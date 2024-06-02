@@ -23,6 +23,7 @@ import app.revanced.patches.youtube.misc.fix.playback.fingerprints.CreatePlayerR
 import app.revanced.patches.youtube.misc.fix.playback.fingerprints.PlayerGestureConfigSyntheticFingerprint
 import app.revanced.patches.youtube.misc.fix.playback.fingerprints.SetPlayerRequestClientTypeFingerprint
 import app.revanced.patches.youtube.misc.settings.SettingsPatch
+import app.revanced.patches.youtube.video.playerresponse.PlayerResponseMethodHookPatch
 import app.revanced.util.getReference
 import app.revanced.util.indexOfFirstInstructionOrThrow
 import app.revanced.util.resultOrThrow
@@ -43,6 +44,7 @@ import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
         SettingsPatch::class,
         AddResourcesPatch::class,
         UserAgentClientSpoofPatch::class,
+        PlayerResponseMethodHookPatch::class,
     ],
     compatiblePackages = [
         CompatiblePackage(
@@ -107,6 +109,11 @@ object SpoofClientPatch : BytecodePatch(
             ),
         )
 
+        PlayerResponseMethodHookPatch += PlayerResponseMethodHookPatch.Hook.ProtoBufferParameter(
+            "$INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerResponseVideoId(" +
+                "Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;",
+        )
+        
         // region Block /initplayback requests to fall back to /get_watch requests.
 
         BuildInitPlaybackRequestFingerprint.resultOrThrow().let {
