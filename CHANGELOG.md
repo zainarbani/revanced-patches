@@ -1,3 +1,24 @@
+# [4.9.0-dev.1](https://github.com/zainarbani/revanced-patches/compare/v4.8.1...v4.9.0-dev.1) (2024-06-02)
+
+
+### Bug Fixes
+
+* **3rd-party Reddit apps:** Spoof user agent to work around Reddit API issues ([#3253](https://github.com/zainarbani/revanced-patches/issues/3253)) ([495e6d6](https://github.com/zainarbani/revanced-patches/commit/495e6d65e7cbae88baa71f8334b9afcf9819deaf))
+* **Reddit - Hide ads:** Constrain to last working version 2024.17.0 ([#3192](https://github.com/zainarbani/revanced-patches/issues/3192)) ([4fb3456](https://github.com/zainarbani/revanced-patches/commit/4fb3456e93ff7ec19030de8870e1cb9c1319faef))
+* **YouTube - Client spoof:** Spoof iOS client model to fix various side effects ([#3220](https://github.com/zainarbani/revanced-patches/issues/3220)) ([9b5f4ce](https://github.com/zainarbani/revanced-patches/commit/9b5f4ce2b251c67e24cfcac3edae70c8a8aae230))
+* **YouTube - Spoof client:** Allow swipe gestures to enter/exit fullscreen when spoofing with `Android VR` client ([#3259](https://github.com/zainarbani/revanced-patches/issues/3259)) ([5114900](https://github.com/zainarbani/revanced-patches/commit/5114900b1b5572c04ba6759eedab77f0a934b058))
+* **YouTube - Spoof client:** Clarify that only enter/exit fullscreen gesture does not work with Android VR spoof ([#3243](https://github.com/zainarbani/revanced-patches/issues/3243)) ([06d8f55](https://github.com/zainarbani/revanced-patches/commit/06d8f55e9b6ce27d8c550f202615689ac9c34cfa))
+* **YouTube - Spoof client:** Improve Android spoofing ([#3230](https://github.com/zainarbani/revanced-patches/issues/3230)) ([b688923](https://github.com/zainarbani/revanced-patches/commit/b688923c7e83805f2377a19b20a969b8cb749a9c))
+* **yt:** test ([0aa0461](https://github.com/zainarbani/revanced-patches/commit/0aa0461d6df89d026f718069f5bd199efe08abab))
+
+
+### Features
+
+* **Messenger:** Add `Hide inbox subtabs` patch ([#3163](https://github.com/zainarbani/revanced-patches/issues/3163)) ([24e4ebd](https://github.com/zainarbani/revanced-patches/commit/24e4ebd77ad0f349b479926bf3983b72c2683496))
+* **YouTube - Hide layout components:** Disable like / subscribe button glow animation ([#3265](https://github.com/zainarbani/revanced-patches/issues/3265)) ([68d35ea](https://github.com/zainarbani/revanced-patches/commit/68d35eafc15513c23cd5220260023e7ec5b7978a))
+* **YouTube Music:** Support version `7.03` ([#3272](https://github.com/zainarbani/revanced-patches/issues/3272)) ([d1ceca3](https://github.com/zainarbani/revanced-patches/commit/d1ceca39984f7933b28d81802d04bb3ead327595))
+* **YouTube:** Support version `19.12`, `19.13`, `19.14`, `19.15` and `19.16` ([#3239](https://github.com/zainarbani/revanced-patches/issues/3239)) ([99b07e0](https://github.com/zainarbani/revanced-patches/commit/99b07e0e18574668f36bb3c962c8d11222114be4))
+
 # [4.9.0-dev.5](https://github.com/ReVanced/revanced-patches/compare/v4.9.0-dev.4...v4.9.0-dev.5) (2024-06-01)
 
 
