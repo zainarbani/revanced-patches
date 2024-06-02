@@ -1,3 +1,10 @@
+## [4.9.2-dev.1](https://github.com/zainarbani/revanced-patches/compare/v4.9.1...v4.9.2-dev.1) (2024-06-02)
+
+
+### Bug Fixes
+
+* **yt:** test8 ([db26d01](https://github.com/zainarbani/revanced-patches/commit/db26d012903795f346c2a21ace0e069704043935))
+
 # [4.9.0-dev.1](https://github.com/zainarbani/revanced-patches/compare/v4.8.1...v4.9.0-dev.1) (2024-06-02)
 
 
