@@ -114,6 +114,7 @@ object SpoofClientPatch : BytecodePatch(
                 "Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;",
         )
         
+        
         // region Block /initplayback requests to fall back to /get_watch requests.
 
         BuildInitPlaybackRequestFingerprint.resultOrThrow().let {
