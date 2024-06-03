@@ -1,3 +1,11 @@
+## [4.9.2-dev.13](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.12...v4.9.2-dev.13) (2024-06-03)
+
+
+### Bug Fixes
+
+* **yt:** zzi5 ([9a259d9](https://github.com/zainarbani/revanced-patches/commit/9a259d9ed34d15a9b1155102117647edc1312254))
+* **yt:** zzi6 ([15c2eb7](https://github.com/zainarbani/revanced-patches/commit/15c2eb730544a55a09a9296ce0a0d8c4d884ae79))
+
 ## [4.9.2-dev.12](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.11...v4.9.2-dev.12) (2024-06-03)
 
 
