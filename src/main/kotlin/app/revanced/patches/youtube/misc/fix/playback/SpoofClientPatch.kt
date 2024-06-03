@@ -33,6 +33,7 @@ import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.builder.MutableMethodImplementation
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
@@ -125,7 +126,7 @@ object SpoofClientPatch : BytecodePatch(
                 } ?: throw PatchException("Could not find the target instruction.")
                 
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<OneRegisterInstruction>(invokeUriIndex).registerA
+                val targetRegister = getInstruction<TwoRegisterInstruction>(invokeUriIndex).registerA
 
                 addInstructions(
                     invokeUriIndex,
