@@ -34,6 +34,7 @@ import com.android.tools.smali.dexlib2.builder.MutableMethodImplementation
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
+import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
@@ -117,16 +118,20 @@ object SpoofClientPatch : BytecodePatch(
         )
         
         BuildVideoPlaybackConnectionFingerprint.resultOrThrow().let {
-            val invokeUriIndex = it.scanResult.patternScanResult!!.startIndex
-
+            val invokeUriIndex = it.mutableMethod
+                .getInstructions().indexOfFirst { instruction ->
+                    instruction.opcode == Opcode.INVOKE_VIRTUAL &&
+                    instruction.getReference<MethodReference>()?.name == "getPath"
+                } ?: throw PatchException("Could not find the target instruction.")
+                
             it.mutableMethod.apply {
-                //val targetRegister = getInstruction<OneRegisterInstruction>(moveUriStringIndex).registerA
+                val targetRegister = getInstruction<OneRegisterInstruction>(invokeUriIndex).registerA
 
                 addInstructions(
                     invokeUriIndex,
                     """
-                        invoke-static { p1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->setVideoPlaybackUrl(Ljava/net/URL;)Ljava/net/URL;
-                        move-result-object p1
+                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->setVideoPlaybackUri(Landroid/net/Uri;)Landroid/net/Uri;
+                        move-result-object v$targetRegister
                     """,
                 )
             }

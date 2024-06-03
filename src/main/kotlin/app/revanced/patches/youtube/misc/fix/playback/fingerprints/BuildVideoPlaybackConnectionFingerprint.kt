@@ -7,16 +7,22 @@ import com.android.tools.smali.dexlib2.Opcode
 
 internal object BuildVideoPlaybackConnectionFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL,
-    returnType = "Ljava/net/URLConnection;",
-    parameters = listOf("Ljava/net/URL;"),
+    returnType = "J",
+    parameters = listOf("L"),
     opcodes = listOf(
-        Opcode.SGET_OBJECT,
+        Opcode.IGET_OBJECT,
         Opcode.INVOKE_VIRTUAL,
-        Opcode.MOVE_RESULT_OBJECT,
-        Opcode.RETURN_OBJECT,
     ),
-    customFingerprint = { methodDef, classDef ->
-        methodDef.name == "openConnection" &&
-        classDef.type.endsWith("CronetUrlRequestContext;")
-   }, 
+    strings = listOf(
+        "/videoplayback",
+        "1",
+        "ump",
+        "range",
+        "ppp",
+        "cpn",
+    ),
+//    customFingerprint = { methodDef, classDef ->
+//        methodDef.name == "openConnection" &&
+//        classDef.type.endsWith("CronetUrlRequestContext;")
+//   }, 
 )
