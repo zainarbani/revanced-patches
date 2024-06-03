@@ -18,6 +18,7 @@ import app.revanced.patches.shared.misc.settings.preference.PreferenceScreen.Sor
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
 import app.revanced.patches.youtube.misc.fix.playback.fingerprints.BuildInitPlaybackRequestFingerprint
 import app.revanced.patches.youtube.misc.fix.playback.fingerprints.BuildPlayerRequestURIFingerprint
+import app.revanced.patches.youtube.misc.fix.playback.fingerprints.BuildVideoPlaybackConnectionFingerprint
 import app.revanced.patches.youtube.misc.fix.playback.fingerprints.CreatePlayerRequestBodyFingerprint
 import app.revanced.patches.youtube.misc.fix.playback.fingerprints.CreatePlayerRequestBodyWithModelFingerprint
 import app.revanced.patches.youtube.misc.fix.playback.fingerprints.PlayerGestureConfigSyntheticFingerprint
@@ -82,6 +83,7 @@ object SpoofClientPatch : BytecodePatch(
         // Client type spoof.
         BuildInitPlaybackRequestFingerprint,
         BuildPlayerRequestURIFingerprint,
+        BuildVideoPlaybackConnectionFingerprint,
         SetPlayerRequestClientTypeFingerprint,
         CreatePlayerRequestBodyFingerprint,
         CreatePlayerRequestBodyWithModelFingerprint,
@@ -114,6 +116,21 @@ object SpoofClientPatch : BytecodePatch(
                 "Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;",
         )
         
+        BuildVideoPlaybackConnectionFingerprint.resultOrThrow().let {
+            val invokeUriIndex = it.scanResult.patternScanResult!!.startIndex
+
+            it.mutableMethod.apply {
+                //val targetRegister = getInstruction<OneRegisterInstruction>(moveUriStringIndex).registerA
+
+                addInstructions(
+                    invokeUriIndex,
+                    """
+                        invoke-static { p1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->setVideoPlaybackUrl(Ljava/lang/URL;)Ljava/lang/URL;
+                        move-result-object p1
+                    """,
+                )
+            }
+        }
         
         // region Block /initplayback requests to fall back to /get_watch requests.
 
