@@ -15,8 +15,8 @@ internal object BuildVideoPlaybackConnectionFingerprint : MethodFingerprint(
         Opcode.MOVE_RESULT_OBJECT,
         Opcode.RETURN_OBJECT,
     ),
-    customFingerprint = { methodDef, _ ->
+    customFingerprint = { methodDef, classDef ->
         methodDef.name == "openConnection" &&
-        methodDef.definingClass.endsWith("ExperimentalCronetEngine;")
+        classDef.type.endsWith("CronetUrlRequestContext;")
    }, 
 )
