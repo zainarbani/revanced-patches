@@ -6,18 +6,13 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal object BuildVideoPlaybackConnectionFingerprint : MethodFingerprint(
-    accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL,
-    returnType = "J",
+    accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL or AccessFlags.SYNCHRONYZED,
     opcodes = listOf(
         Opcode.IGET_OBJECT,
-        Opcode.INVOKE_VIRTUAL,
+        Opcode.IGET_OBJECT,
     ),
     strings = listOf(
-        "/videoplayback",
-        "ump",
-        "range",
-        "ppp",
-        "cpn",
+        "c.cpn_mismatch.",
     ),
 //    customFingerprint = { methodDef, classDef ->
 //        methodDef.name == "openConnection" &&

@@ -121,18 +121,18 @@ object SpoofClientPatch : BytecodePatch(
         BuildVideoPlaybackConnectionFingerprint.resultOrThrow().let {
             val invokeUriIndex = it.mutableMethod
                 .getInstructions().indexOfFirst { instruction ->
-                    instruction.opcode == Opcode.INVOKE_VIRTUAL &&
-                    instruction.getReference<MethodReference>()?.name == "getPath"
+                    instruction.opcode == Opcode.IGET_OBJECT &&
+                    instruction.getReference<FieldReference>()?.type == "Ljava/lang/String;"&&
+                    instruction.getReference<FieldReference>()?.definingClass == "Lcom/google/android/libraries/youtube/innertube/model/media/VideoStreamingData;"
                 } ?: throw PatchException("Could not find the target instruction.")
                 
             it.mutableMethod.apply {
-                //val targetRegister = getInstruction<OneRegisterInstruction>(invokeUriIndex).registerA
+                val targetRegister = getInstruction<TwoRegisterInstruction>(invokeUriIndex).registerA
 
                 addInstructions(
-                    invokeUriIndex,
+                    invokeUriIndex + 1,
                     """
-                        invoke-static { v2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->setVideoPlaybackUri(Landroid/net/Uri;)Landroid/net/Uri;
-                        move-result-object v2
+                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
                     """,
                 )
             }
