@@ -8,7 +8,6 @@ import com.android.tools.smali.dexlib2.Opcode
 internal object BuildVideoPlaybackConnectionFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL,
     returnType = "J",
-    parameters = listOf("L"),
     opcodes = listOf(
         Opcode.IGET_OBJECT,
         Opcode.INVOKE_VIRTUAL,

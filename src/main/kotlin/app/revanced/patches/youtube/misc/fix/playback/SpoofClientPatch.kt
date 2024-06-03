@@ -126,7 +126,7 @@ object SpoofClientPatch : BytecodePatch(
                 } ?: throw PatchException("Could not find the target instruction.")
                 
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<TwoRegisterInstruction>(invokeUriIndex).registerA
+                val targetRegister = getInstruction<OneRegisterInstruction>(invokeUriIndex).registerA
 
                 addInstructions(
                     invokeUriIndex,
