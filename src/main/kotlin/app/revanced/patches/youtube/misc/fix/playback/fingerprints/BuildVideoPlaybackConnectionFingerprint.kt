@@ -6,7 +6,7 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal object BuildVideoPlaybackConnectionFingerprint : MethodFingerprint(
-    accessFlags = AccessFlags.PRIVATE or AccessFlags.FINAL or AccessFlags.SYNCHRONIZED,
+    accessFlags = AccessFlags.PRIVATE or AccessFlags.FINAL or AccessFlags.DECLARED_SYNCHRONIZED,
     returnType = "L",
 //    opcodes = listOf(
 //        Opcode.IGET_OBJECT,
