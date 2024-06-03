@@ -6,11 +6,12 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal object BuildVideoPlaybackConnectionFingerprint : MethodFingerprint(
-    accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL or AccessFlags.SYNCHRONIZED,
-    opcodes = listOf(
-        Opcode.IGET_OBJECT,
-        Opcode.IGET_OBJECT,
-    ),
+    accessFlags = AccessFlags.PRIVATE or AccessFlags.FINAL or AccessFlags.SYNCHRONIZED,
+    returnType = "L",
+//    opcodes = listOf(
+//        Opcode.IGET_OBJECT,
+//        Opcode.IGET_OBJECT,
+//    ),
     strings = listOf(
         "c.cpn_mismatch.",
     ),
