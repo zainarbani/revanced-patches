@@ -10,6 +10,12 @@ internal object BuildVideoPlaybackConnectionFingerprint : MethodFingerprint(
     parameters = listOf(
         "Ljava/net/URL;", // videoplayback URL
         "I",
+        "[B",
+        "J",
+        "J",
+        "Z",
+        "Z",
+        "Ljava/util/Map;",
     ),
     strings = listOf(
         "Range",
