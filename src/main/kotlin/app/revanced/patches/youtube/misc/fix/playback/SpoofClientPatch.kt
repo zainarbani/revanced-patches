@@ -126,13 +126,13 @@ object SpoofClientPatch : BytecodePatch(
                 } ?: throw PatchException("Could not find the target instruction.")
                 
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<OneRegisterInstruction>(invokeUriIndex).registerA
+                //val targetRegister = getInstruction<OneRegisterInstruction>(invokeUriIndex).registerA
 
                 addInstructions(
                     invokeUriIndex,
                     """
-                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->setVideoPlaybackUri(Landroid/net/Uri;)Landroid/net/Uri;
-                        move-result-object v$targetRegister
+                        invoke-static { v2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->setVideoPlaybackUri(Landroid/net/Uri;)Landroid/net/Uri;
+                        move-result-object v2
                     """,
                 )
             }

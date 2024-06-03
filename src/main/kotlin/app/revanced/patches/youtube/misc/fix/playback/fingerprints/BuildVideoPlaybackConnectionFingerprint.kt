@@ -14,7 +14,6 @@ internal object BuildVideoPlaybackConnectionFingerprint : MethodFingerprint(
     ),
     strings = listOf(
         "/videoplayback",
-        "1",
         "ump",
         "range",
         "ppp",
