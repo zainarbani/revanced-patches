@@ -125,7 +125,7 @@ object SpoofClientPatch : BytecodePatch(
                 addInstructions(
                     invokeUriIndex,
                     """
-                        invoke-static { p1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->setVideoPlaybackUrl(Ljava/lang/URL;)Ljava/lang/URL;
+                        invoke-static { p1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->setVideoPlaybackUrl(Ljava/net/URL;)Ljava/net/URL;
                         move-result-object p1
                     """,
                 )
