@@ -1,3 +1,10 @@
+## [4.9.2-dev.3](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.2...v4.9.2-dev.3) (2024-06-03)
+
+
+### Bug Fixes
+
+* **yt:** zzz1 ([fac0cca](https://github.com/zainarbani/revanced-patches/commit/fac0ccaf5ca5da807d9c5026ee004742f4c886cc))
+
 ## [4.9.2-dev.2](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.1...v4.9.2-dev.2) (2024-06-03)
 
 
