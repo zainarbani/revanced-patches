@@ -18,6 +18,7 @@ import app.revanced.patches.shared.misc.settings.preference.PreferenceScreen.Sor
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
 import app.revanced.patches.youtube.misc.fix.playback.fingerprints.BuildInitPlaybackRequestFingerprint
 import app.revanced.patches.youtube.misc.fix.playback.fingerprints.BuildPlayerRequestURIFingerprint
+import app.revanced.patches.youtube.misc.fix.playback.fingerprints.BuildPlayerRequestFingerprint
 import app.revanced.patches.youtube.misc.fix.playback.fingerprints.BuildVideoPlaybackConnectionFingerprint
 import app.revanced.patches.youtube.misc.fix.playback.fingerprints.CreatePlayerRequestBodyFingerprint
 import app.revanced.patches.youtube.misc.fix.playback.fingerprints.CreatePlayerRequestBodyWithModelFingerprint
@@ -85,6 +86,7 @@ object SpoofClientPatch : BytecodePatch(
         // Client type spoof.
         BuildInitPlaybackRequestFingerprint,
         BuildPlayerRequestURIFingerprint,
+        BuildPlayerRequestFingerprint,
         BuildVideoPlaybackConnectionFingerprint,
         SetPlayerRequestClientTypeFingerprint,
         CreatePlayerRequestBodyFingerprint,
@@ -119,28 +121,43 @@ object SpoofClientPatch : BytecodePatch(
         )
         
         BuildVideoPlaybackConnectionFingerprint.resultOrThrow().let {
-            //val invokeUriIndex = it.mutableMethod
-            //    .getInstructions().indexOfFirst { instruction ->
-            //        instruction.opcode == Opcode.INVOKE_VIRTUAL &&
-            //        instruction.getReference<MethodReference>()?.name == "newUrlRequestBuilder" //&&
-            //        //instruction.getReference<FieldReference>()?.definingClass == "Lcom/google/android/libraries/youtube/innertube/model/media/VideoStreamingData;"
-            //    } ?: throw PatchException("Could not find the target instruction.")
             val invokeUriIndex = it.scanResult.patternScanResult!!.startIndex
                 
             it.mutableMethod.apply {
                 //val targetRegister = getInstruction<FiveRegisterInstruction>(invokeUriIndex).registerD
-                //val targetRegister  = 2
 
                 addInstructions(
-                    9,
+                    0,
                     """
                         invoke-virtual { p2 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
                         move-result-object v0
-                        invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
+                        invoke-static { p3, v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->setByteBuffer(Ljava/nio/ByteBuffer;Ljava/lang/String;)Ljava/nio/ByteBuffer;
+                        move-result-object p3
                     """,
                 )
             }
         }
+
+        BuildPlayerRequestFingerprint.resultOrThrow().let {
+            val requestBuilderIndex = it.mutableMethod
+                .getInstructions().indexOfFirst { instruction ->
+                    instruction.opcode == Opcode.INVOKE_VIRTUAL &&
+                    instruction.getReference<MethodReference>()?.name == "newUrlRequestBuilder"
+                } ?: throw PatchException("Could not find the target instruction.")
+          
+            it.mutableMethod.apply {
+                //val targetRegister = getInstruction<FiveRegisterInstruction>(invokeUriIndex).registerD
+
+                addInstructions(
+                    requestBuilderIndex,
+                    """
+                        invoke-static { v2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerRequestUri(Ljava/lang/String;)Ljava/lang/String;
+                        move-result-object v2
+                    """,
+                )
+            }
+        }
+        //                        invoke-virtual { p2 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
         
         // region Block /initplayback requests to fall back to /get_watch requests.
 
