@@ -119,21 +119,24 @@ object SpoofClientPatch : BytecodePatch(
         )
         
         BuildVideoPlaybackConnectionFingerprint.resultOrThrow().let {
-            val invokeUriIndex = it.mutableMethod
-                .getInstructions().indexOfFirst { instruction ->
-                    instruction.opcode == Opcode.INVOKE_VIRTUAL &&
-                    instruction.getReference<MethodReference>()?.name == "newUrlRequestBuilder" //&&
-                    //instruction.getReference<FieldReference>()?.definingClass == "Lcom/google/android/libraries/youtube/innertube/model/media/VideoStreamingData;"
-                } ?: throw PatchException("Could not find the target instruction.")
+            //val invokeUriIndex = it.mutableMethod
+            //    .getInstructions().indexOfFirst { instruction ->
+            //        instruction.opcode == Opcode.INVOKE_VIRTUAL &&
+            //        instruction.getReference<MethodReference>()?.name == "newUrlRequestBuilder" //&&
+            //        //instruction.getReference<FieldReference>()?.definingClass == "Lcom/google/android/libraries/youtube/innertube/model/media/VideoStreamingData;"
+            //    } ?: throw PatchException("Could not find the target instruction.")
+            val invokeUriIndex = it.scanResult.patternScanResult!!.startIndex
                 
             it.mutableMethod.apply {
                 //val targetRegister = getInstruction<FiveRegisterInstruction>(invokeUriIndex).registerD
-                val targetRegister  = 2
+                //val targetRegister  = 2
 
                 addInstructions(
                     invokeUriIndex,
                     """
-                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
+                        invoke-virtual { p2 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
+                        move-result-object v0
+                        invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
                     """,
                 )
             }
