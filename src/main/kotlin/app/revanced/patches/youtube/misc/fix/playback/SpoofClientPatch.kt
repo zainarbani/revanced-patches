@@ -115,10 +115,10 @@ object SpoofClientPatch : BytecodePatch(
             ),
         )
 
-        PlayerResponseMethodHookPatch += PlayerResponseMethodHookPatch.Hook.ProtoBufferParameter(
-            "$INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerResponseVideoId(" +
-                "Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;",
-        )
+        //PlayerResponseMethodHookPatch += PlayerResponseMethodHookPatch.Hook.ProtoBufferParameter(
+        //    "$INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerResponseVideoId(" +
+        //        "Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;",
+        //)
         
         BuildVideoPlaybackConnectionFingerprint.resultOrThrow().let {
             val invokeUriIndex = it.scanResult.patternScanResult!!.startIndex
