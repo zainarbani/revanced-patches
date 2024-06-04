@@ -134,7 +134,7 @@ object SpoofClientPatch : BytecodePatch(
                 addInstructions(
                     invokeUriIndex,
                     """
-                        invoke-virtual { v0, p2 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
+                        invoke-virtual { v0, p1 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
                         invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
                     """,
                 )
