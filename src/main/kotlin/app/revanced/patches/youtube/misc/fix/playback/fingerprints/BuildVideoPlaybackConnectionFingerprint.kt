@@ -6,15 +6,24 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal object BuildVideoPlaybackConnectionFingerprint : MethodFingerprint(
-    accessFlags = AccessFlags.PRIVATE or AccessFlags.FINAL or AccessFlags.DECLARED_SYNCHRONIZED,
-    returnType = "L",
+    accessFlags = AccessFlags.PUBLIC or AccessFlags.STATIC,
+    returnType = "Lorg/chromium/net/UrlRequest;",
+    parameterTypes = listOf(
+        "L",
+        "Ljava/util/Map;",
+        "[B",
+        "L",
+        "L",
+        "L",
+        "Lorg/chromium/net/UrlRequest\$Callback;"
+    ),
 //    opcodes = listOf(
 //        Opcode.IGET_OBJECT,
 //        Opcode.IGET_OBJECT,
 //    ),
-    strings = listOf(
-        "c.cpn_mismatch.",
-    ),
+//    strings = listOf(
+//        "c.cpn_mismatch.",
+//    ),
 //    customFingerprint = { methodDef, classDef ->
 //        methodDef.name == "openConnection" &&
 //        classDef.type.endsWith("CronetUrlRequestContext;")
