@@ -13,19 +13,6 @@ internal object BuildVideoPlaybackConnectionFingerprint : MethodFingerprint(
         "Lorg/chromium/net/UrlResponseInfo;",
         "Ljava/nio/ByteBuffer;",
     ),
-    opcodes = listOf(
-        Opcode.IGET_OBJECT,
-        Opcode.INVOKE_STATIC,
-        Opcode.MOVE_RESULT_OBJECT,
-        Opcode.INVOKE_STATIC,
-        Opcode.IGET_OBJECT,
-        Opcode.INVOKE_VIRTUAL,
-        Opcode.INVOKE_STATIC,
-        Opcode.RETURN_VOID,
-        Opcode.MOVE_EXCEPTION,
-        Opcode.INVOKE_STATIC,
-        Opcode.THROW,
-    ),
     customFingerprint = { methodDef, _ ->
         methodDef.name == "onReadCompleted"
     }, 
@@ -44,9 +31,9 @@ internal object BuildVideoPlaybackConnectionFingerprint : MethodFingerprint(
 //        Opcode.IGET_OBJECT,
 //        Opcode.IGET_OBJECT,
 //    ),
-//    strings = listOf(
-//        "c.cpn_mismatch.",
-//    ),
+    strings = listOf(
+        "Wrong wiretype for messages tag: ",
+    ),
 //    customFingerprint = { methodDef, classDef ->
 //        methodDef.name == "openConnection" &&
 //        classDef.type.endsWith("CronetUrlRequestContext;")
