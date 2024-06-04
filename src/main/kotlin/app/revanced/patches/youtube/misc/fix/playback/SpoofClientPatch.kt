@@ -132,10 +132,9 @@ object SpoofClientPatch : BytecodePatch(
                 //val targetRegister  = 2
 
                 addInstructions(
-                    invokeUriIndex + 3,
+                    invokeUriIndex,
                     """
-                        invoke-virtual { p2 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
-                        move-result-object v0
+                        invoke-virtual { v0, p2 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
                         invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
                     """,
                 )
