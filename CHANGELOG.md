@@ -1,3 +1,10 @@
+## [4.9.2-dev.21](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.20...v4.9.2-dev.21) (2024-06-04)
+
+
+### Bug Fixes
+
+* **yt:** www7 ([3d60953](https://github.com/zainarbani/revanced-patches/commit/3d60953034ae0f2a160ab3b28e9d70bfbd723189))
+
 ## [4.9.2-dev.20](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.19...v4.9.2-dev.20) (2024-06-04)
 
 
