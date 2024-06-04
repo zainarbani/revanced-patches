@@ -121,18 +121,19 @@ object SpoofClientPatch : BytecodePatch(
         //)
         
         BuildVideoPlaybackConnectionFingerprint.resultOrThrow().let {
-            val invokeUriIndex = it.scanResult.patternScanResult!!.startIndex
+            val moveResultIndex = it.mutableMethod
+                .getInstructions().indexOfFirst { instruction ->
+                    instruction.opcode == Opcode.MOVE_RESULT_OBJECT //&&
+//                    instruction.getReference<MethodReference>()?.name == "newUrlRequestBuilder"
+                } ?: throw PatchException("Could not find the target instruction.")
                 
             it.mutableMethod.apply {
-                //val targetRegister = getInstruction<FiveRegisterInstruction>(invokeUriIndex).registerD
+                val targetRegister = getInstruction<OneRegisterInstruction>(moveResultIndex).registerA
 
                 addInstructions(
-                    0,
+                    moveResultIndex + 1 ,
                     """
-                        invoke-virtual { p2 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
-                        move-result-object v0
-                        invoke-static { p3, v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->setByteBuffer(Ljava/nio/ByteBuffer;Ljava/lang/String;)Ljava/nio/ByteBuffer;
-                        move-result-object p3
+                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
                     """,
                 )
             }

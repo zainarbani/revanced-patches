@@ -11,7 +11,7 @@ internal object BuildVideoPlaybackConnectionFingerprint : MethodFingerprint(
     parameters = listOf(
         "Lorg/chromium/net/UrlRequest;",
         "Lorg/chromium/net/UrlResponseInfo;",
-        "Ljava/nio/ByteBuffer;",
+//        "Ljava/nio/ByteBuffer;",
     ),
     opcodes = listOf(
         Opcode.IGET_OBJECT,
@@ -27,7 +27,7 @@ internal object BuildVideoPlaybackConnectionFingerprint : MethodFingerprint(
         Opcode.THROW
     ),
     customFingerprint = { methodDef, _ ->
-        methodDef.name == "onReadCompleted"
+        methodDef.name == "onSucceeded"
     },
 )
 
