@@ -1,3 +1,10 @@
+## [4.9.2-dev.27](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.26...v4.9.2-dev.27) (2024-06-04)
+
+
+### Bug Fixes
+
+* **yt:** wwn4 ([5e21035](https://github.com/zainarbani/revanced-patches/commit/5e2103598a8903ce9b00da7de718098259840973))
+
 ## [4.9.2-dev.26](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.25...v4.9.2-dev.26) (2024-06-04)
 
 
