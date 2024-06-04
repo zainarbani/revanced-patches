@@ -1,3 +1,10 @@
+## [4.9.2-dev.20](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.19...v4.9.2-dev.20) (2024-06-04)
+
+
+### Bug Fixes
+
+* **yt:** www6 ([3832053](https://github.com/zainarbani/revanced-patches/commit/38320538dd6cb3d57f90830d1396fa5cc95554d3))
+
 ## [4.9.2-dev.19](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.18...v4.9.2-dev.19) (2024-06-04)
 
 
