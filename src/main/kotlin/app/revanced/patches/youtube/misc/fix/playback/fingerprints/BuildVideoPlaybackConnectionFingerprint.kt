@@ -8,7 +8,7 @@ import com.android.tools.smali.dexlib2.Opcode
 internal object BuildVideoPlaybackConnectionFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PUBLIC or AccessFlags.STATIC,
     returnType = "Lorg/chromium/net/UrlRequest;",
-    parameterTypes = listOf(
+    parameters = listOf(
         "L",
         "Ljava/util/Map;",
         "[B",
