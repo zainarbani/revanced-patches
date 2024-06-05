@@ -1,3 +1,10 @@
+## [4.9.2-dev.38](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.37...v4.9.2-dev.38) (2024-06-05)
+
+
+### Bug Fixes
+
+* **yt:** kkk2 ([5a4b0ee](https://github.com/zainarbani/revanced-patches/commit/5a4b0ee19dfb163bfd599a507c6af70a022dcbf7))
+
 ## [4.9.2-dev.37](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.36...v4.9.2-dev.37) (2024-06-05)
 
 
