@@ -17,18 +17,15 @@ internal object BuildPlayerRequestFingerprint : MethodFingerprint(
 //        "L",
 //        "Lorg/chromium/net/UrlRequest\$Callback;"
 //    ),
-    accessFlags = AccessFlags.PRIVATE or AccessFlags.FINAL,
-    returnType = "V",
+    accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL,
+    returnType = "Lcom/google/common/util/concurrent/ListenableFuture;",
     opcodes = listOf(
         Opcode.INVOKE_VIRTUAL,
         Opcode.MOVE_RESULT_OBJECT,
     ),
     strings = listOf(
-        "GET",
-        "POST",
-        "Content-Length",
-        "0",
         "Content-Type",
         "application/x-www-form-urlencoded",
+        "Content-Length",
     ),
 )
