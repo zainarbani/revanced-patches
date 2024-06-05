@@ -3,17 +3,32 @@ package app.revanced.patches.youtube.misc.fix.playback.fingerprints
 import app.revanced.patcher.extensions.or
 import app.revanced.patcher.fingerprint.MethodFingerprint
 import com.android.tools.smali.dexlib2.AccessFlags
+import com.android.tools.smali.dexlib2.Opcode
 
 internal object BuildPlayerRequestFingerprint : MethodFingerprint(
-    accessFlags = AccessFlags.PUBLIC or AccessFlags.STATIC,
-    returnType = "Lorg/chromium/net/UrlRequest;",
-    parameters = listOf(
-        "L",
-        "Ljava/util/Map;",
-        "[B",
-        "L",
-        "L",
-        "L",
-        "Lorg/chromium/net/UrlRequest\$Callback;"
+//    accessFlags = AccessFlags.PUBLIC or AccessFlags.STATIC,
+//    returnType = "Lorg/chromium/net/UrlRequest;",
+//    parameters = listOf(
+//        "L",
+//        "Ljava/util/Map;",
+//        "[B",
+//        "L",
+//        "L",
+//        "L",
+//        "Lorg/chromium/net/UrlRequest\$Callback;"
+//    ),
+    accessFlags = AccessFlags.PRIVATE or AccessFlags.FINAL,
+    returnType = "V",
+    opcodes = listOf(
+        Opcode.INVOKE_VIRTUAL,
+        Opcode.MOVE_RESULT_OBJECT,
+    ),
+    strings = listOf(
+        "GET",
+        "POST",
+        "Content-Length",
+        "0",
+        "Content-Type",
+        "application/x-www-form-urlencoded",
     ),
 )

@@ -152,12 +152,12 @@ object SpoofClientPatch : BytecodePatch(
                 addInstructions(
                     requestBuilderIndex,
                     """
-                        invoke-static { v2, p1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerRequestUri(Ljava/lang/String;Ljava/util/Map;)Ljava/lang/String;
-                        move-result-object v2
+                        invoke-static { v1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
                     """,
                 )
             }
         }
+        //invoke-static { v2, p1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerRequestUri(Ljava/lang/String;Ljava/util/Map;)Ljava/lang/String;
         //                        invoke-virtual { p2 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
         
         // region Block /initplayback requests to fall back to /get_watch requests.
