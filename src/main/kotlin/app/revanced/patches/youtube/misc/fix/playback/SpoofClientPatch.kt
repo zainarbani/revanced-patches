@@ -152,7 +152,7 @@ object SpoofClientPatch : BytecodePatch(
                 addInstructions(
                     requestBuilderIndex,
                     """
-                        invoke-static { v2, p3 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerRequestUri(Ljava/lang/String;[B)Ljava/lang/String;
+                        invoke-static { v2, p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerRequestUri(Ljava/lang/String;Ljava/util/Map)Ljava/lang/String;
                         move-result-object v2
                     """,
                 )
