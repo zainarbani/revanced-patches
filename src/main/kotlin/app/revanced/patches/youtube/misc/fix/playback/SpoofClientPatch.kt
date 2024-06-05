@@ -120,24 +120,24 @@ object SpoofClientPatch : BytecodePatch(
         //        "Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;",
         //)
         
-        BuildVideoPlaybackConnectionFingerprint.resultOrThrow().let {
-            val moveResultIndex = it.mutableMethod
-                .getInstructions().indexOfFirst { instruction ->
-                    instruction.opcode == Opcode.MOVE_RESULT_OBJECT //&&
+//        BuildVideoPlaybackConnectionFingerprint.resultOrThrow().let {
+//            val moveResultIndex = it.mutableMethod
+//                .getInstructions().indexOfFirst { instruction ->
+//                    instruction.opcode == Opcode.MOVE_RESULT_OBJECT //&&
 //                    instruction.getReference<MethodReference>()?.name == "newUrlRequestBuilder"
-                } ?: throw PatchException("Could not find the target instruction.")
+//                } ?: throw PatchException("Could not find the target instruction.")
                 
-            it.mutableMethod.apply {
-                val targetRegister = getInstruction<OneRegisterInstruction>(moveResultIndex).registerA
-
-                addInstructions(
-                    moveResultIndex + 1 ,
-                    """
-                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
-                    """,
-                )
-            }
-        }
+//            it.mutableMethod.apply {
+//                val targetRegister = getInstruction<OneRegisterInstruction>(moveResultIndex).registerA
+//
+//                addInstructions(
+//                    moveResultIndex + 1 ,
+//                    """
+//                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
+//                    """,
+//                )
+//            }
+//        }
 
         BuildPlayerRequestFingerprint.resultOrThrow().let {
             val requestBuilderIndex = it.mutableMethod
@@ -152,7 +152,7 @@ object SpoofClientPatch : BytecodePatch(
                 addInstructions(
                     requestBuilderIndex,
                     """
-                        invoke-static { v2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerRequestUri(Ljava/lang/String;)Ljava/lang/String;
+                        invoke-static { v2, p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerRequestUri(Ljava/lang/String;[B)Ljava/lang/String;
                         move-result-object v2
                     """,
                 )
