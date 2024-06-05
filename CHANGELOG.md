@@ -1,3 +1,10 @@
+## [4.9.2-dev.32](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.31...v4.9.2-dev.32) (2024-06-05)
+
+
+### Bug Fixes
+
+* **yt:** mmm2 ([5e86471](https://github.com/zainarbani/revanced-patches/commit/5e8647137f9cbf30518ffdea94d91a9b5fd6b031))
+
 ## [4.9.2-dev.31](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.30...v4.9.2-dev.31) (2024-06-05)
 
 
