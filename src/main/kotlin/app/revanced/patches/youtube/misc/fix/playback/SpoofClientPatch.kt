@@ -100,6 +100,8 @@ object SpoofClientPatch : BytecodePatch(
         "Lapp/revanced/integrations/youtube/patches/spoof/SpoofClientPatch;"
     private const val CLIENT_INFO_CLASS_DESCRIPTOR =
         "Lcom/google/protos/youtube/api/innertube/InnertubeContext\$ClientInfo;"
+    private const val FORMAT_STREAM_MODEL_CLASS_DESCRIPTOR =
+        "Lcom/google/android/libraries/youtube/innertube/model/media/FormatStreamModel;"
 
     override fun execute(context: BytecodeContext) {
         AddResourcesPatch(this::class)
@@ -140,19 +142,26 @@ object SpoofClientPatch : BytecodePatch(
 //        }
 
         BuildPlayerRequestFingerprint.resultOrThrow().let {
-            val requestBuilderIndex = it.mutableMethod
+            val returnIndex = it.scanResult.patternScanResult!!.endIndex
+            val setUriIndex = it.mutableMethod
                 .getInstructions().indexOfFirst { instruction ->
-                    instruction.opcode == Opcode.INVOKE_VIRTUAL &&
-                    instruction.getReference<MethodReference>()?.name == "newUrlRequestBuilder"
-                } ?: throw PatchException("Could not find the target instruction.")
-          
+                    instruction.opcode == Opcode.IPUT_OBJECT &&
+                    instruction.getReference<FieldReference>()?.definingClass == "Lcom/google/android/libraries/youtube/innertube/model/media/FormatStreamModel;" &&
+                    instruction.getReference<FieldReference>()?.type == "Landroid/net/Uri;"
+                } ?: throw PatchException("Could not find the target instruction.")            
+       
+            
             it.mutableMethod.apply {
-                //val targetRegister = getInstruction<FiveRegisterInstruction>(invokeUriIndex).registerD
+                val targetRegister = getInstruction<TwoRegisterInstruction>(setUriIndex)
+                val targetName = getReference<FieldReference>(setUriIndex).name
 
                 addInstructions(
-                    requestBuilderIndex,
+                    returnIndex,
                     """
-                        invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
+                        iget-object v${targetRegister.registerA}, p${targetRegister.registerB}, $FORMAT_STREAM_MODEL_CLASS_DESCRIPTOR->$targetName:Landroid/net/Uri;
+                        invoke-virtual { v${targetRegister.registerA} }, Landroid/net/Uri;->toString()Ljava/lang/String;
+                        move-result-object ${targetRegister.registerA}
+                        invoke-static { v${targetRegister.registerA} }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
                     """,
                 )
             }

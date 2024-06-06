@@ -17,13 +17,22 @@ internal object BuildPlayerRequestFingerprint : MethodFingerprint(
 //        "L",
 //        "Lorg/chromium/net/UrlRequest\$Callback;"
 //    ),
-    accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL,
-    returnType = "Lxdv;",
-    parameters = listOf("Lxdo;"),
-    opcodes = listOf(
-        Opcode.INVOKE_VIRTUAL,
-        Opcode.MOVE_RESULT_OBJECT,
+    accessFlags = AccessFlags.PUBLIC or AccessFlags.CONSTRUCTOR,
+    returnType = "V",
+    parameters = listOf(
+        "L",
+        "Ljava/lang/String;",
+        "Z",
+        "L",
     ),
+//    opcodes = listOf(
+//        Opcode.INVOKE_VIRTUAL,
+//        Opcode.MOVE_RESULT_OBJECT,
+//    ),
+    customFingerprint = { methodDef, classDef ->
+        methodDef.name == "<init>" &&
+        classDef.type.endsWith("FormatStreamModel;")
+    },
 //    strings = listOf(
 //        "Content-Type",
 //        "application/x-www-form-urlencoded",
