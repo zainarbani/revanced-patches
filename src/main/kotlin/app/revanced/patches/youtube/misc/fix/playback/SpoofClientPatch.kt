@@ -143,15 +143,15 @@ object SpoofClientPatch : BytecodePatch(
 
         BuildPlayerRequestFingerprint.resultOrThrow().let {
             val returnIndex = it.scanResult.patternScanResult!!.endIndex
-            val setUriIndex = it.mutableMethod
-                .getInstructions().indexOfFirst { instruction ->
+            val setUriInstruction = it.mutableMethod
+                .getInstructions().firstOrNull { instruction ->
                     instruction.opcode == Opcode.IPUT_OBJECT &&
                     instruction.getReference<FieldReference>()?.definingClass == FORMAT_STREAM_MODEL_CLASS_DESCRIPTOR &&
                     instruction.getReference<FieldReference>()?.type == "Landroid/net/Uri;"
-                } ?: throw PatchException("Could not find the target instruction.")
+                } ?: throw PatchException("Could not find the setUri instruction.")
                 
-            val fieldName = it.mutableMethod.getInstructions()[setUriIndex]
-                .getReference<FieldReference>()!!.name
+            val setUriIndex = it.mutableMethod.getInstructions().indexOf(setUriInstruction)
+            val fieldName = setUriInstruction.getReference<FieldReference>()!!.name
 
             it.mutableMethod.apply {
                 val targetRegister = getInstruction<TwoRegisterInstruction>(setUriIndex)
@@ -161,7 +161,7 @@ object SpoofClientPatch : BytecodePatch(
                     """
                         iget-object v${targetRegister.registerA}, p${targetRegister.registerB}, $FORMAT_STREAM_MODEL_CLASS_DESCRIPTOR->$fieldName:Landroid/net/Uri;
                         invoke-virtual { v${targetRegister.registerA} }, Landroid/net/Uri;->toString()Ljava/lang/String;
-                        move-result-object ${targetRegister.registerA}
+                        move-result-object v${targetRegister.registerA}
                         invoke-static { v${targetRegister.registerA} }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
                     """,
                 )
