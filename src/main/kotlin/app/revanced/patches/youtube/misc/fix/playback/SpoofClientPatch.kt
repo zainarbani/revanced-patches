@@ -146,14 +146,13 @@ object SpoofClientPatch : BytecodePatch(
             val setUriIndex = it.mutableMethod
                 .getInstructions().indexOfFirst { instruction ->
                     instruction.opcode == Opcode.IPUT_OBJECT &&
-                    instruction.getReference<FieldReference>()?.definingClass == "Lcom/google/android/libraries/youtube/innertube/model/media/FormatStreamModel;" &&
+                    instruction.getReference<FieldReference>()?.definingClass == FORMAT_STREAM_MODEL_CLASS_DESCRIPTOR &&
                     instruction.getReference<FieldReference>()?.type == "Landroid/net/Uri;"
                 } ?: throw PatchException("Could not find the target instruction.")            
-       
-            
+
             it.mutableMethod.apply {
                 val targetRegister = getInstruction<TwoRegisterInstruction>(setUriIndex)
-                val targetName = getReference<FieldReference>(setUriIndex).name
+                val targetName = getReference<FieldReference>(setUriIndex)!!.name
 
                 addInstructions(
                     returnIndex,
