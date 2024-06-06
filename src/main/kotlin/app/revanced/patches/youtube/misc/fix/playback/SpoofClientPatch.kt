@@ -159,10 +159,8 @@ object SpoofClientPatch : BytecodePatch(
                 addInstructions(
                     returnIndex,
                     """
-                        iget-object v${targetRegister.registerA}, p0, $FORMAT_STREAM_MODEL_CLASS_DESCRIPTOR->$fieldName:Landroid/net/Uri;
-                        invoke-virtual { v${targetRegister.registerA} }, Landroid/net/Uri;->toString()Ljava/lang/String;
-                        move-result-object v0
-                        invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
+                        iget-object v0, p0, $FORMAT_STREAM_MODEL_CLASS_DESCRIPTOR->$fieldName:Landroid/net/Uri;
+                        invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintUri(Landroid/net/Uri;)V
                     """,
                 )
             }
