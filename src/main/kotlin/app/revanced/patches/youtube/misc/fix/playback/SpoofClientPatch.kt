@@ -148,16 +148,18 @@ object SpoofClientPatch : BytecodePatch(
                     instruction.opcode == Opcode.IPUT_OBJECT &&
                     instruction.getReference<FieldReference>()?.definingClass == FORMAT_STREAM_MODEL_CLASS_DESCRIPTOR &&
                     instruction.getReference<FieldReference>()?.type == "Landroid/net/Uri;"
-                } ?: throw PatchException("Could not find the target instruction.")            
+                } ?: throw PatchException("Could not find the target instruction.")
+                
+            val fieldName = it.mutableMethod.getInstructions()[setUriIndex]
+                .getReference<FieldReference>()!!.name
 
             it.mutableMethod.apply {
                 val targetRegister = getInstruction<TwoRegisterInstruction>(setUriIndex)
-                val targetName = getInstruction<FieldReference>(setUriIndex)!!.name
 
                 addInstructions(
                     returnIndex,
                     """
-                        iget-object v${targetRegister.registerA}, p${targetRegister.registerB}, $FORMAT_STREAM_MODEL_CLASS_DESCRIPTOR->$targetName:Landroid/net/Uri;
+                        iget-object v${targetRegister.registerA}, p${targetRegister.registerB}, $FORMAT_STREAM_MODEL_CLASS_DESCRIPTOR->$fieldName:Landroid/net/Uri;
                         invoke-virtual { v${targetRegister.registerA} }, Landroid/net/Uri;->toString()Ljava/lang/String;
                         move-result-object ${targetRegister.registerA}
                         invoke-static { v${targetRegister.registerA} }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
