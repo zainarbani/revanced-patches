@@ -25,10 +25,10 @@ internal object BuildPlayerRequestFingerprint : MethodFingerprint(
         "Z",
         "L",
     ),
-//    opcodes = listOf(
-//        Opcode.INVOKE_VIRTUAL,
-//        Opcode.MOVE_RESULT_OBJECT,
-//    ),
+    opcodes = listOf(
+        Opcode.INVOKE_STATIC,
+        Opcode.MOVE_RESULT_OBJECT,
+    ),
     customFingerprint = { methodDef, classDef ->
         methodDef.name == "<init>" &&
         classDef.type.endsWith("FormatStreamModel;")
