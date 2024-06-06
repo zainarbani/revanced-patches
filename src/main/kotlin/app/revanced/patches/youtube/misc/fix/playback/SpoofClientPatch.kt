@@ -152,7 +152,7 @@ object SpoofClientPatch : BytecodePatch(
 
             it.mutableMethod.apply {
                 val targetRegister = getInstruction<TwoRegisterInstruction>(setUriIndex)
-                val targetName = (setUriIndex as FieldReference).name
+                val targetName = getInstruction<FieldReference>(setUriIndex).reference.name
 
                 addInstructions(
                     returnIndex,
