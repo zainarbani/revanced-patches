@@ -1,3 +1,10 @@
+## [4.9.2-dev.45](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.44...v4.9.2-dev.45) (2024-06-06)
+
+
+### Bug Fixes
+
+* **yt:** kkn6 ([8024b68](https://github.com/zainarbani/revanced-patches/commit/8024b68083b882f2493d92cffbd1361e971e2aa6))
+
 ## [4.9.2-dev.44](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.43...v4.9.2-dev.44) (2024-06-06)
 
 
