@@ -160,6 +160,7 @@ object SpoofClientPatch : BytecodePatch(
                     setUriIndex,
                     """
                         invoke-static { v1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintUri(Landroid/net/Uri;)V
+                        invoke-static { p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/string;)V
                     """,
                 )
             }
