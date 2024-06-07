@@ -151,12 +151,8 @@ object SpoofClientPatch : BytecodePatch(
 
 
         BuildShortRecompositionFragmentPeerFingerprint.resultOrThrow().let {
-            val cbrIndex = it.mutableMethod
-                .getInstructions().indexOfFirst { instruction ->
-                    instruction.opcode == Opcode.CONST_STRING &&
-                    instruction.getStringConstant() == "cbr"
-                } ?: throw PatchException("Could not find the target instruction.")
-                
+            val cbrIndex = it.index
+
             it.mutableMethod.apply {
                 val targetRegister = getInstruction<OneRegisterInstruction>(cbrIndex - 1).registerA
 
