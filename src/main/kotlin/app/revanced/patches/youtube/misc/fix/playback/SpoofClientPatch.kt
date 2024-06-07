@@ -181,7 +181,7 @@ object SpoofClientPatch : BytecodePatch(
                 } ?: throw PatchException("Could not find the parseUriIndex.")
 
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<OneRegisterInstruction>(parseUriIndex).registerA
+                val targetRegister = getInstruction<OneRegisterInstruction>(parseUriIndex + 1).registerA
 
                 addInstructions(
                     parseUriIndex + 2,
