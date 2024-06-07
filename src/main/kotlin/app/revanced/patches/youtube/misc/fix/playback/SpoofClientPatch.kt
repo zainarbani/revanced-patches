@@ -158,9 +158,7 @@ object SpoofClientPatch : BytecodePatch(
 
                 addInstructions(
                     cbrIndex,
-                    """
-                        const-string p1, \"com.google.android.youtube\"
-                    """,
+                    "const-string p1, \"com.google.android.youtube\"",
                 )
             }
         }
