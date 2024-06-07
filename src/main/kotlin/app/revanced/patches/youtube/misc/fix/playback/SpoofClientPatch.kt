@@ -157,15 +157,16 @@ object SpoofClientPatch : BytecodePatch(
 
             it.mutableMethod.apply {
                 val targetRegister = getInstruction<TwoRegisterInstruction>(setUriIndex).registerA
-                val targetParameter = method.parameters.find { it == "Ljava/lang/String;" }
+                //val targetParameter = method.parameters.find { it == "Ljava/lang/String;" }
 
-                addInstructionsWithLabels(
+                addInstructions(
                     setUriIndex,
                     """
                         if-eqz v$targetRegister, :skip
                         invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintUri(Landroid/net/Uri;)V
-                        invoke-static { p$targetParameter }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/string;)V
-                    """, ExternalLabel("skip", getInstruction(setUriIndex))
+                        invoke-static { p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/string;)V
+                        :skip
+                    """,
                 )
             }
         }
