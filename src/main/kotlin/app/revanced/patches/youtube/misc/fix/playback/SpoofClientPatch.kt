@@ -159,8 +159,8 @@ object SpoofClientPatch : BytecodePatch(
                 addInstructions(
                     returnIndex,
                     """
-                        iget-object v1, p0, $FORMAT_STREAM_MODEL_CLASS_DESCRIPTOR->$fieldName:Landroid/net/Uri;
-                        invoke-static { v1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintUri(Landroid/net/Uri;)V
+                        iget-object p0, p0, $FORMAT_STREAM_MODEL_CLASS_DESCRIPTOR->$fieldName:Landroid/net/Uri;
+                        invoke-static { p0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintUri(Landroid/net/Uri;)V
                     """,
                 )
             }
