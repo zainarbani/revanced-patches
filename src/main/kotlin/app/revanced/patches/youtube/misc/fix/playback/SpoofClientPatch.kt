@@ -3,6 +3,7 @@ package app.revanced.patches.youtube.misc.fix.playback
 import app.revanced.patcher.data.BytecodeContext
 import app.revanced.patcher.extensions.InstructionExtensions.addInstruction
 import app.revanced.patcher.extensions.InstructionExtensions.addInstructions
+import app.revanced.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.revanced.patcher.extensions.InstructionExtensions.getInstruction
 import app.revanced.patcher.extensions.InstructionExtensions.getInstructions
 import app.revanced.patcher.extensions.or
@@ -12,6 +13,7 @@ import app.revanced.patcher.patch.annotation.CompatiblePackage
 import app.revanced.patcher.patch.annotation.Patch
 import app.revanced.patcher.util.proxy.mutableTypes.MutableMethod
 import app.revanced.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
+import app.revanced.patcher.util.smali.ExternalLabel
 import app.revanced.patches.all.misc.resources.AddResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.PreferenceScreen
 import app.revanced.patches.shared.misc.settings.preference.PreferenceScreen.Sorting
@@ -155,13 +157,15 @@ object SpoofClientPatch : BytecodePatch(
 
             it.mutableMethod.apply {
                 val targetRegister = getInstruction<TwoRegisterInstruction>(setUriIndex).registerA
+                val targetParameter = method.parameters.find { it == "Ljava/lang/String;" }
 
-                addInstructions(
+                addInstructionsWithLabels(
                     setUriIndex,
                     """
-                        invoke-static { v1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintUri(Landroid/net/Uri;)V
-                        invoke-static { p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/string;)V
-                    """,
+                        if-eqz v$targetRegister, :skip
+                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintUri(Landroid/net/Uri;)V
+                        invoke-static { p$targetParameter }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/string;)V
+                    """, ExternalLabel("skip", getInstruction(setUriIndex))
                 )
             }
         }
