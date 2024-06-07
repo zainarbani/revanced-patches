@@ -132,13 +132,13 @@ object SpoofClientPatch : BytecodePatch(
                 } ?: throw PatchException("Could not find the target instruction.")
                 
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<OneRegisterInstruction>(newUrlIndex - 3).registerA
+                //val targetRegister = getInstruction<OneRegisterInstruction>(newUrlIndex - 3).registerA
 
                 addInstructions(
                     newUrlIndex,
                     """
-                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerRequestUri(Ljava/lang/String;)Ljava/lang/String;
-                        move-result-object v$targetRegister
+                        invoke-static { v2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerRequestUri(Ljava/lang/String;)Ljava/lang/String;
+                        move-result-object v2
                     """,
                 )
             }
