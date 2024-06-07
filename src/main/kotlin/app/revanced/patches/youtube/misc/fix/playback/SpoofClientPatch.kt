@@ -151,7 +151,7 @@ object SpoofClientPatch : BytecodePatch(
 
 
         BuildShortRecompositionFragmentPeerFingerprint.resultOrThrow().let {
-            val cbrIndex = it.index
+            val cbrIndex = it.scanResult.patternScanResult!!.endIndex
 
             it.mutableMethod.apply {
                 val targetRegister = getInstruction<OneRegisterInstruction>(cbrIndex - 1).registerA
