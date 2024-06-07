@@ -11,7 +11,7 @@ internal object BuildShortRecompositionFragmentPeerFingerprint : MethodFingerpri
     parameters = listOf(
         "Landroid/os/Bundle;",
     ),
-    customFingerprint = { methodDef, classDef ->
-        methodDef.definingClass.endsWith == "RecompositionFragmentPeer"
+    customFingerprint = { methodDef, _ ->
+        methodDef.definingClass.endsWith == "RecompositionFragmentPeer;"
     }, 
 )
