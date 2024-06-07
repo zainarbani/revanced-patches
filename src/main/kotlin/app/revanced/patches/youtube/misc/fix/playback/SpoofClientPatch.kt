@@ -184,7 +184,7 @@ object SpoofClientPatch : BytecodePatch(
                 val targetRegister = getInstruction<OneRegisterInstruction>(parseUriIndex).registerA
 
                 addInstructions(
-                    setUriIndex + 2,
+                    parseUriIndex + 2,
                     """
                         invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->getFormatStreamUri(Landroid/net/Uri;)Landroid/net/Uri;
                         move-result-object v$targetRegister
