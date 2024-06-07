@@ -176,8 +176,8 @@ object SpoofClientPatch : BytecodePatch(
             val parseUriIndex = it.mutableMethod
                 .getInstructions().indexOfFirst { instruction ->
                     instruction.opcode == Opcode.INVOKE_STATIC &&
-                    instruction.getReference<FieldReference>()?.definingClass == "Landroid/net/Uri;" &&
-                    instruction.getReference<FieldReference>()?.name == "parse"
+                    instruction.getReference<MethodReference>()?.definingClass == "Landroid/net/Uri;" &&
+                    instruction.getReference<MethodReference>()?.name == "parse"
                 } ?: throw PatchException("Could not find the parseUriIndex.")
 
             it.mutableMethod.apply {
