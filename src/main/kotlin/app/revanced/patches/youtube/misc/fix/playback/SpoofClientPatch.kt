@@ -94,6 +94,7 @@ object SpoofClientPatch : BytecodePatch(
         BuildPlayerRequestBuilderFingerprint,
         BuildFormatStreamModelFingerprint,
         BuildVideoStreamingDataFingerprint,
+        BuildShortRecompositionFragmentPeerFingerprint,
         //SetPlayerRequestClientTypeFingerprint,
         //CreatePlayerRequestBodyFingerprint,
         //CreatePlayerRequestBodyWithModelFingerprint,
@@ -148,25 +149,21 @@ object SpoofClientPatch : BytecodePatch(
             }
         }
 
-        BuildFormatStreamModelFingerprint.resultOrThrow().let {
-            val setUriInstruction = it.mutableMethod
-                .getInstructions().firstOrNull { instruction ->
-                    instruction.opcode == Opcode.IPUT_OBJECT &&
-                    instruction.getReference<FieldReference>()?.definingClass == FORMAT_STREAM_MODEL_CLASS_DESCRIPTOR &&
-                    instruction.getReference<FieldReference>()?.type == "Landroid/net/Uri;"
-                } ?: throw PatchException("Could not find the setUriInstruction.")
-                
-            val setUriIndex = it.mutableMethod.getInstructions().indexOf(setUriInstruction)
-            val fieldName = setUriInstruction.getReference<FieldReference>()!!.name
 
+        BuildShortRecompositionFragmentPeerFingerprint.resultOrThrow().let {
+            val cbrIndex = it.mutableMethod
+                .getInstructions().indexOfFirst { instruction ->
+                    instruction.opcode == Opcode.CONST_STRING &&
+                    instruction.getStringConstant() == "cbr"
+                } ?: throw PatchException("Could not find the target instruction.")
+                
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<TwoRegisterInstruction>(setUriIndex).registerA
+                val targetRegister = getInstruction<OneRegisterInstruction>(cbrIndex - 1).registerA
 
                 addInstructions(
-                    setUriIndex,
+                    cbrIndex,
                     """
-                        invoke-static { v$targetRegister, p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getFormatStreamUri(Landroid/net/Uri;Ljava/lang/String;)Landroid/net/Uri;
-                        move-result-object v$targetRegister
+                        const-string p$targetRegister, \"com.google.android.youtube\"
                     """,
                 )
             }

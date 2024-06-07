@@ -6,12 +6,18 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal object BuildShortRecompositionFragmentPeerFingerprint : MethodFingerprint(
-    accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL,
+//    accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL,
     returnType = "V",
-    parameters = listOf(
-        "Landroid/os/Bundle;",
+    opcodes = listOf(
+        Opcode.CONST_STRING,
     ),
-    customFingerprint = { methodDef, _ ->
-        methodDef.definingClass.endsWith("RecompositionFragmentPeer;")
-    }, 
+    strings = listOf(
+        "cbr",
+    ),
+//    parameters = listOf(
+//        "Landroid/os/Bundle;",
+//    ),
+//    customFingerprint = { methodDef, _ ->
+//        methodDef.definingClass.endsWith("RecompositionFragmentPeer;")
+//    }, 
 )
