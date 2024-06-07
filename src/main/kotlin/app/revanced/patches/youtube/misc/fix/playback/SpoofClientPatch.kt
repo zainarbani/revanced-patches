@@ -171,27 +171,6 @@ object SpoofClientPatch : BytecodePatch(
                 )
             }
         }
-
-        BuildVideoStreamingDataFingerprint.resultOrThrow().let {
-            val parseUriIndex = it.mutableMethod
-                .getInstructions().indexOfFirst { instruction ->
-                    instruction.opcode == Opcode.INVOKE_STATIC &&
-                    instruction.getReference<MethodReference>()?.definingClass == "Landroid/net/Uri;" &&
-                    instruction.getReference<MethodReference>()?.name == "parse"
-                } ?: throw PatchException("Could not find the parseUriIndex.")
-
-            it.mutableMethod.apply {
-                val targetRegister = getInstruction<OneRegisterInstruction>(parseUriIndex + 1).registerA
-
-                addInstructions(
-                    parseUriIndex + 2,
-                    """
-                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->getFormatStreamUri(Landroid/net/Uri;)Landroid/net/Uri;
-                        move-result-object v$targetRegister
-                    """,
-                )
-            }
-        }
         
         BuildInitPlaybackRequestFingerprint.resultOrThrow().let {
             val moveUriStringIndex = it.scanResult.patternScanResult!!.startIndex
