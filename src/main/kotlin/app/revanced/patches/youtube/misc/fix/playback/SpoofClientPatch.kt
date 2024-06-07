@@ -154,12 +154,12 @@ object SpoofClientPatch : BytecodePatch(
             val cbrIndex = it.scanResult.patternScanResult!!.endIndex
 
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<OneRegisterInstruction>(cbrIndex - 1).registerA
+                //val targetRegister = getInstruction<OneRegisterInstruction>(cbrIndex - 1).registerA
 
                 addInstructions(
                     cbrIndex,
                     """
-                        const-string p$targetRegister, \"com.google.android.youtube\"
+                        const-string p1, \"com.google.android.youtube\"
                     """,
                 )
             }
