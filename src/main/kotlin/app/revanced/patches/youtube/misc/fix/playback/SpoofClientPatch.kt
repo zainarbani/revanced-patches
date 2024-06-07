@@ -142,7 +142,7 @@ object SpoofClientPatch : BytecodePatch(
 //        }
 
         BuildPlayerRequestFingerprint.resultOrThrow().let {
-            val returnIndex = it.scanResult.patternScanResult!!.endIndex
+            //val returnIndex = it.scanResult.patternScanResult!!.endIndex
             val setUriInstruction = it.mutableMethod
                 .getInstructions().firstOrNull { instruction ->
                     instruction.opcode == Opcode.IPUT_OBJECT &&
@@ -154,17 +154,17 @@ object SpoofClientPatch : BytecodePatch(
             val fieldName = setUriInstruction.getReference<FieldReference>()!!.name
 
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<TwoRegisterInstruction>(setUriIndex)
+                val targetRegister = getInstruction<TwoRegisterInstruction>(setUriIndex).registerA
 
                 addInstructions(
-                    returnIndex,
+                    setUriIndex,
                     """
-                        iget-object p0, p0, $FORMAT_STREAM_MODEL_CLASS_DESCRIPTOR->$fieldName:Landroid/net/Uri;
-                        invoke-static { p0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintUri(Landroid/net/Uri;)V
+                        invoke-static { v1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintUri(Landroid/net/Uri;)V
                     """,
                 )
             }
         }
+        //                        iget-object p0, p0, $FORMAT_STREAM_MODEL_CLASS_DESCRIPTOR->$fieldName:Landroid/net/Uri;
         //invoke-static { v2, p1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerRequestUri(Ljava/lang/String;Ljava/util/Map;)Ljava/lang/String;
         //                        invoke-virtual { p2 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
         //
