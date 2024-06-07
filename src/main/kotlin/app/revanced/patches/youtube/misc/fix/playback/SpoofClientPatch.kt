@@ -89,7 +89,7 @@ object SpoofClientPatch : BytecodePatch(
         BuildInitPlaybackRequestFingerprint,
         BuildPlayerRequestURIFingerprint,
         BuildPlayerRequestFingerprint,
-        //BuildVideoPlaybackConnectionFingerprint,
+        BuildVideoPlaybackConnectionFingerprint,
         SetPlayerRequestClientTypeFingerprint,
         CreatePlayerRequestBodyFingerprint,
         CreatePlayerRequestBodyWithModelFingerprint,
@@ -124,46 +124,45 @@ object SpoofClientPatch : BytecodePatch(
         //        "Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;",
         //)
         
-//        BuildVideoPlaybackConnectionFingerprint.resultOrThrow().let {
-//            val moveResultIndex = it.mutableMethod
-//                .getInstructions().indexOfFirst { instruction ->
-//                    instruction.opcode == Opcode.MOVE_RESULT_OBJECT //&&
-//                    instruction.getReference<MethodReference>()?.name == "newUrlRequestBuilder"
-//                } ?: throw PatchException("Could not find the target instruction.")
+        BuildVideoPlaybackConnectionFingerprint.resultOrThrow().let {
+            val newUrlIndex = it.mutableMethod
+                .getInstructions().indexOfFirst { instruction ->
+                    instruction.opcode == Opcode.INVOKE_VIRTUAL &&
+                    instruction.getReference<MethodReference>()?.name == "newUrlRequestBuilder"
+                } ?: throw PatchException("Could not find the target instruction.")
                 
-//            it.mutableMethod.apply {
-//                val targetRegister = getInstruction<OneRegisterInstruction>(moveResultIndex).registerA
-//
-//                addInstructions(
-//                    moveResultIndex + 1 ,
-//                    """
-//                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
-//                    """,
-//                )
-//            }
-//        }
+            it.mutableMethod.apply {
+                val targetRegister = getInstruction<OneRegisterInstruction>(newUrlIndex - 3).registerA
+
+                addInstructions(
+                    newUrlIndex,
+                    """
+                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerRequestUri(Ljava/lang/String;)Ljava/lang/String;
+                        move-result-object v$targetRegister
+                    """,
+                )
+            }
+        }
 
         BuildPlayerRequestFingerprint.resultOrThrow().let {
-            //val returnIndex = it.scanResult.patternScanResult!!.endIndex
             val setUriInstruction = it.mutableMethod
                 .getInstructions().firstOrNull { instruction ->
                     instruction.opcode == Opcode.IPUT_OBJECT &&
                     instruction.getReference<FieldReference>()?.definingClass == FORMAT_STREAM_MODEL_CLASS_DESCRIPTOR &&
                     instruction.getReference<FieldReference>()?.type == "Landroid/net/Uri;"
-                } ?: throw PatchException("Could not find the setUri instruction.")
+                } ?: throw PatchException("Could not find the setUriInstruction.")
                 
             val setUriIndex = it.mutableMethod.getInstructions().indexOf(setUriInstruction)
             val fieldName = setUriInstruction.getReference<FieldReference>()!!.name
 
             it.mutableMethod.apply {
                 val targetRegister = getInstruction<TwoRegisterInstruction>(setUriIndex).registerA
-                //val targetParameter = method.parameters.find { it == "Ljava/lang/String;" }
 
                 addInstructions(
                     setUriIndex,
                     """
-                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintUri(Landroid/net/Uri;)V
-                        invoke-static { p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
+                        invoke-static { v$targetRegister, p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getFormatStreamUri(Landroid/net/Uri;Ljava/lang/String;)Landroid/net/Uri;
+                        move-result-object v$targetRegister
                     """,
                 )
             }
