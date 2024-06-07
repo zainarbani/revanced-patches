@@ -165,7 +165,7 @@ object SpoofClientPatch : BytecodePatch(
                 addInstructions(
                     setUriIndex,
                     """
-                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->getFormatStreamUri(Landroid/net/Uri;)Landroid/net/Uri;
+                        invoke-static { v$targetRegister, p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getFormatStreamUri(Landroid/net/Uri;Ljava/lang/String)Landroid/net/Uri;
                         move-result-object v$targetRegister
                     """,
                 )
