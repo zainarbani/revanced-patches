@@ -5,18 +5,7 @@ import app.revanced.patcher.fingerprint.MethodFingerprint
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
-internal object BuildPlayerRequestFingerprint : MethodFingerprint(
-//    accessFlags = AccessFlags.PUBLIC or AccessFlags.STATIC,
-//    returnType = "Lorg/chromium/net/UrlRequest;",
-//    parameters = listOf(
-//        "L",
-//        "Ljava/util/Map;",
-//        "[B",
-//        "L",
-//        "L",
-//        "L",
-//        "Lorg/chromium/net/UrlRequest\$Callback;"
-//    ),
+internal object BuildFormatStreamModelFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PUBLIC or AccessFlags.CONSTRUCTOR,
     returnType = "V",
     parameters = listOf(
@@ -33,9 +22,9 @@ internal object BuildPlayerRequestFingerprint : MethodFingerprint(
         methodDef.name == "<init>" &&
         classDef.type.endsWith("FormatStreamModel;")
     },
-//    strings = listOf(
-//        "Content-Type",
-//        "application/x-www-form-urlencoded",
-//        "Content-Length",
-//    ),
 )
+
+
+
+
+

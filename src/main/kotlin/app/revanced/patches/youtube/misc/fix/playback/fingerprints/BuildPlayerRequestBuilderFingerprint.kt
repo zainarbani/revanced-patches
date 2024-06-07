@@ -5,7 +5,7 @@ import app.revanced.patcher.fingerprint.MethodFingerprint
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
-internal object BuildVideoPlaybackConnectionFingerprint : MethodFingerprint(
+internal object BuildPlayerRequestBuilderFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PUBLIC or AccessFlags.STATIC,
     returnType = "Lorg/chromium/net/UrlRequest;",
     parameters = listOf(
@@ -21,9 +21,3 @@ internal object BuildVideoPlaybackConnectionFingerprint : MethodFingerprint(
         Opcode.INVOKE_VIRTUAL,
     ),
 )
-
-//    customFingerprint = { methodDef, classDef ->
-//        methodDef.name == "openConnection" &&
-//        classDef.type.endsWith("CronetUrlRequestContext;")
-//    }, 
-
