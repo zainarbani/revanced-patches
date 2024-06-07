@@ -1,3 +1,11 @@
+## [4.9.2-dev.60](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.59...v4.9.2-dev.60) (2024-06-07)
+
+
+### Bug Fixes
+
+* **yt:** kko2 ([3c928da](https://github.com/zainarbani/revanced-patches/commit/3c928dae9aa314f2a26c7fdb81b75d5ede28dde7))
+* **yt:** kko3 ([138945b](https://github.com/zainarbani/revanced-patches/commit/138945be1e9540921c28fbe0cfc72d2cfda42e3a))
+
 ## [4.9.2-dev.59](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.58...v4.9.2-dev.59) (2024-06-07)
 
 
