@@ -8,7 +8,6 @@ import com.android.tools.smali.dexlib2.Opcode
 internal object BuildTestFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL,
     returnType = "L",
-    parameters = "L",
     strings = listOf(
         " playerConfig",
         " streamingData",
