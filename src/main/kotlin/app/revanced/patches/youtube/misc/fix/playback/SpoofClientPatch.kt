@@ -18,6 +18,7 @@ import app.revanced.patches.all.misc.resources.AddResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.PreferenceScreen
 import app.revanced.patches.shared.misc.settings.preference.PreferenceScreen.Sorting
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
+import app.revanced.patches.youtube.misc.fix.playback.fingerprints.BuildTestFingerprint
 import app.revanced.patches.youtube.misc.fix.playback.fingerprints.BuildInitPlaybackRequestFingerprint
 import app.revanced.patches.youtube.misc.fix.playback.fingerprints.BuildPlayerRequestURIFingerprint
 import app.revanced.patches.youtube.misc.fix.playback.fingerprints.BuildPlayerRequestBuilderFingerprint
@@ -89,18 +90,20 @@ import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
 object SpoofClientPatch : BytecodePatch(
     setOf(
         // Client type spoof.
-        BuildInitPlaybackRequestFingerprint,
-        BuildPlayerRequestURIFingerprint,
-        BuildPlayerRequestBuilderFingerprint,
-        BuildFormatStreamModelFingerprint,
-        BuildVideoStreamingDataFingerprint,
-        BuildShortRecompositionFragmentPeerFingerprint,
+        //BuildInitPlaybackRequestFingerprint,
+        //BuildPlayerRequestURIFingerprint,
+        //BuildPlayerRequestBuilderFingerprint,
+        //BuildFormatStreamModelFingerprint,
+        //BuildVideoStreamingDataFingerprint,
+        //BuildShortRecompositionFragmentPeerFingerprint,
         //SetPlayerRequestClientTypeFingerprint,
         //CreatePlayerRequestBodyFingerprint,
         //CreatePlayerRequestBodyWithModelFingerprint,
 
         // Player gesture config.
         //PlayerGestureConfigSyntheticFingerprint,
+        
+        BuildTestFingerprint,
     ),
 ) {
     private const val INTEGRATIONS_CLASS_DESCRIPTOR =
@@ -129,75 +132,25 @@ object SpoofClientPatch : BytecodePatch(
         //        "Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;",
         //)
         
-        BuildPlayerRequestBuilderFingerprint.resultOrThrow().let {
-            val newUrlIndex = it.mutableMethod
+        BuildTestFingerprint.resultOrThrow().let {
+            val testIndex = it.mutableMethod
                 .getInstructions().indexOfFirst { instruction ->
-                    instruction.opcode == Opcode.INVOKE_VIRTUAL &&
-                    instruction.getReference<MethodReference>()?.name == "newUrlRequestBuilder"
-                } ?: throw PatchException("Could not find the target instruction.")
+                    instruction.opcode == Opcode.CHECK_CAST &&
+                    instruction.getReference<TypeReference>()?.type == "Lcom/google/android/libraries/youtube/innertube/model/media/PlayerConfigModel;"
+                } ?: throw PatchException("Could not find the test index.")
                 
             it.mutableMethod.apply {
-                //val targetRegister = getInstruction<FiveRegisterInstruction>(newUrlIndex).registerC - 1
+                val targetRegister = getInstruction<OneRegisterInstruction>(testIndex).registerA
 
                 addInstructions(
-                    newUrlIndex,
+                    testIndex,
                     """
-                        invoke-static { v2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerRequestUri(Ljava/lang/String;)Ljava/lang/String;
-                        move-result-object v2
+                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintObj(Ljava/lang/Object;)V
                     """,
-                )
-            }
-        }
-
-
-        BuildShortRecompositionFragmentPeerFingerprint.resultOrThrow().let {
-            val cbrIndex = it.scanResult.patternScanResult!!.endIndex
-
-            it.mutableMethod.apply {
-                //val targetRegister = getInstruction<OneRegisterInstruction>(cbrIndex - 1).registerA
-
-                addInstructions(
-                    cbrIndex,
-                    "const-string p1, \"com.google.android.youtube\"",
                 )
             }
         }
         
-        BuildInitPlaybackRequestFingerprint.resultOrThrow().let {
-            val moveUriStringIndex = it.scanResult.patternScanResult!!.startIndex
-
-            it.mutableMethod.apply {
-                val targetRegister = getInstruction<OneRegisterInstruction>(moveUriStringIndex).registerA
-
-                addInstructions(
-                    moveUriStringIndex + 1,
-                    """
-                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->blockInitPlaybackRequest(Ljava/lang/String;)Ljava/lang/String;
-                        move-result-object v$targetRegister
-                    """,
-                )
-            }
-        }
-
-        // endregion
-
-        // region Block /get_watch requests to fall back to /player requests.
-
-        BuildPlayerRequestURIFingerprint.resultOrThrow().let {
-            val invokeToStringIndex = it.scanResult.patternScanResult!!.startIndex
-
-            it.mutableMethod.apply {
-                val uriRegister = getInstruction<FiveRegisterInstruction>(invokeToStringIndex).registerC
-
-                addInstructions(
-                    invokeToStringIndex,
-                    """
-                        invoke-static { v$uriRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->blockGetWatchRequest(Landroid/net/Uri;)Landroid/net/Uri;
-                        move-result-object v$uriRegister
-                    """,
-                )
-            }
-        }
 
         // endregion
 
