@@ -132,20 +132,12 @@ object SpoofClientPatch : BytecodePatch(
         //        "Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;",
         //)
         
-        BuildTestFingerprint.resultOrThrow().let {
-            val testIndex = it.mutableMethod
-                .getInstructions().indexOfFirst { instruction ->
-                    instruction.opcode == Opcode.CHECK_CAST &&
-                    instruction.getReference<TypeReference>()?.type == "Lcom/google/android/libraries/youtube/innertube/model/media/PlayerConfigModel;"
-                } ?: throw PatchException("Could not find the test index.")
-                
+        BuildTestFingerprint.resultOrThrow().let {                
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<OneRegisterInstruction>(testIndex).registerA
-
                 addInstructions(
-                    testIndex,
+                    0,
                     """
-                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintObj(Ljava/lang/Object;)V
+                        invoke-static { p0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintList(Ljava/util/List;)V
                     """,
                 )
             }
