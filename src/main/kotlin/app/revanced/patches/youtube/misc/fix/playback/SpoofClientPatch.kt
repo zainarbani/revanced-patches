@@ -138,8 +138,8 @@ object SpoofClientPatch : BytecodePatch(
             val testIndex = it.mutableMethod
                 .getInstructions().indexOfFirst { instruction ->
                     instruction.opcode == Opcode.INVOKE_STATIC &&
-                    instruction.getReference<MethodReference>()?.parameterTypes == listOf("I", "Ljava/lang/String;")
-                    instruction.getReference<MethodReference>()?.returnType == "Ljava/lang/String;" &&
+                    instruction.getReference<MethodReference>()?.parameterTypes == listOf("I", "Ljava/lang/String;") &&
+                    instruction.getReference<MethodReference>()?.returnType == "Ljava/lang/String;"
                 } ?: throw PatchException("Could not find the testIndex.")
             
             it.mutableMethod.apply {
