@@ -94,7 +94,7 @@ object SpoofClientPatch : BytecodePatch(
         // Client type spoof.
         //BuildInitPlaybackRequestFingerprint,
         //BuildPlayerRequestURIFingerprint,
-        //BuildPlayerRequestBuilderFingerprint,
+        BuildPlayerRequestBuilderFingerprint,
         BuildFormatStreamModelFingerprint,
         //BuildVideoStreamingDataFingerprint,
         //BuildShortRecompositionFragmentPeerFingerprint,
@@ -133,22 +133,49 @@ object SpoofClientPatch : BytecodePatch(
         //    "$INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerResponseVideoId(" +
         //        "Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;",
         //)
+
+        BuildPlayerRequestBuilderFingerprint.resultOrThrow().let {
+            val newUrlIndex = it.mutableMethod
+                .getInstructions().indexOfFirst { instruction ->
+                    instruction.opcode == Opcode.INVOKE_VIRTUAL &&
+                    instruction.getReference<MethodReference>()?.name == "newUrlRequestBuilder"
+                } ?: throw PatchException("Could not find the target instruction.")
+                
+            it.mutableMethod.apply {
+                //val targetRegister = getInstruction<FiveRegisterInstruction>(newUrlIndex).registerC - 1
+
+                addInstructions(
+                    newUrlIndex,
+                    """
+                        invoke-static { v2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerRequestUri(Ljava/lang/String;)Ljava/lang/String;
+                        move-result-object v2
+                    """,
+                )
+            }
+        }
         
         BuildFormatStreamModelFingerprint.resultOrThrow().let {
             val testIndex = it.mutableMethod
                 .getInstructions().indexOfFirst { instruction ->
                     instruction.opcode == Opcode.INVOKE_STATIC &&
-                    instruction.getReference<MethodReference>()?.parameterTypes == listOf("I", "Ljava/lang/String;") &&
-                    instruction.getReference<MethodReference>()?.returnType == "Ljava/lang/String;"
+                    instruction.getReference<MethodReference>()?.name == "parse" &&
+                    instruction.getReference<MethodReference>()?.returnType == "Landroid/net/Uri;"
                 } ?: throw PatchException("Could not find the testIndex.")
             
+            val prevIns = it.mutableMethod.getInstruction(testIndex - 1)
+            val targetClass = prevIns.getReference<FieldReference>()?.definingClass
+            val targetName = prevIns.getReference<FieldReference>()?.name
+            val targetType = prevIns.getReference<FieldReference>()?.type
+            
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<BuilderInstruction35c>(testIndex).registerD
+                val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex - 1)
                 
                 addInstructions(
                     testIndex,
                     """
-                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
+                        invoke-static { v${targetRegister.registerA}, p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getFormatStreamUri(Landroid/net/Uri;Ljava/lang/String;)Landroid/net/Uri;
+                        move-result-object v${targetRegister.registerA}
+                        iput-object v${targetRegister.registerA}, p${targetRegister.registerB}, $targetClass;->$targetName:$targetType
                     """,
                 )
             }
