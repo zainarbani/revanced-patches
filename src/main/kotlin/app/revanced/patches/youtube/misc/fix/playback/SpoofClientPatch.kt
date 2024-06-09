@@ -136,15 +136,18 @@ object SpoofClientPatch : BytecodePatch(
             val testIndex = it.mutableMethod
                 .getInstructions().indexOfFirst { instruction ->
                     instruction.opcode == Opcode.IGET_OBJECT &&
-                    instruction.getReference<FieldReference>()?.type == "Ljava/lang/String"
+                    instruction.getReference<FieldReference>()?.type == "Ljava/lang/String;"
                 } ?: throw PatchException("Could not find the testIndex.")
-                
+            
+            //val targetInstruction = it.mutableMethod.getInstructions()[testIndex]
+            
             it.mutableMethod.apply {
-                //val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex).registerA
+                val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex).registerA
+                
                 addInstructions(
                     testIndex,
                     """
-                        invoke-static { v6 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
+                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
                     """,
                 )
             }
