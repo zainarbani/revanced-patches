@@ -143,7 +143,7 @@ object SpoofClientPatch : BytecodePatch(
                 } ?: throw PatchException("Could not find the testIndex.")
             
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<BuilderInstruction35c>(testIndex).registers[0]
+                val targetRegister = getInstruction<BuilderInstruction35c>(testIndex).registerA
                 
                 addInstructions(
                     testIndex + 2,
