@@ -145,7 +145,7 @@ object SpoofClientPatch : BytecodePatch(
                 val targetRegister = getInstruction<ThreeRegisterInstruction>(testIndex).registerB
                 
                 addInstructions(
-                    testIndex + 1,
+                    testIndex,
                     """
                         invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
                     """,
