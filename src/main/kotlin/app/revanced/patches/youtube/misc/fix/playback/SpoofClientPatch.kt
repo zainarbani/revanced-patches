@@ -175,7 +175,7 @@ object SpoofClientPatch : BytecodePatch(
                     """
                         invoke-static { v${targetRegister.registerA}, p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getFormatStreamUri(Landroid/net/Uri;Ljava/lang/String;)Landroid/net/Uri;
                         move-result-object v${targetRegister.registerA}
-                        iput-object v${targetRegister.registerA}, p${targetRegister.registerB}, $targetClass;->$targetName:$targetType
+                        iput-object v${targetRegister.registerA}, p${targetRegister.registerB}, $targetClass->$targetName:$targetType
                     """,
                 )
             }
