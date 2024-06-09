@@ -1,3 +1,10 @@
+## [4.9.2-dev.72](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.71...v4.9.2-dev.72) (2024-06-09)
+
+
+### Bug Fixes
+
+* **yt:** ddk1 ([9435039](https://github.com/zainarbani/revanced-patches/commit/94350396f06720fb2ad915241f8fab8adce061c1))
+
 ## [4.9.2-dev.71](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.70...v4.9.2-dev.71) (2024-06-09)
 
 
