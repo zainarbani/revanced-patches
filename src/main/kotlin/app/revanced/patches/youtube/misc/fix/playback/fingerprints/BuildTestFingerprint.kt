@@ -11,7 +11,7 @@ internal object BuildTestFingerprint : MethodFingerprint(
         methodDef.name == "<init>" &&
         classDef.type.endsWith("VideoStreamingData;")
     },
-))
+)
 
 
 
