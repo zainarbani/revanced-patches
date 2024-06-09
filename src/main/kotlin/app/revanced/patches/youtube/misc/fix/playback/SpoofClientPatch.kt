@@ -38,6 +38,7 @@ import app.revanced.util.resultOrThrow
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.builder.MutableMethodImplementation
+import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction35c
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
@@ -94,7 +95,7 @@ object SpoofClientPatch : BytecodePatch(
         //BuildInitPlaybackRequestFingerprint,
         //BuildPlayerRequestURIFingerprint,
         //BuildPlayerRequestBuilderFingerprint,
-        //BuildFormatStreamModelFingerprint,
+        BuildFormatStreamModelFingerprint,
         //BuildVideoStreamingDataFingerprint,
         //BuildShortRecompositionFragmentPeerFingerprint,
         //SetPlayerRequestClientTypeFingerprint,
@@ -104,7 +105,7 @@ object SpoofClientPatch : BytecodePatch(
         // Player gesture config.
         //PlayerGestureConfigSyntheticFingerprint,
         
-        BuildTestFingerprint,
+        //BuildTestFingerprint,
     ),
 ) {
     private const val INTEGRATIONS_CLASS_DESCRIPTOR =
@@ -133,21 +134,21 @@ object SpoofClientPatch : BytecodePatch(
         //        "Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;",
         //)
         
-        BuildTestFingerprint.resultOrThrow().let {
+        BuildFormatStreamModelFingerprint.resultOrThrow().let {
             val testIndex = it.mutableMethod
                 .getInstructions().indexOfFirst { instruction ->
-                    instruction.opcode == Opcode.INVOKE_VIRTUAL &&
-                    instruction.getReference<MethodReference>()?.definingClass == "Lcom/google/android/libraries/youtube/innertube/model/player/PlayerResponseModelImpl\$MutableContext;" &&
-                    instruction.getReference<MethodReference>()?.parameterTypes == listOf("Ljava/lang/String;", "Ljava/lang/String;")
+                    instruction.opcode == Opcode.INVOKE_STATIC &&
+                    instruction.getReference<MethodReference>()?.parameterTypes == listOf("I", "Ljava/lang/String;")
+                    instruction.getReference<MethodReference>()?.returnType == "Ljava/lang/String;" &&
                 } ?: throw PatchException("Could not find the testIndex.")
             
             it.mutableMethod.apply {
-                //val targetRegister = getInstruction<ThreeRegisterInstruction>(testIndex).registerB
+                val targetRegister = getInstruction<BuilderInstruction35c>(testIndex).registers[0]
                 
                 addInstructions(
-                    testIndex,
+                    testIndex + 2,
                     """
-                        invoke-static { v4 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
+                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
                     """,
                 )
             }
