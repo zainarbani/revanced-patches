@@ -94,7 +94,7 @@ object SpoofClientPatch : BytecodePatch(
         // Client type spoof.
         //BuildInitPlaybackRequestFingerprint,
         //BuildPlayerRequestURIFingerprint,
-        BuildPlayerRequestBuilderFingerprint,
+        //BuildPlayerRequestBuilderFingerprint,
         BuildFormatStreamModelFingerprint,
         //BuildVideoStreamingDataFingerprint,
         //BuildShortRecompositionFragmentPeerFingerprint,
@@ -129,30 +129,11 @@ object SpoofClientPatch : BytecodePatch(
             ),
         )
 
-        //PlayerResponseMethodHookPatch += PlayerResponseMethodHookPatch.Hook.ProtoBufferParameter(
-        //    "$INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerResponseVideoId(" +
-        //        "Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;",
-        //)
+        PlayerResponseMethodHookPatch += PlayerResponseMethodHookPatch.Hook.ProtoBufferParameter(
+            "$INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerRequestUri(" +
+                "Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;",
+        )
 
-        BuildPlayerRequestBuilderFingerprint.resultOrThrow().let {
-            val newUrlIndex = it.mutableMethod
-                .getInstructions().indexOfFirst { instruction ->
-                    instruction.opcode == Opcode.INVOKE_VIRTUAL &&
-                    instruction.getReference<MethodReference>()?.name == "newUrlRequestBuilder"
-                } ?: throw PatchException("Could not find the target instruction.")
-                
-            it.mutableMethod.apply {
-                //val targetRegister = getInstruction<FiveRegisterInstruction>(newUrlIndex).registerC - 1
-
-                addInstructions(
-                    newUrlIndex,
-                    """
-                        invoke-static { v2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerRequestUri(Ljava/lang/String;)Ljava/lang/String;
-                        move-result-object v2
-                    """,
-                )
-            }
-        }
         
         BuildFormatStreamModelFingerprint.resultOrThrow().let {
             val testIndex = it.mutableMethod
