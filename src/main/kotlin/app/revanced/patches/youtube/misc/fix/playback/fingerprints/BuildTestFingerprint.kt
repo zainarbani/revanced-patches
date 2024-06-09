@@ -6,10 +6,12 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal object BuildTestFingerprint : MethodFingerprint(
-    accessFlags = AccessFlags.PUBLIC or AccessFlags.CONSTRUCTOR,
-    customFingerprint = { methodDef, classDef ->
-        methodDef.name == "<init>" &&
-        classDef.type.endsWith("VideoStreamingData;")
+    accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL or AccessFlags.SYNTHETIC,
+    strings = listOf(
+        "Error reading streaming data",
+    ),
+    customFingerprint = { methodDef, _ ->
+        methodDef.name == "createFromParcel"
     },
 )
 

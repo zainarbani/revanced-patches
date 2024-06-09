@@ -41,6 +41,7 @@ import com.android.tools.smali.dexlib2.builder.MutableMethodImplementation
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
+import com.android.tools.smali.dexlib2.iface.instruction.ThreeRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
@@ -135,12 +136,13 @@ object SpoofClientPatch : BytecodePatch(
         BuildTestFingerprint.resultOrThrow().let {
             val testIndex = it.mutableMethod
                 .getInstructions().indexOfFirst { instruction ->
-                    instruction.opcode == Opcode.IGET_OBJECT &&
-                    instruction.getReference<FieldReference>()?.type == "Ljava/lang/String;"
+                    instruction.opcode == Opcode.INVOKE_VIRTUAL &&
+                    instruction.getReference<MethodReference>()?.definingClass == "Lcom/google/android/libraries/youtube/innertube/model/player/PlayerResponseModelImpl\$MutableContext;" &&
+                    instruction.getReference<MethodReference>()?.parameterTypes == listOf("Ljava/lang/String;", "Ljava/lang/String;")
                 } ?: throw PatchException("Could not find the testIndex.")
             
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex).registerA
+                val targetRegister = getInstruction<ThreeRegisterInstruction>(testIndex).registerB
                 
                 addInstructions(
                     testIndex + 1,
