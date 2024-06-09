@@ -142,12 +142,12 @@ object SpoofClientPatch : BytecodePatch(
                 } ?: throw PatchException("Could not find the testIndex.")
             
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<ThreeRegisterInstruction>(testIndex).registerB
+                //val targetRegister = getInstruction<ThreeRegisterInstruction>(testIndex).registerB
                 
                 addInstructions(
                     testIndex,
                     """
-                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
+                        invoke-static { v4 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
                     """,
                 )
             }
