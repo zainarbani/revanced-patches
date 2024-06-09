@@ -132,12 +132,19 @@ object SpoofClientPatch : BytecodePatch(
         //        "Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;",
         //)
         
-        BuildTestFingerprint.resultOrThrow().let {                
+        BuildTestFingerprint.resultOrThrow().let {
+            val testIndex = it.mutableMethod
+                .getInstructions().indexOfFirst { instruction ->
+                    instruction.opcode == Opcode.IGET_OBJECT &&
+                    instruction.getReference<FieldReference>()?.type == "Ljava/lang/String"
+                } ?: throw PatchException("Could not find the testIndex.")
+                
             it.mutableMethod.apply {
+                //val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex).registerA
                 addInstructions(
-                    0,
+                    testIndex,
                     """
-                        invoke-static { p0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintList(Ljava/util/List;)V
+                        invoke-static { v6 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
                     """,
                 )
             }
