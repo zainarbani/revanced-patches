@@ -168,14 +168,14 @@ object SpoofClientPatch : BytecodePatch(
             val targetType = prevIns.getReference<FieldReference>()?.type
             
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex - 1)
+                //val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex - 1)
                 
                 addInstructions(
                     testIndex,
                     """
-                        invoke-static { v${targetRegister.registerA}, p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getFormatStreamUri(Landroid/net/Uri;Ljava/lang/String;)Landroid/net/Uri;
-                        move-result-object v${targetRegister.registerA}
-                        iput-object v${targetRegister.registerA}, p${targetRegister.registerB}, $targetClass->$targetName:$targetType
+                        invoke-static { v1, p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getFormatStreamUri(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+                        move-result-object v1
+                        iput-object v1, p1, $targetClass->$targetName:$targetType
                     """,
                 )
             }
