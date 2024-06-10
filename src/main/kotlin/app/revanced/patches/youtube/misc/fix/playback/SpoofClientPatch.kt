@@ -166,15 +166,15 @@ object SpoofClientPatch : BytecodePatch(
         
 
         BuildTestTwoFingerprint.resultOrThrow().let {
-            val testIndex = it.mutableMethod.instructions.count()
+            //val testIndex = it.mutableMethod.instructions.count()
     
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<OneRegisterInstruction>(testIndex).registerA
+                //val targetRegister = getInstruction<OneRegisterInstruction>(testIndex).registerA
                 
                 addInstructions(
-                    testIndex,
+                    6,
                     """
-                        const/4 v$targetRegister, 0x1
+                        const/4 v0, 0x1
                     """,
                 )
             }
