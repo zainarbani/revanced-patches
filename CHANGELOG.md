@@ -1,3 +1,10 @@
+## [4.9.2-dev.77](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.76...v4.9.2-dev.77) (2024-06-10)
+
+
+### Bug Fixes
+
+* **yt:** ddg3 ([1f4b272](https://github.com/zainarbani/revanced-patches/commit/1f4b2727ecd986668ddc9b2ce5b9851e4e87eb49))
+
 ## [4.9.2-dev.76](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.75...v4.9.2-dev.76) (2024-06-09)
 
 
