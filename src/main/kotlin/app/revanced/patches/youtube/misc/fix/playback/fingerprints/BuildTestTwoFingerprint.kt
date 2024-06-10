@@ -12,6 +12,6 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
         methodDef.instructions.any { instruction ->
             instruction.opcode == Opcode.CONST_WIDE_32 && 
             instruction.literal == 0x2b46463L
-        },
-    },
+        }
+    }
 )
