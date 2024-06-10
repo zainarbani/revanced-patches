@@ -19,6 +19,7 @@ import app.revanced.patches.shared.misc.settings.preference.PreferenceScreen
 import app.revanced.patches.shared.misc.settings.preference.PreferenceScreen.Sorting
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
 import app.revanced.patches.youtube.misc.fix.playback.fingerprints.BuildTestFingerprint
+import app.revanced.patches.youtube.misc.fix.playback.fingerprints.BuildTestTwoFingerprint
 import app.revanced.patches.youtube.misc.fix.playback.fingerprints.BuildInitPlaybackRequestFingerprint
 import app.revanced.patches.youtube.misc.fix.playback.fingerprints.BuildPlayerRequestURIFingerprint
 import app.revanced.patches.youtube.misc.fix.playback.fingerprints.BuildPlayerRequestBuilderFingerprint
@@ -96,7 +97,8 @@ object SpoofClientPatch : BytecodePatch(
         //BuildPlayerRequestURIFingerprint,
         //BuildPlayerRequestBuilderFingerprint,
         BuildFormatStreamModelFingerprint,
-        BuildVideoStreamingDataFingerprint,
+        //BuildVideoStreamingDataFingerprint,
+        BuildTestTwoFingerprint,
         //BuildShortRecompositionFragmentPeerFingerprint,
         //SetPlayerRequestClientTypeFingerprint,
         //CreatePlayerRequestBodyFingerprint,
@@ -162,21 +164,17 @@ object SpoofClientPatch : BytecodePatch(
             }
         }
         
-        BuildVideoStreamingDataFingerprint.resultOrThrow().let {
-            val testIndex = it.mutableMethod
-                .getInstructions().indexOfFirst { instruction ->
-                    instruction.opcode == Opcode.INVOKE_STATIC &&
-                    instruction.getReference<MethodReference>()?.name == "parse" &&
-                    instruction.getReference<MethodReference>()?.returnType == "Landroid/net/Uri;"
-                } ?: throw PatchException("Could not find the testIndex.")
-                        
+
+        BuildTestTwoFingerprint.resultOrThrow().let {
+            val testIndex = it.mutableMethod.instructions.count()
+    
             it.mutableMethod.apply {
-                //val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex - 1)
+                val targetRegister = getInstruction<OneRegisterInstruction>(testIndex).registerA
                 
                 addInstructions(
                     testIndex,
                     """
-                        invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
+                        const/4 v$targetRegister, 0x1
                     """,
                 )
             }
