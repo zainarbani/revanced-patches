@@ -96,7 +96,7 @@ object SpoofClientPatch : BytecodePatch(
         //BuildPlayerRequestURIFingerprint,
         //BuildPlayerRequestBuilderFingerprint,
         BuildFormatStreamModelFingerprint,
-        //BuildVideoStreamingDataFingerprint,
+        BuildVideoStreamingDataFingerprint,
         //BuildShortRecompositionFragmentPeerFingerprint,
         //SetPlayerRequestClientTypeFingerprint,
         //CreatePlayerRequestBodyFingerprint,
@@ -162,7 +162,26 @@ object SpoofClientPatch : BytecodePatch(
             }
         }
         
-
+        BuildVideoStreamingDataFingerprint.resultOrThrow().let {
+            val testIndex = it.mutableMethod
+                .getInstructions().indexOfFirst { instruction ->
+                    instruction.opcode == Opcode.INVOKE_STATIC &&
+                    instruction.getReference<MethodReference>()?.name == "parse" &&
+                    instruction.getReference<MethodReference>()?.returnType == "Landroid/net/Uri;"
+                } ?: throw PatchException("Could not find the testIndex.")
+                        
+            it.mutableMethod.apply {
+                //val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex - 1)
+                
+                addInstructions(
+                    testIndex,
+                    """
+                        invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
+                    """,
+                )
+            }
+        }
+        
         // endregion
 
     }

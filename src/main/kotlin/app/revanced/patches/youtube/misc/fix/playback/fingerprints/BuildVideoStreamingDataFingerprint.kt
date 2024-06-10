@@ -6,12 +6,8 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal object BuildVideoStreamingDataFingerprint : MethodFingerprint(
-    accessFlags = AccessFlags.PUBLIC or AccessFlags.STATIC,
-    returnType = "Z",
-    parameters = listOf(
-        "Lcom/google/protos/youtube/api/innertube/StreamingDataOuterClass\$StreamingData;",
-        "Lcom/google/android/libraries/youtube/innertube/model/media/PlayerConfigModel;",
-    ),
+    accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL,
+    returnType = "Landroid/net/Uri",
     customFingerprint = { _, classDef ->
         classDef.type.endsWith("VideoStreamingData;")
     }, 
