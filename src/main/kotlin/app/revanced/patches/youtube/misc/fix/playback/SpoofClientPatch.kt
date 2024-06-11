@@ -168,7 +168,7 @@ object SpoofClientPatch : BytecodePatch(
         BuildTestTwoFingerprint.resultOrThrow().let {
             val testIndex = it.mutableMethod
                 .getInstructions().indexOfFirst { instruction ->
-                    instruction.opcode == Opcode.RETURN &&
+                    instruction.opcode == Opcode.RETURN
                 } ?: throw PatchException("Could not find the testIndex.")
     
             it.mutableMethod.apply {
