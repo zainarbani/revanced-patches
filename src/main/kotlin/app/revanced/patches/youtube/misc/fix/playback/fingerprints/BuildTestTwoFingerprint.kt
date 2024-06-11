@@ -7,7 +7,7 @@ import app.revanced.patcher.fingerprint.MethodFingerprint
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 //import com.android.tools.smali.dexlib2.iface.Method
-import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction31i
+import com.android.tools.smali.dexlib2.dexbacked.instruction.DexBackedInstruction31i
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 
 
@@ -18,7 +18,7 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
         methodDef.implementation?.instructions?.any { instruction ->
             if (instruction.opcode != Opcode.CONST_WIDE_32) return@any false
             
-            val reference = instruction as BuilderInstruction31i
+            val reference = instruction as DexBackedInstruction31i
             
             if (reference.getWideLiteral() != 0x2b46463L) return@any false
             true
