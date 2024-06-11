@@ -1,6 +1,6 @@
 package app.revanced.patches.youtube.misc.fix.playback.fingerprints
 
-//import app.revanced.patches.youtube.misc.fix.playback.fingerprints.BuildTestTwoFingerprint.constWideIndex
+import app.revanced.patches.youtube.misc.fix.playback.fingerprints.BuildTestTwoFingerprint.constWideIndex
 import app.revanced.patcher.extensions.or
 import app.revanced.patcher.fingerprint.MethodFingerprint
 import com.android.tools.smali.dexlib2.AccessFlags
@@ -14,9 +14,9 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
         constWideIndex(methodDef) >= 0
     }
 ) {
-    private fun constWideIndex(methodDef: Method) =
-        methodDef.getInstructions().indexOfFirst { instruction ->
-            instruction.opcode == Opcode.CONST_WIDE_32 &&
-            instruction.literal == 0x2b46463L
+    fun constWideIndex(methodDef: Method) =
+        methodDef.indexOfFirstInstruction {
+            opcode == Opcode.CONST_WIDE_32 &&
+            literal == 0x2b46463L
         }
 }
