@@ -1,3 +1,10 @@
+## [4.9.2-dev.80](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.79...v4.9.2-dev.80) (2024-06-11)
+
+
+### Bug Fixes
+
+* **yt:** ddj8 ([8b3a4c6](https://github.com/zainarbani/revanced-patches/commit/8b3a4c6a24b03bebb21d22df356f1d8de3b2bde0))
+
 ## [4.9.2-dev.79](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.78...v4.9.2-dev.79) (2024-06-11)
 
 
