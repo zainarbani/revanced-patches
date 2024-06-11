@@ -166,15 +166,18 @@ object SpoofClientPatch : BytecodePatch(
         
 
         BuildTestTwoFingerprint.resultOrThrow().let {
-            //val testIndex = it.mutableMethod.instructions.count()
+            val testIndex = it.mutableMethod
+                .getInstructions().indexOfFirst { instruction ->
+                    instruction.opcode == Opcode.RETURN &&
+                } ?: throw PatchException("Could not find the testIndex.")
     
             it.mutableMethod.apply {
-                //val targetRegister = getInstruction<OneRegisterInstruction>(testIndex).registerA
+                val targetRegister = getInstruction<OneRegisterInstruction>(testIndex).registerA
                 
                 addInstructions(
-                    6,
+                    testIndex,
                     """
-                        const/4 v0, 0x1
+                        const/4 v$targetRegister, 0x1
                     """,
                 )
             }

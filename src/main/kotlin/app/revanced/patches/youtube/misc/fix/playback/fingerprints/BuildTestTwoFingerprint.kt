@@ -10,12 +10,9 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL,
     returnType = "Z",
     customFingerprint = { methodDef, _ ->
-        constWideIndex(methodDef) >= 0
-    }
-) {
-    fun constWideIndex(methodDef: Method) =
         methodDef.indexOfFirstInstruction {
             opcode == Opcode.CONST_WIDE_32 &&
             literal == 0x2b46463L
-        }
-}
+        } >= 0
+    }
+)
