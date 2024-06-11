@@ -14,7 +14,7 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
     customFingerprint = { methodDef, _ ->
         methodDef.implementation?.instructions?.any { instruction ->
             if (instruction.opcode != Opcode.CONST_WIDE_32) return@any false
-            if (instruction.literal != 0x2b46463L) return@any false
+            if (!instruction.toString().contains("0x2b46463")) return@any false
             true
          } ?: false
     }
