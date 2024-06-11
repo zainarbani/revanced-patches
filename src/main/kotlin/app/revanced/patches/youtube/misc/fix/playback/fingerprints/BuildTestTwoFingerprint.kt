@@ -15,7 +15,7 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
     }
 ) {
     private fun constWideIndex(methodDef: Method) =
-        methodDef.instructions.indexOfFirst { instruction ->
+        methodDef.getInstructions().indexOfFirst { instruction ->
             instruction.opcode == Opcode.CONST_WIDE_32 &&
             instruction.literal == 0x2b46463L
         }
