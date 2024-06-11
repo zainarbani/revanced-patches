@@ -1,3 +1,21 @@
+## [4.9.2-dev.78](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.77...v4.9.2-dev.78) (2024-06-11)
+
+
+### Bug Fixes
+
+* **yt:** dda ([71d0ae6](https://github.com/zainarbani/revanced-patches/commit/71d0ae6acd8bb40212207112c2dd9dd224ebe477))
+* **yt:** dda1 ([5131599](https://github.com/zainarbani/revanced-patches/commit/5131599b0640d2bb61950937ccdf0d0409368478))
+* **yt:** dda2 ([ce88c9a](https://github.com/zainarbani/revanced-patches/commit/ce88c9ac34950c90b464d05155cb5fb98476bda4))
+* **yt:** dda3 ([770ff56](https://github.com/zainarbani/revanced-patches/commit/770ff5681ae8fa2a5c4987428dd3eef3f27f1196))
+* **yt:** dda4 ([4bec0c5](https://github.com/zainarbani/revanced-patches/commit/4bec0c5cb9fc675a5559b030799b39c49f5579d0))
+* **yt:** dda5 ([cbe835c](https://github.com/zainarbani/revanced-patches/commit/cbe835c74be02d4d82378b4b74b6027b9477d588))
+* **yt:** dda6 ([c5f2c58](https://github.com/zainarbani/revanced-patches/commit/c5f2c585c7d9a0e3ec3bb9a27b549f16ba1c718b))
+* **yt:** dda7 ([858992a](https://github.com/zainarbani/revanced-patches/commit/858992a02a428e5e3f6e224a51d3a25844a4a416))
+* **yt:** dda8 ([812eef2](https://github.com/zainarbani/revanced-patches/commit/812eef23428d8eb129812bd97b6ad46870db2b02))
+* **yt:** dda9 ([1af08a4](https://github.com/zainarbani/revanced-patches/commit/1af08a432dbb869299a7b580f1200997abd3a29f))
+* **yt:** ddj ([613b29b](https://github.com/zainarbani/revanced-patches/commit/613b29b86dc333121a5dda8abc029d11e1b03695))
+* **yt:** ddj1 ([3c934ea](https://github.com/zainarbani/revanced-patches/commit/3c934eaef0fa46afab4a07f8790f5762aeebdba8))
+
 ## [4.9.2-dev.77](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.76...v4.9.2-dev.77) (2024-06-10)
 
 
