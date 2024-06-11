@@ -18,8 +18,8 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
         methodDef.implementation?.instructions?.any { instruction ->
             if (instruction.opcode != Opcode.CONST_WIDE_32) return@any false
             
-            val reference = (instruction as ReferenceInstruction).reference as BuilderInstruction31i
-            if (reference.literal != 0x2b46463) return@any false
+            //val reference = (instruction as ReferenceInstruction).reference as BuilderInstruction31i
+            if (instruction.getWideLiteral() != 0x2b46463L) return@any false
             true
          } ?: false
     }
