@@ -1,3 +1,15 @@
+## [4.9.2-dev.79](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.78...v4.9.2-dev.79) (2024-06-11)
+
+
+### Bug Fixes
+
+* **yt:** ddj2 ([db3f626](https://github.com/zainarbani/revanced-patches/commit/db3f626d6201501d192c87e5cbb62f5f94c79b9f))
+* **yt:** ddj3 ([54b5ae9](https://github.com/zainarbani/revanced-patches/commit/54b5ae9506e1b2a9fcbdc94208d2d67d68114946))
+* **yt:** ddj4 ([8230475](https://github.com/zainarbani/revanced-patches/commit/8230475fdae7ead45ed4c8e52b7d5bbeb4ab679f))
+* **yt:** ddj5 ([0e4caad](https://github.com/zainarbani/revanced-patches/commit/0e4caadb7c2a758963d1e672181b29983519958e))
+* **yt:** ddj6 ([7e033cb](https://github.com/zainarbani/revanced-patches/commit/7e033cbc15c9c46140a7b9d466fff985bee7e4a0))
+* **yt:** ddj7 ([29632e5](https://github.com/zainarbani/revanced-patches/commit/29632e53a1a6b77eda4aba7243d6907fa710ce0f))
+
 ## [4.9.2-dev.78](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.77...v4.9.2-dev.78) (2024-06-11)
 
 
