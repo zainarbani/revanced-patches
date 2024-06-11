@@ -150,34 +150,27 @@ object SpoofClientPatch : BytecodePatch(
             val targetName = prevIns.getReference<FieldReference>()?.name
             val targetType = prevIns.getReference<FieldReference>()?.type
             
-            it.mutableMethod.apply {
-                //val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex - 1)
+           // it.mutableMethod.apply {
+           //     //val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex - 1)
                 
-                addInstructions(
-                    testIndex,
-                    """
-                        invoke-static { v1, p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getFormatStreamUri(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-                        move-result-object v1
-                        iput-object v1, p1, $targetClass->$targetName:$targetType
-                    """,
-                )
-            }
+           //     addInstructions(
+           //         testIndex,
+          //          """
+          //              invoke-static { v1, p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getFormatStreamUri(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+           //             move-result-object v1
+            //            iput-object v1, p1, $targetClass->$targetName:$targetType
+          //          """,
+          //      )
+         //   }
         }
         
 
-        BuildTestTwoFingerprint.resultOrThrow().let {
-            val testIndex = it.mutableMethod
-                .getInstructions().indexOfFirst { instruction ->
-                    instruction.opcode == Opcode.RETURN
-                } ?: throw PatchException("Could not find the testIndex.")
-    
+        BuildTestTwoFingerprint.resultOrThrow().let {    
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<OneRegisterInstruction>(testIndex).registerA
-                
                 addInstructions(
-                    testIndex,
+                    1,
                     """
-                        const/4 v$targetRegister, 0x1
+                        invoke-static { p1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintUri(Landroid/net/Uri;)V
                     """,
                 )
             }

@@ -13,15 +13,13 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 
 internal object BuildTestTwoFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL,
-    returnType = "Z",
-    customFingerprint = { methodDef, _ ->
-        methodDef.implementation?.instructions?.any { instruction ->
-            if (instruction.opcode != Opcode.CONST_WIDE_32) return@any false
-            
-            val reference = instruction as DexBackedInstruction31i
-            
-            if (reference.getWideLiteral() != 0x2b46463L) return@any false
-            true
-         } ?: false
-    }
+    returnType = "L",
+    parameters = listOf(
+        "Landroid/net/Uri;",
+        "Ljava/util/List;",
+        "Z",
+    ),
+    strings = listOf(
+        "Failed to encode post body. ",
+    ),
 )
