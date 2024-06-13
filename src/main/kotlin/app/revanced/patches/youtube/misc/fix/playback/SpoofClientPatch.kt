@@ -58,7 +58,7 @@ import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
         SettingsPatch::class,
         AddResourcesPatch::class,
         UserAgentClientSpoofPatch::class,
-        //PlayerResponseMethodHookPatch::class,
+        PlayerResponseMethodHookPatch::class,
         //VideoIdPatch::class,
     ],
     compatiblePackages = [
