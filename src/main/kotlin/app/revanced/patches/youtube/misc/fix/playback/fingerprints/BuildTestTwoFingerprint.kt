@@ -15,16 +15,16 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PUBLIC or AccessFlags.CONSTRUCTOR,
     returnType = "V",
     parameters = listOf(
-        "Landroid/net/Uri;",
+        "Landroid/net/Uri;", // p1, media URI
         "J",
         "I",
         "[B",
         "Ljava/util/Map;",
         "J",
         "J",
-        "Ljava/lang/String;",
+        "Ljava/lang/String;", // p8, videoId
         "I",
-        "Ljava/lang/Object;",
+        "Ljava/lang/Object;"
     ),
     customFingerprint = { methodDef, _ ->
         methodDef.name == "<init>"
