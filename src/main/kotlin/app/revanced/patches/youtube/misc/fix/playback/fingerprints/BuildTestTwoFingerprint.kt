@@ -12,10 +12,10 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 
 
 internal object BuildTestTwoFingerprint : MethodFingerprint(
-    accessFlags = AccessFlags.PROTECTED,
+    accessFlags = AccessFlags.PROTECTED.value,
     returnType = "Lorg/chromium/net/UrlRequest\$Builder;",
     parameters = listOf(
-        "L"
+        "L",
     ),
     strings = listOf(
         "Content-Type",
