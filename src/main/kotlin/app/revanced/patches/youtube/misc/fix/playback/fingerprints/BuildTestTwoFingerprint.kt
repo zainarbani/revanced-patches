@@ -12,14 +12,13 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 
 
 internal object BuildTestTwoFingerprint : MethodFingerprint(
-    accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL,
-    returnType = "L",
+    accessFlags = AccessFlags.PROTECTED,
+    returnType = "Lorg/chromium/net/UrlRequest\$Builder",
     parameters = listOf(
-        "Landroid/net/Uri;",
-        "Ljava/util/List;",
-        "Z",
+        "L"
     ),
     strings = listOf(
-        "Failed to encode post body. ",
+        "Content-Type",
+        "Range",
     ),
 )

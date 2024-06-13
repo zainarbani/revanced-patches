@@ -170,7 +170,7 @@ object SpoofClientPatch : BytecodePatch(
                 addInstructions(
                     1,
                     """
-                        invoke-static { p1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintUri(Landroid/net/Uri;)V
+                        invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintUri(Landroid/net/Uri;)V
                     """,
                 )
             }
