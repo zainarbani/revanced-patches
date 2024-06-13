@@ -1,3 +1,10 @@
+## [4.9.2-dev.88](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.87...v4.9.2-dev.88) (2024-06-13)
+
+
+### Bug Fixes
+
+* **yt:** ddu1 ([61c761f](https://github.com/zainarbani/revanced-patches/commit/61c761f0f2bb255ab4f727149039d346a5f950b1))
+
 ## [4.9.2-dev.87](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.86...v4.9.2-dev.87) (2024-06-13)
 
 
