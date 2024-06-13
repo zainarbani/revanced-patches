@@ -175,11 +175,12 @@ object SpoofClientPatch : BytecodePatch(
             it.mutableMethod.apply {
                 val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex).registerA
                 
-                addInstructions(
+                addInstructionsWithLabels(
                     testIndex,
                     """
+                        if-eqz v$targetRegister, :ignore
                         invoke-static { p8 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
-                    """,
+                    """, ExternalLabel("ignore", getInstruction(testIndex))
                 )
             }
         }

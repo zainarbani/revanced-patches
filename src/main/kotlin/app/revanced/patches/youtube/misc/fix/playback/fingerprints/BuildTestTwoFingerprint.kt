@@ -24,7 +24,7 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
         "J",
         "Ljava/lang/String;", // p8, videoId
         "I",
-        "Ljava/lang/Object;"
+        "Ljava/lang/Object;",
     ),
     customFingerprint = { methodDef, _ ->
         methodDef.name == "<init>"
