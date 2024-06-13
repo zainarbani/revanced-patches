@@ -1,3 +1,10 @@
+## [4.9.2-dev.84](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.83...v4.9.2-dev.84) (2024-06-13)
+
+
+### Bug Fixes
+
+* **yt:** ddx4 ([1716338](https://github.com/zainarbani/revanced-patches/commit/171633852c2dc16fb336fffe47c18f3e8a3fecd3))
+
 ## [4.9.2-dev.83](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.82...v4.9.2-dev.83) (2024-06-13)
 
 
