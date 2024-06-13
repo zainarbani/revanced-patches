@@ -33,6 +33,7 @@ import app.revanced.patches.youtube.misc.fix.playback.fingerprints.PlayerGesture
 import app.revanced.patches.youtube.misc.fix.playback.fingerprints.SetPlayerRequestClientTypeFingerprint
 import app.revanced.patches.youtube.misc.settings.SettingsPatch
 import app.revanced.patches.youtube.video.playerresponse.PlayerResponseMethodHookPatch
+import app.revanced.patches.youtube.video.videoid.VideoIdPatch
 import app.revanced.util.getReference
 import app.revanced.util.indexOfFirstInstructionOrThrow
 import app.revanced.util.resultOrThrow
@@ -57,7 +58,8 @@ import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
         SettingsPatch::class,
         AddResourcesPatch::class,
         UserAgentClientSpoofPatch::class,
-        PlayerResponseMethodHookPatch::class,
+        //PlayerResponseMethodHookPatch::class,
+        //VideoIdPatch::class,
     ],
     compatiblePackages = [
         CompatiblePackage(
@@ -135,7 +137,6 @@ object SpoofClientPatch : BytecodePatch(
             "$INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerRequestUri(" +
                 "Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;",
         )
-
         
         BuildFormatStreamModelFingerprint.resultOrThrow().let {
             val testIndex = it.mutableMethod
@@ -178,9 +179,9 @@ object SpoofClientPatch : BytecodePatch(
                 addInstructionsWithLabels(
                     testIndex,
                     """
-                        if-eqz v$targetRegister, :ignore
-                        invoke-static { p8 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
-                    """, ExternalLabel("ignore", getInstruction(testIndex))
+                        if-eqz v$targetRegister, :skip
+                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->getFormatStreamUri(Landroid/net/Uri;)Landroid/net/Uri;
+                    """, ExternalLabel("skip", getInstruction(testIndex))
                 )
             }
         }
