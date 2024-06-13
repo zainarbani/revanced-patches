@@ -165,12 +165,20 @@ object SpoofClientPatch : BytecodePatch(
         }
         
 
-        BuildTestTwoFingerprint.resultOrThrow().let {    
+        BuildTestTwoFingerprint.resultOrThrow().let {
+            val testIndex = it.mutableMethod
+                .getInstructions().indexOfFirst { instruction ->
+                    instruction.opcode == Opcode.IPUT_OBJECT &&
+                    instruction.getReference<FieldReference>()?.type == "Landroid/net/Uri;"
+                } ?: throw PatchException("Could not find the testIndex.")
+
             it.mutableMethod.apply {
+                val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex).registerA
+                
                 addInstructions(
-                    1,
+                    testIndex,
                     """
-                        invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintUri(Landroid/net/Uri;)V
+                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintUri(Landroid/net/Uri;)V
                     """,
                 )
             }
