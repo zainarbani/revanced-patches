@@ -1,3 +1,11 @@
+## [4.9.2-dev.89](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.88...v4.9.2-dev.89) (2024-06-14)
+
+
+### Bug Fixes
+
+* **yt:** dds ([435ecec](https://github.com/zainarbani/revanced-patches/commit/435ecec0e0c5ff026f531232f0d5a4fc4a7477f5))
+* **yt:** dds1 ([abc44c4](https://github.com/zainarbani/revanced-patches/commit/abc44c492f0ec8566aa941cfbac21444a935265a))
+
 ## [4.9.2-dev.88](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.87...v4.9.2-dev.88) (2024-06-13)
 
 
