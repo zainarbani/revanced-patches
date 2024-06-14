@@ -142,7 +142,7 @@ object SpoofClientPatch : BytecodePatch(
             val testIndex = it.mutableMethod
                 .getInstructions().indexOfFirst { instruction ->
                     instruction.opcode == Opcode.NEW_INSTANCE &&
-                    instruction.getReference<TypeReference>()?.name == "Lcom/google/android/libraries/youtube/innertube/model/media/PlayerConfigModel;"
+                    instruction.getReference<TypeReference>()?.type == "Lcom/google/android/libraries/youtube/innertube/model/media/PlayerConfigModel;"
                     //instruction.getReference<MethodReference>()?.returnType == ""
                 } ?: throw PatchException("Could not find the testIndex.")
             
@@ -152,7 +152,7 @@ object SpoofClientPatch : BytecodePatch(
             //val targetType = prevIns.getReference<FieldReference>()?.type
             
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<OneRegisterInstruction>(testIndex) + 1
+                val targetRegister = getInstruction<OneRegisterInstruction>(testIndex).registerA + 1
                 
                 addInstructions(
                     testIndex,
