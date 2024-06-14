@@ -98,7 +98,7 @@ object SpoofClientPatch : BytecodePatch(
         //BuildInitPlaybackRequestFingerprint,
         //BuildPlayerRequestURIFingerprint,
         //BuildPlayerRequestBuilderFingerprint,
-        BuildFormatStreamModelFingerprint,
+        //BuildFormatStreamModelFingerprint,
         //BuildVideoStreamingDataFingerprint,
         BuildTestTwoFingerprint,
         //BuildShortRecompositionFragmentPeerFingerprint,
@@ -109,7 +109,7 @@ object SpoofClientPatch : BytecodePatch(
         // Player gesture config.
         //PlayerGestureConfigSyntheticFingerprint,
         
-        //BuildTestFingerprint,
+        BuildTestFingerprint,
     ),
 ) {
     private const val INTEGRATIONS_CLASS_DESCRIPTOR =
@@ -138,31 +138,31 @@ object SpoofClientPatch : BytecodePatch(
                 "Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;",
         )
         
-        BuildFormatStreamModelFingerprint.resultOrThrow().let {
+        BuildTestFingerprint.resultOrThrow().let {
             val testIndex = it.mutableMethod
                 .getInstructions().indexOfFirst { instruction ->
-                    instruction.opcode == Opcode.INVOKE_STATIC &&
-                    instruction.getReference<MethodReference>()?.name == "parse" &&
-                    instruction.getReference<MethodReference>()?.returnType == "Landroid/net/Uri;"
+                    instruction.opcode == Opcode.NEW_INSTANCE &&
+                    instruction.getReference<TypeReference>()?.name == "Lcom/google/android/libraries/youtube/innertube/model/media/PlayerConfigModel;"
+                    //instruction.getReference<MethodReference>()?.returnType == ""
                 } ?: throw PatchException("Could not find the testIndex.")
             
-            val prevIns = it.mutableMethod.getInstruction(testIndex - 1)
-            val targetClass = prevIns.getReference<FieldReference>()?.definingClass
-            val targetName = prevIns.getReference<FieldReference>()?.name
-            val targetType = prevIns.getReference<FieldReference>()?.type
+            //val prevIns = it.mutableMethod.getInstruction(testIndex - 1)
+            //val targetClass = prevIns.getReference<FieldReference>()?.definingClass
+            //val targetName = prevIns.getReference<FieldReference>()?.name
+            //val targetType = prevIns.getReference<FieldReference>()?.type
             
-           // it.mutableMethod.apply {
-           //     //val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex - 1)
+            it.mutableMethod.apply {
+                val targetRegister = getInstruction<OneRegisterInstruction>(testIndex) + 1
                 
-           //     addInstructions(
-           //         testIndex,
-          //          """
-          //              invoke-static { v1, p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getFormatStreamUri(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-           //             move-result-object v1
-            //            iput-object v1, p1, $targetClass->$targetName:$targetType
-          //          """,
-          //      )
-         //   }
+                addInstructions(
+                    testIndex,
+                    """
+                        invoke-virtual/range {p1 .. p1}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+                        move-result-object v$targetRegister
+                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
+                    """,
+                )
+            }
         }
         
 
