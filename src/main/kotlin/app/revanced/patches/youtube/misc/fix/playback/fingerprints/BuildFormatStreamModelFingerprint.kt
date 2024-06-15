@@ -15,8 +15,8 @@ internal object BuildFormatStreamModelFingerprint : MethodFingerprint(
         "L",
     ),
     opcodes = listOf(
+        Opcode.IGET_OBJECT,
         Opcode.INVOKE_STATIC,
-        Opcode.MOVE_RESULT_OBJECT,
     ),
     customFingerprint = { methodDef, classDef ->
         methodDef.name == "<init>" &&

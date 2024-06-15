@@ -139,12 +139,13 @@ object SpoofClientPatch : BytecodePatch(
         )
         
         BuildFormatStreamModelFingerprint.resultOrThrow().let {
-            val testIndex = it.mutableMethod
-                .getInstructions().indexOfFirst { instruction ->
-                    instruction.opcode == Opcode.IGET_OBJECT //&&
-                    //instruction.getReference<FieldReference>()?.name == "parse" &&
-                    //instruction.getReference<MethodReference>()?.returnType == "Landroid/net/Uri;"
-                } ?: throw PatchException("Could not find the testIndex.")
+            val testIndex = scanResult.patternScanResult!!.startIndex
+            //val testIndex = it.mutableMethod
+            //    .getInstructions().indexOfFirst { instruction ->
+            //        instruction.opcode == Opcode.IGET_OBJECT //&&
+            //        //instruction.getReference<FieldReference>()?.name == "parse" &&
+            //        //instruction.getReference<MethodReference>()?.returnType == "Landroid/net/Uri;"
+            //    } ?: throw PatchException("Could not find the testIndex.")
             
             it.mutableMethod.apply {
                 val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex)
@@ -155,10 +156,10 @@ object SpoofClientPatch : BytecodePatch(
                 addInstructionsWithLabels(
                     testIndex + 1,
                     """
-                        if-eqz v1, :skip
-                        invoke-static { v1, p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getStreamingDataUrl(Ljava/lang/String;Ljava/lang/string;)Ljava/lang/String;
-                        move-result-object v1
-                        iput-object v1, p1, $targetClass->$targetName:$targetType
+                        if-eqz v${targetRegister.registerA}, :skip
+                        invoke-static { v${targetRegister.registerA}, p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getStreamingDataUrl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+                        move-result-object v${targetRegister.registerA}
+                        iput-object v${targetRegister.registerA}, p${targetRegister.registerB}, $targetClass->$targetName:$targetType
                     """, ExternalLabel("skip", getInstruction(testIndex + 1))
                 )
             }
@@ -166,11 +167,12 @@ object SpoofClientPatch : BytecodePatch(
         
 
         BuildTestTwoFingerprint.resultOrThrow().let {
-            val testIndex = it.mutableMethod
-                .getInstructions().indexOfFirst { instruction ->
-                    instruction.opcode == Opcode.IGET_OBJECT &&
-                    instruction.getReference<FieldReference>()?.type == "Landroid/net/Uri;"
-                } ?: throw PatchException("Could not find the testIndex.")
+            val testIndex = scanResult.patternScanResult!!.startIndex
+          //  val testIndex = it.mutableMethod
+          //      .getInstructions().indexOfFirst { instruction ->
+          //          instruction.opcode == Opcode.IGET_OBJECT &&
+          //          instruction.getReference<FieldReference>()?.type == "Landroid/net/Uri;"
+          //      } ?: throw PatchException("Could not find the testIndex.")
 
             it.mutableMethod.apply {
                 val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex)

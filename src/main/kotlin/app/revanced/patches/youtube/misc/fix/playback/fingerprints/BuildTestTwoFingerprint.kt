@@ -8,6 +8,10 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PROTECTED.value,
     returnType = "Lorg/chromium/net/UrlRequest\$Builder;",
     parameters = listOf("L"),
+    opcodes = listOf(
+        Opcode.IGET_OBJECT,
+        Opcode.INVOKE_VIRTUAL,
+    ),
     strings = listOf(
         "Content-Type",
         "Range",
