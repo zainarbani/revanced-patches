@@ -159,7 +159,6 @@ object SpoofClientPatch : BytecodePatch(
                         if-eqz v1, :skip
                         invoke-static { v1, p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getStreamingDataUrl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
                         move-result-object v1
-                        iput-object v1, p1, $targetClass->$targetName:$targetType
                     """, ExternalLabel("skip", getInstruction(testIndex + 1))
                 )
             }
@@ -186,7 +185,6 @@ object SpoofClientPatch : BytecodePatch(
                         if-eqz v0, :skip
                         invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getStreamingDataUri(Landroid/net/Uri;)Landroid/net/Uri;
                         move-result-object v0
-                        iput-object v0, p1, $targetClass->$targetName:$targetType
                     """, ExternalLabel("skip", getInstruction(testIndex + 1))
                 )
             }
