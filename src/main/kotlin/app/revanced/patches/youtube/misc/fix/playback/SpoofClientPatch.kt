@@ -141,25 +141,25 @@ object SpoofClientPatch : BytecodePatch(
         BuildFormatStreamModelFingerprint.resultOrThrow().let {
             val testIndex = it.mutableMethod
                 .getInstructions().indexOfFirst { instruction ->
-                    instruction.opcode == Opcode.INVOKE_STATIC &&
-                    instruction.getReference<MethodReference>()?.name == "parse" &&
-                    instruction.getReference<MethodReference>()?.returnType == "Landroid/net/Uri;"
+                    instruction.opcode == Opcode.IGET_OBJECT //&&
+                    //instruction.getReference<FieldReference>()?.name == "parse" &&
+                    //instruction.getReference<MethodReference>()?.returnType == "Landroid/net/Uri;"
                 } ?: throw PatchException("Could not find the testIndex.")
             
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex - 1)
-                val targetClass = getInstruction(testIndex - 1).getReference<FieldReference>()!!.definingClass
-                val targetName = getInstruction(testIndex - 1).getReference<FieldReference>()!!.name
-                val targetType = getInstruction(testIndex - 1).getReference<FieldReference>()!!.type
+                val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex)
+                val targetClass = getInstruction(testIndex).getReference<FieldReference>()!!.definingClass
+                val targetName = getInstruction(testIndex).getReference<FieldReference>()!!.name
+                val targetType = getInstruction(testIndex).getReference<FieldReference>()!!.type
                 
                 addInstructionsWithLabels(
-                    testIndex,
+                    testIndex + 1,
                     """
                         if-eqz v${targetRegister.registerA}, :skip
                         invoke-static { v${targetRegister.registerA}, p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getStreamingDataUrl(Ljava/lang/String;Ljava/lang/string;)Ljava/lang/String;
                         move-result-object v${targetRegister.registerA}
                         iput-object v${targetRegister.registerA}, p${targetRegister.registerB}, $targetClass->$targetName:$targetType
-                    """, ExternalLabel("skip", getInstruction(testIndex))
+                    """, ExternalLabel("skip", getInstruction(testIndex + 1))
                 )
             }
         }
