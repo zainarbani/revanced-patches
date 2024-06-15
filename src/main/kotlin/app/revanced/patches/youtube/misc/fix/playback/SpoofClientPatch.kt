@@ -157,6 +157,7 @@ object SpoofClientPatch : BytecodePatch(
                     testIndex + 1,
                     """
                         if-eqz v1, :skip
+                        if-eqz p2, :skip
                         invoke-static { v1, p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getStreamingDataUrl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
                         move-result-object v1
                     """, ExternalLabel("skip", getInstruction(testIndex + 1))
