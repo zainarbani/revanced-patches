@@ -155,10 +155,10 @@ object SpoofClientPatch : BytecodePatch(
                 addInstructionsWithLabels(
                     testIndex + 1,
                     """
-                        if-eqz v${targetRegister.registerA}, :skip
-                        invoke-static { v${targetRegister.registerA}, p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getStreamingDataUrl(Ljava/lang/String;Ljava/lang/string;)Ljava/lang/String;
-                        move-result-object v${targetRegister.registerA}
-                        iput-object v${targetRegister.registerA}, p${targetRegister.registerB}, $targetClass->$targetName:$targetType
+                        if-eqz v1, :skip
+                        invoke-static { v1, p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getStreamingDataUrl(Ljava/lang/String;Ljava/lang/string;)Ljava/lang/String;
+                        move-result-object v1
+                        iput-object v1, p1, $targetClass->$targetName:$targetType
                     """, ExternalLabel("skip", getInstruction(testIndex + 1))
                 )
             }
@@ -181,10 +181,10 @@ object SpoofClientPatch : BytecodePatch(
                 addInstructionsWithLabels(
                     testIndex + 1,
                     """
-                        if-eqz v${targetRegister.registerA}, :skip
-                        invoke-static { v${targetRegister.registerA} }, $INTEGRATIONS_CLASS_DESCRIPTOR->getStreamingDataUri(Landroid/net/Uri;)Landroid/net/Uri;
-                        move-result-object v${targetRegister.registerA}
-                        iput-object v${targetRegister.registerA}, p${targetRegister.registerB}, $targetClass->$targetName:$targetType
+                        if-eqz v0, :skip
+                        invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getStreamingDataUri(Landroid/net/Uri;)Landroid/net/Uri;
+                        move-result-object v0
+                        iput-object v0, p1, $targetClass->$targetName:$targetType
                     """, ExternalLabel("skip", getInstruction(testIndex + 1))
                 )
             }
