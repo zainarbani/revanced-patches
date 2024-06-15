@@ -1,3 +1,10 @@
+## [4.9.2-dev.94](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.93...v4.9.2-dev.94) (2024-06-15)
+
+
+### Bug Fixes
+
+* **yt:** dda7 ([8fbad6a](https://github.com/zainarbani/revanced-patches/commit/8fbad6a645c74ca17553ec8c71b9011cdc2ddc91))
+
 ## [4.9.2-dev.93](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.92...v4.9.2-dev.93) (2024-06-15)
 
 
