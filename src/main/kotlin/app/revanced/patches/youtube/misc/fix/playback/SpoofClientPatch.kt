@@ -98,7 +98,7 @@ object SpoofClientPatch : BytecodePatch(
         //BuildInitPlaybackRequestFingerprint,
         //BuildPlayerRequestURIFingerprint,
         //BuildPlayerRequestBuilderFingerprint,
-        //BuildFormatStreamModelFingerprint,
+        BuildFormatStreamModelFingerprint,
         //BuildVideoStreamingDataFingerprint,
         BuildTestTwoFingerprint,
         //BuildShortRecompositionFragmentPeerFingerprint,
@@ -109,7 +109,7 @@ object SpoofClientPatch : BytecodePatch(
         // Player gesture config.
         //PlayerGestureConfigSyntheticFingerprint,
         
-        BuildTestFingerprint,
+        #BuildTestFingerprint,
     ),
 ) {
     private const val INTEGRATIONS_CLASS_DESCRIPTOR =
@@ -138,11 +138,11 @@ object SpoofClientPatch : BytecodePatch(
                 "Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;",
         )
         
-        BuildTestFingerprint.resultOrThrow().let {
+        BuildFormatStreamModelFingerprint.resultOrThrow().let {
             val testIndex = it.mutableMethod
                 .getInstructions().indexOfFirst { instruction ->
-                    instruction.opcode == Opcode.NEW_INSTANCE &&
-                    instruction.getReference<TypeReference>()?.type == "Lcom/google/android/libraries/youtube/innertube/model/media/PlayerConfigModel;"
+                    instruction.opcode == Opcode.INVOKE_STATIC &&
+                    instruction.getReference<MethodReference>()?.returnType == "Landroid/net/Uri"
                     //instruction.getReference<MethodReference>()?.returnType == ""
                 } ?: throw PatchException("Could not find the testIndex.")
             
@@ -152,15 +152,19 @@ object SpoofClientPatch : BytecodePatch(
             //val targetType = prevIns.getReference<FieldReference>()?.type
             
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<OneRegisterInstruction>(testIndex).registerA + 1
+                val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex - 1)
+                val targetClass = getInstruction(testIndex - 1).getReference<FieldReference>()!!.definingClass
+                val targetName = getInstruction(testIndex - 1).getReference<FieldReference>()!!.name
+                val targetType = getInstruction(testIndex - 1).getReference<FieldReference>()!!.type
                 
-                addInstructions(
+                addInstructionsWithLabels(
                     testIndex,
                     """
-                        invoke-virtual/range {p1 .. p1}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-                        move-result-object v$targetRegister
-                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
-                    """,
+                        if-eqz v${targetRegister.registerA}, :skip
+                        invoke-static { v${targetRegister.registerA}, p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getStreamingDataUrl(Ljava/lang/String;Ljava/lang/string;)Ljava/lang/String;
+                        move-result-object v${targetRegister.registerA}
+                        iput-object v${targetRegister.registerA}, p${targetRegister.registerB}, $targetClass->$targetName:$targetType
+                    """, ExternalLabel("skip", getInstruction(testIndex))
                 )
             }
         }
@@ -174,14 +178,18 @@ object SpoofClientPatch : BytecodePatch(
                 } ?: throw PatchException("Could not find the testIndex.")
 
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex).registerA
-                
+                val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex)
+                val targetClass = getInstruction(testIndex).getReference<FieldReference>()!!.definingClass
+                val targetName = getInstruction(testIndex).getReference<FieldReference>()!!.name
+                val targetType = getInstruction(testIndex).getReference<FieldReference>()!!.type
+
                 addInstructionsWithLabels(
                     testIndex + 1,
                     """
-                        if-eqz v$targetRegister, :skip
-                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->getFormatStreamUri(Landroid/net/Uri;)Landroid/net/Uri;
-                        move-result-object v$targetRegister
+                        if-eqz v${targetRegister.registerA}, :skip
+                        invoke-static { v${targetRegister.registerA} }, $INTEGRATIONS_CLASS_DESCRIPTOR->getStreamingDataUri(Landroid/net/Uri;)Landroid/net/Uri;
+                        move-result-object v${targetRegister.registerA}
+                        iput-object v${targetRegister.registerA}, p${targetRegister.registerB}, $targetClass->$targetName:$targetType
                     """, ExternalLabel("skip", getInstruction(testIndex + 1))
                 )
             }
