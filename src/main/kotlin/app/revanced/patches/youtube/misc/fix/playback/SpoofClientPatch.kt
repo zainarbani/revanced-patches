@@ -142,14 +142,8 @@ object SpoofClientPatch : BytecodePatch(
             val testIndex = it.mutableMethod
                 .getInstructions().indexOfFirst { instruction ->
                     instruction.opcode == Opcode.INVOKE_STATIC &&
-                    instruction.getReference<MethodReference>()?.returnType == "Landroid/net/Uri"
-                    //instruction.getReference<MethodReference>()?.returnType == ""
+                    instruction.getReference<MethodReference>()?.returnType == "Landroid/net/Uri;"
                 } ?: throw PatchException("Could not find the testIndex.")
-            
-            //val prevIns = it.mutableMethod.getInstruction(testIndex - 1)
-            //val targetClass = prevIns.getReference<FieldReference>()?.definingClass
-            //val targetName = prevIns.getReference<FieldReference>()?.name
-            //val targetType = prevIns.getReference<FieldReference>()?.type
             
             it.mutableMethod.apply {
                 val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex - 1)
