@@ -139,7 +139,7 @@ object SpoofClientPatch : BytecodePatch(
         )
         
         BuildFormatStreamModelFingerprint.resultOrThrow().let {
-            val testIndex = scanResult.patternScanResult!!.startIndex
+            val testIndex = it.scanResult.patternScanResult!!.startIndex
             //val testIndex = it.mutableMethod
             //    .getInstructions().indexOfFirst { instruction ->
             //        instruction.opcode == Opcode.IGET_OBJECT //&&
@@ -167,7 +167,7 @@ object SpoofClientPatch : BytecodePatch(
         
 
         BuildTestTwoFingerprint.resultOrThrow().let {
-            val testIndex = scanResult.patternScanResult!!.startIndex
+            val testIndex = it.scanResult.patternScanResult!!.startIndex
           //  val testIndex = it.mutableMethod
           //      .getInstructions().indexOfFirst { instruction ->
           //          instruction.opcode == Opcode.IGET_OBJECT &&
