@@ -109,7 +109,7 @@ object SpoofClientPatch : BytecodePatch(
         // Player gesture config.
         //PlayerGestureConfigSyntheticFingerprint,
         
-        #BuildTestFingerprint,
+        //BuildTestFingerprint,
     ),
 ) {
     private const val INTEGRATIONS_CLASS_DESCRIPTOR =
