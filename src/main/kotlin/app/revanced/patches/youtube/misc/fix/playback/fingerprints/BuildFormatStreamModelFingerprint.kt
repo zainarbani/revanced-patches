@@ -15,7 +15,7 @@ internal object BuildFormatStreamModelFingerprint : MethodFingerprint(
         "L",
     ),
     opcodes = listOf(
-        Opcode.IGET_OBJECT,
+        Opcode.IGET_OBJECT, // stream uri.
         Opcode.INVOKE_STATIC,
     ),
     customFingerprint = { methodDef, classDef ->

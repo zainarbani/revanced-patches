@@ -10,7 +10,7 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
     returnType = "Lorg/chromium/net/UrlRequest\$Builder;",
     parameters = listOf("L"),
     opcodes = listOf(
-        Opcode.IGET_OBJECT,
+        Opcode.IGET_OBJECT, // stream uri.
         Opcode.INVOKE_VIRTUAL,
     ),
     strings = listOf(
