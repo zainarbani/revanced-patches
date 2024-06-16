@@ -168,7 +168,7 @@ object SpoofClientPatch : BytecodePatch(
 
             it.mutableMethod.apply {
                 val targetRegisterA = getInstruction<TwoRegisterInstruction>(testIndex).registerA
-                val targetRegisterB = getInstruction<TwoRegisterInstruction>(headersIndex - 1).registerB
+                //val targetRegisterB = getInstruction<TwoRegisterInstruction>(headersIndex - 1).registerB
 
                 addInstructionsWithLabels(
                     testIndex + 1,
