@@ -1,3 +1,10 @@
+## [4.9.2-dev.118](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.117...v4.9.2-dev.118) (2024-06-16)
+
+
+### Bug Fixes
+
+* **yt:** dde1 ([e68fe13](https://github.com/zainarbani/revanced-patches/commit/e68fe13a8e3a2a9232b1e6be1aa8203b42e1a76b))
+
 ## [4.9.2-dev.117](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.116...v4.9.2-dev.117) (2024-06-16)
 
 
