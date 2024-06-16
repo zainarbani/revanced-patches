@@ -7,7 +7,7 @@ import com.android.tools.smali.dexlib2.Opcode
 
 internal object BuildTestTwoFingerprint : MethodFingerprint(
     returnType = "V",
-    accessFlags = AccessFlags.PUBLIC,
+    accessFlags = AccessFlags.PUBLIC.value,
     customFingerprint = { methodDef, _ ->
         methodDef.name == "<init>" &&
         methodDef.parameters == listOf(
