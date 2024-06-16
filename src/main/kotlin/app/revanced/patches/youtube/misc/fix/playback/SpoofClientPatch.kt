@@ -158,7 +158,7 @@ object SpoofClientPatch : BytecodePatch(
         
 
         BuildTestTwoFingerprint.resultOrThrow().let {
-            val testIndex = it.scanResult.patternScanResult!!.startIndex
+            //val testIndex = it.scanResult.patternScanResult!!.startIndex
             
             it.mutableMethod.apply {
                 addInstructions(
