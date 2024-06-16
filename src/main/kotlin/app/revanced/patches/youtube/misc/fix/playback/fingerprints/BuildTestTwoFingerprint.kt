@@ -6,8 +6,8 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal object BuildTestTwoFingerprint : MethodFingerprint(
-    returnType = "V",
-    accessFlags = AccessFlags.PUBLIC or AccessFlags.CONSTRUCTOR,
+    //returnType = "V",
+    //accessFlags = AccessFlags.PUBLIC or AccessFlags.CONSTRUCTOR,
     parameters = listOf(
         "Landroid/net/Uri;",
         "J",
@@ -20,8 +20,7 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
         "I",
         "Ljava/lang/Object;",
     ),
-    customFingerprint = { _, classDef ->
-        //methodDef.name == "<init>" &&
-        classDef.type == "Lbuv;"
+    customFingerprint = { methodDef, _ ->
+        methodDef.name == "<init>"
     },
 )
