@@ -25,6 +25,6 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
         Opcode.IPUT_WIDE,
     ),
     customFingerprint = { methodDef, _ ->
-        methodDef.name == "<init>" &&
+        methodDef.name == "<init>"
     },
 )
