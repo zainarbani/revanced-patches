@@ -1,3 +1,10 @@
+## [4.9.2-dev.115](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.114...v4.9.2-dev.115) (2024-06-16)
+
+
+### Bug Fixes
+
+* **yt:** ddr8 ([fadc14f](https://github.com/zainarbani/revanced-patches/commit/fadc14f2291bf1a9de55e7c801c0069aa75b8a8a))
+
 ## [4.9.2-dev.114](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.113...v4.9.2-dev.114) (2024-06-16)
 
 
