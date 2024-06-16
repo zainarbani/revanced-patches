@@ -6,15 +6,21 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal object BuildTestTwoFingerprint : MethodFingerprint(
-    accessFlags = AccessFlags.PROTECTED.value,
-    returnType = "Lorg/chromium/net/UrlRequest\$Builder;",
-    parameters = listOf("L"),
-    opcodes = listOf(
-        Opcode.IGET_OBJECT, // stream uri.
-        Opcode.INVOKE_VIRTUAL,
+    accessFlags = AccessFlags.PUBLIC or AccessFlags.CONSTRUCTOR,
+    returnType = "V",
+    parameters = listOf(
+        "Landroid/net/Uri;",
+        "J",
+        "I",
+        "[B",
+        "Ljava/util/Map;",
+        "J",
+        "J",
+        "Ljava/lang/String;",
+        "I",
+        "Ljava/lang/Object;",
     ),
-    strings = listOf(
-        "Content-Type",
-        "Range",
-    ),
+    customFingerprint = { methodDef, _ ->
+        methodDef.name == "<init>"
+    },
 )

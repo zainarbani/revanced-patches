@@ -158,32 +158,13 @@ object SpoofClientPatch : BytecodePatch(
         
 
         BuildTestTwoFingerprint.resultOrThrow().let {
-            val testIndex = it.scanResult.patternScanResult!!.startIndex
-            val headersIndex = it.mutableMethod
-                .getInstructions().indexOfFirst { instruction ->
-                    instruction.opcode == Opcode.INVOKE_INTERFACE &&
-                    instruction.getReference<MethodReference>()?.name == "iterator"
-                    //instruction.getReference<MethodReference>()?.returnType == "Landroid/net/Uri;"
-                } ?: throw PatchException("Could not find the testIndex.")
-
             it.mutableMethod.apply {
-                val targetRegisterA = getInstruction<TwoRegisterInstruction>(testIndex).registerA
-                //val targetRegisterB = getInstruction<TwoRegisterInstruction>(headersIndex - 1).registerB
-
-                addInstructionsWithLabels(
-                    testIndex + 1,
-                    """
-                        if-eqz v0, :skip
-                        invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getStreamingDataUri(Landroid/net/Uri;)Landroid/net/Uri;
-                        move-result-object v0
-                    """, ExternalLabel("skip", getInstruction(testIndex + 1))
-                )
-
                 addInstructions(
-                    headersIndex,
+                    0,
                     """
-                        invoke-static { v2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintMap(Ljava/util/Map;)V
-                    """
+                        invoke-static { p5 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintMap(Ljava/util/Map;)V
+                        invoke-static { p8 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
+                    """,
                 )
             }
         }
