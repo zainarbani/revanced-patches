@@ -20,12 +20,8 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
         "I",
         "Ljava/lang/Object;",
     ),
-    opcodes = listOf(
-        Opcode.IPUT_OBJECT, // stream uri.
-        Opcode.IPUT_WIDE,
-    ),
-    customFingerprint = { methodDef, classDef ->
-        methodDef.name == "<init>" &&
+    customFingerprint = { _, classDef ->
+        //methodDef.name == "<init>" &&
         classDef.type == "Lbuv;"
     },
 )
