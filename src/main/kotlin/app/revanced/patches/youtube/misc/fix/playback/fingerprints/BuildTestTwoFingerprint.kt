@@ -20,6 +20,10 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
         "I",
         "Ljava/lang/Object;",
     ),
+    opcodes = listOf(
+        Opcode.IPUT_OBJECT, // stream uri.
+        Opcode.IPUT_WIDE,
+    ),
     customFingerprint = { methodDef, _ ->
         methodDef.name == "<init>" &&
         methodDef.definingClass.endsWith("HashMap;")
