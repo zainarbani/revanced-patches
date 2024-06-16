@@ -1,3 +1,11 @@
+## [4.9.2-dev.114](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.113...v4.9.2-dev.114) (2024-06-16)
+
+
+### Bug Fixes
+
+* **yt:** ddr6 ([569bd6b](https://github.com/zainarbani/revanced-patches/commit/569bd6bd001a62ef177200b331e4837c14d288cf))
+* **yt:** ddr7 ([6c12ce2](https://github.com/zainarbani/revanced-patches/commit/6c12ce2e0524d4a7ab68e0155fb2117d0981b3c4))
+
 ## [4.9.2-dev.113](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.112...v4.9.2-dev.113) (2024-06-16)
 
 
