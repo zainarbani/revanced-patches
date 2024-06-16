@@ -1,3 +1,10 @@
+## [4.9.2-dev.112](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.111...v4.9.2-dev.112) (2024-06-16)
+
+
+### Bug Fixes
+
+* **yt:** ddr4 ([c285f5a](https://github.com/zainarbani/revanced-patches/commit/c285f5a21f2472480832f9a51162ccf2f37d0b69))
+
 ## [4.9.2-dev.111](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.110...v4.9.2-dev.111) (2024-06-16)
 
 
