@@ -7,7 +7,7 @@ import com.android.tools.smali.dexlib2.Opcode
 
 internal object BuildTestTwoFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PUBLIC or AccessFlags.CONSTRUCTOR,
-    returnType = "V",
+    //returnType = "V",
     parameters = listOf(
         "Landroid/net/Uri;",
         "J",
@@ -26,6 +26,7 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
         Opcode.IPUT_OBJECT, // stream uri.
     ),
     customFingerprint = { methodDef, _ ->
-        methodDef.name == "<init>"
+        methodDef.name == "<init>" &&
+        methodDef.definingClass.endsWith("HashMap;")
     },
 )
