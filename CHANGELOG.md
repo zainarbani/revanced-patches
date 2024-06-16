@@ -1,3 +1,10 @@
+## [4.9.2-dev.109](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.108...v4.9.2-dev.109) (2024-06-16)
+
+
+### Bug Fixes
+
+* **yt:** ddr1 ([87e4794](https://github.com/zainarbani/revanced-patches/commit/87e47948d6300843b12bd59b6b0a83fdd2a34ad9))
+
 ## [4.9.2-dev.108](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.107...v4.9.2-dev.108) (2024-06-16)
 
 
