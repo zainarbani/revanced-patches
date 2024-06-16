@@ -1,3 +1,10 @@
+## [4.9.2-dev.113](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.112...v4.9.2-dev.113) (2024-06-16)
+
+
+### Bug Fixes
+
+* **yt:** ddr5 ([f5adf02](https://github.com/zainarbani/revanced-patches/commit/f5adf02907685bb6684413a34ced4fd5c5b9373c))
+
 ## [4.9.2-dev.112](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.111...v4.9.2-dev.112) (2024-06-16)
 
 
