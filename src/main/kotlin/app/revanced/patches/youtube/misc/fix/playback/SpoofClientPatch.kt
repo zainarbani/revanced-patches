@@ -140,7 +140,7 @@ object SpoofClientPatch : BytecodePatch(
         
         BuildFormatStreamModelFingerprint.resultOrThrow().let {
             val testIndex = it.scanResult.patternScanResult!!.startIndex
-
+            
             it.mutableMethod.apply {
                 val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex)
 
@@ -159,7 +159,12 @@ object SpoofClientPatch : BytecodePatch(
 
         BuildTestTwoFingerprint.resultOrThrow().let {
             val testIndex = it.scanResult.patternScanResult!!.startIndex
-            val headersIndex = it.scanResult.patternScanResult!!.endIndex
+            val headersIndex = it.mutableMethod
+                .getInstructions().indexOfFirst { instruction ->
+                    instruction.opcode == Opcode.INVOKE_INTERFACE &&
+                    instruction.getReference<MethodReference>()?.name == "iterator"
+                    //instruction.getReference<MethodReference>()?.returnType == "Landroid/net/Uri;"
+                } ?: throw PatchException("Could not find the testIndex.")
 
             it.mutableMethod.apply {
                 val targetRegisterA = getInstruction<TwoRegisterInstruction>(testIndex).registerA

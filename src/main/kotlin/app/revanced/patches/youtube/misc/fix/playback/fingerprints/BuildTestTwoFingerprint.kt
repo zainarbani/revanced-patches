@@ -12,10 +12,6 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
     opcodes = listOf(
         Opcode.IGET_OBJECT, // stream uri.
         Opcode.INVOKE_VIRTUAL,
-        Opcode.NEW_INSTANCE,
-        Opcode.INVOKE_DIRECT,
-        Opcode.INVOKE_INTERFACE,
-        Opcode.INVOKE_INTERFACE, // headers map.
     ),
     strings = listOf(
         "Content-Type",
