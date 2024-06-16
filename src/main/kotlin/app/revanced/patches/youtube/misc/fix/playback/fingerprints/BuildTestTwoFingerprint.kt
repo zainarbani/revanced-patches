@@ -20,4 +20,12 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
         "I",
         "Ljava/lang/Object;",
     ),
+    opcodes = listOf(
+        Opcode.INVOKE_STATIC,
+        Opcode.MOVE_OBJECT,
+        Opcode.IPUT_OBJECT, // stream uri.
+    ),
+    customFingerprint = { methodDef, _ ->
+        methodDef.name == "<init>"
+    },
 )
