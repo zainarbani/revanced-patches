@@ -29,7 +29,7 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
         classDef.methods.any { method ->
             method.implementation?.instructions?.any { instruction ->
                 instruction.toString().contains("media3.datasource")
-            }
+            } == true
         }
     }
 ) 
