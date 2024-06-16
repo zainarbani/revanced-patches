@@ -20,4 +20,8 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
         "I",
         "Ljava/lang/Object;",
     ),
+    customFingerprint = { methodDef, _ ->
+        methodDef.name == "<init>" &&
+        methodDef.definingClass.endsWith("HashMap;")
+    },
 )
