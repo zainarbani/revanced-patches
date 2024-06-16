@@ -1,3 +1,10 @@
+## [4.9.2-dev.107](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.106...v4.9.2-dev.107) (2024-06-16)
+
+
+### Bug Fixes
+
+* **yt:** ddc9 ([98bc24e](https://github.com/zainarbani/revanced-patches/commit/98bc24e1989a72e834e1c05fa117f6d376db9491))
+
 ## [4.9.2-dev.106](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.105...v4.9.2-dev.106) (2024-06-16)
 
 
