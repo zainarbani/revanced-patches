@@ -1,3 +1,10 @@
+## [4.9.2-dev.116](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.115...v4.9.2-dev.116) (2024-06-16)
+
+
+### Bug Fixes
+
+* **yt:** ddr9 ([eecaaca](https://github.com/zainarbani/revanced-patches/commit/eecaaca0e0b2effba58747d478bbc071488d288b))
+
 ## [4.9.2-dev.115](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.114...v4.9.2-dev.115) (2024-06-16)
 
 
