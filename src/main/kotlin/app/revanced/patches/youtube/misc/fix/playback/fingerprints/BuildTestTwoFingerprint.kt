@@ -27,8 +27,8 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
     customFingerprint = { methodDef, classDef ->
         methodDef.name == "<init>" &&
         classDef.methods.any { method ->
-            method.instructions.any {
-                it.toString().contains("media3.datasource")
+            method.instructions.any { instruction ->
+                instruction.toString().contains("media3.datasource")
             }
         }
     }
