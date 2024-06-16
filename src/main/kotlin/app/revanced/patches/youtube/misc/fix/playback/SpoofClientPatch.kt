@@ -140,19 +140,10 @@ object SpoofClientPatch : BytecodePatch(
         
         BuildFormatStreamModelFingerprint.resultOrThrow().let {
             val testIndex = it.scanResult.patternScanResult!!.startIndex
-            //val testIndex = it.mutableMethod
-            //    .getInstructions().indexOfFirst { instruction ->
-            //        instruction.opcode == Opcode.IGET_OBJECT //&&
-            //        //instruction.getReference<FieldReference>()?.name == "parse" &&
-            //        //instruction.getReference<MethodReference>()?.returnType == "Landroid/net/Uri;"
-            //    } ?: throw PatchException("Could not find the testIndex.")
-            
+
             it.mutableMethod.apply {
                 val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex)
-                val targetClass = getInstruction(testIndex).getReference<FieldReference>()!!.definingClass
-                val targetName = getInstruction(testIndex).getReference<FieldReference>()!!.name
-                val targetType = getInstruction(testIndex).getReference<FieldReference>()!!.type
-                
+
                 addInstructionsWithLabels(
                     testIndex + 1,
                     """
@@ -168,17 +159,11 @@ object SpoofClientPatch : BytecodePatch(
 
         BuildTestTwoFingerprint.resultOrThrow().let {
             val testIndex = it.scanResult.patternScanResult!!.startIndex
-          //  val testIndex = it.mutableMethod
-          //      .getInstructions().indexOfFirst { instruction ->
-          //          instruction.opcode == Opcode.IGET_OBJECT &&
-          //          instruction.getReference<FieldReference>()?.type == "Landroid/net/Uri;"
-          //      } ?: throw PatchException("Could not find the testIndex.")
+            val headersIndex = it.scanResult.patternScanResult!!.endIndex
 
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex)
-                val targetClass = getInstruction(testIndex).getReference<FieldReference>()!!.definingClass
-                val targetName = getInstruction(testIndex).getReference<FieldReference>()!!.name
-                val targetType = getInstruction(testIndex).getReference<FieldReference>()!!.type
+                val targetRegisterA = getInstruction<TwoRegisterInstruction>(testIndex).registerA
+                val targetRegisterB = getInstruction<TwoRegisterInstruction>(headersIndex - 1).registerB
 
                 addInstructionsWithLabels(
                     testIndex + 1,
@@ -187,6 +172,13 @@ object SpoofClientPatch : BytecodePatch(
                         invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getStreamingDataUri(Landroid/net/Uri;)Landroid/net/Uri;
                         move-result-object v0
                     """, ExternalLabel("skip", getInstruction(testIndex + 1))
+                )
+
+                addInstructions(
+                    headersIndex,
+                    """
+                        invoke-static { v2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintMap(Ljava/util/Map;)V
+                    """
                 )
             }
         }
