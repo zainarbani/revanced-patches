@@ -24,8 +24,8 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
         Opcode.IPUT_OBJECT, // stream uri.
         Opcode.IPUT_WIDE,
     ),
-    customFingerprint = { methodDef, _ ->
+    customFingerprint = { methodDef, classDef ->
         methodDef.name == "<init>" &&
-        methodDef.definingClass.endsWith("DesugarCollections;")
+        classDef.type == "Lbuf"
     },
 )
