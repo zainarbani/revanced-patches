@@ -7,7 +7,7 @@ import com.android.tools.smali.dexlib2.Opcode
 
 internal object BuildTestTwoFingerprint : MethodFingerprint(
     returnType = "V",
-    accessFlags = AccessFlags.PUBLIC or AccessFlags.CONSTRUCTOR,
+    accessFlags = AccessFlags.PUBLIC.value or AccessFlags.CONSTRUCTOR.value,
     parameters = listOf(
         "Landroid/net/Uri;",
         "J",
@@ -24,4 +24,7 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
         Opcode.IPUT_OBJECT, // stream uri.
         Opcode.IPUT_WIDE,
     ),
+    customFingerprint = { methodDef, _ ->
+        methodDef.name == "<init>" &&
+    },
 )
