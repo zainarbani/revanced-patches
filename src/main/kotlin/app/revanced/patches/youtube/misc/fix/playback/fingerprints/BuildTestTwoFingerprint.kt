@@ -21,12 +21,15 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
         "Ljava/lang/Object;"
     ),
     opcodes = listOf(
-        Opcode.INVOKE_STATIC,
-        Opcode.INVOKE_STATIC,
-        Opcode.MOVE_OBJECT,
-        Opcode.IPUT_OBJECT // stream uri.
+        Opcode.IPUT_OBJECT,
+        Opcode.IPUT_WIDE
     ),
-    customFingerprint = { methodDef, _ ->
-        methodDef.name == "<init>"
+    customFingerprint = { methodDef, classDef ->
+        methodDef.name == "<init>" &&
+        classDef.methods.any { method ->
+            method.instructions.any {
+                it.toString().contains("media3.datasource")
+            }
+        }
     }
-)
+) 

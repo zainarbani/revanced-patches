@@ -157,19 +157,19 @@ object SpoofClientPatch : BytecodePatch(
         }
         
 
-        BuildTestTwoFingerprint.resultOrThrow().let {
+        //BuildTestTwoFingerprint.resultOrThrow().let {
             //val testIndex = it.scanResult.patternScanResult!!.startIndex
             
-            it.mutableMethod.apply {
-                addInstructions(
-                    0,
-                    """
-                        invoke-static { p5 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintMap(Ljava/util/Map;)V
-                        invoke-static { p8 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
-                    """,
-                )
-            }
-        }
+         //   it.mutableMethod.apply {
+          //      addInstructions(
+        //            0,
+       //             """
+      //                  invoke-static { p5 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintMap(Ljava/util/Map;)V
+      //                  invoke-static { p8 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
+        //            """,
+        //        )
+     //       }
+     //   }
         
         // endregion
 
