@@ -1,3 +1,10 @@
+## [4.9.2-dev.123](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.122...v4.9.2-dev.123) (2024-06-16)
+
+
+### Bug Fixes
+
+* **yt:** ddy1 ([8eb6c70](https://github.com/zainarbani/revanced-patches/commit/8eb6c70cdcc9fc6c2d274852230d07dcb7b17622))
+
 ## [4.9.2-dev.122](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.121...v4.9.2-dev.122) (2024-06-16)
 
 
