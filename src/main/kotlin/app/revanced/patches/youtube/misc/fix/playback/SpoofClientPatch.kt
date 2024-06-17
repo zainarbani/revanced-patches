@@ -95,8 +95,8 @@ import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
 object SpoofClientPatch : BytecodePatch(
     setOf(
         // Client type spoof.
-        //BuildInitPlaybackRequestFingerprint,
-        //BuildPlayerRequestURIFingerprint,
+        BuildInitPlaybackRequestFingerprint,
+        BuildPlayerRequestURIFingerprint,
         //BuildPlayerRequestBuilderFingerprint,
         BuildFormatStreamModelFingerprint,
         //BuildVideoStreamingDataFingerprint,
