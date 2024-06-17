@@ -167,14 +167,13 @@ object SpoofClientPatch : BytecodePatch(
              println("zain: initMethod found: $initMethod")
              initMethod?.apply {
                 addInstructions(
-                    0, """
-                            invoke-static { p5 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintMap(Ljava/util/Map;)V
-                            invoke-static { p8 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
+                    4, """
+                            invoke-static { p1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintUri(Landroid/net/Uri;)V
                         """
                 )
             } ?: throw PatchException("Could not find the init method.")
         }
-        
+        //                            invoke-static { p8 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
         // endregion
 
     }
