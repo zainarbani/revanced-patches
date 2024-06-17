@@ -208,7 +208,7 @@ object SpoofClientPatch : BytecodePatch(
              initMethod?.apply {
                 addInstructions(
                     4, """
-                            invoke-static { v3 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintMap(Ljava/util/Map;)V
+                            invoke-static { p6 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintMap(Ljava/util/Map;)V
                         """
                 )
             } ?: throw PatchException("Could not find the init method.")
