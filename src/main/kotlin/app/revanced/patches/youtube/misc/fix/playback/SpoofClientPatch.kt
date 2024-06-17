@@ -161,10 +161,10 @@ object SpoofClientPatch : BytecodePatch(
             val targetMethod = it.mutableMethod.definingClass
                 .methods.firstOrNull { method ->
                     method.name == "<init>" &&
-                    method.parameters.count() = 10
+                    method.parameters.count() == 10
                 }
             
-            targetMethod?.let { -> method
+            targetMethod?.let { method ->
                 method.apply {
                     addInstructions(
                         0,
