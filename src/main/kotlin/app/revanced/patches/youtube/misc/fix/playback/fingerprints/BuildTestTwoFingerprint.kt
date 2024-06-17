@@ -24,9 +24,10 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
         Opcode.IPUT_OBJECT,
         Opcode.IPUT_WIDE
     ),
-    customFingerprint = { methodDef, _ ->
+    customFingerprint = { methodDef, classDef ->
         methodDef.name == "<init>" &&
-        methodDef.parameters.size == 10 //&&
+        //methodDef.parameters.size == 10 &&
+        classDef.methods.isNotEmpty()
         //classDef.fields.count() == 12
         //classDef.methods.any { method ->
         //    method.implementation?.instructions?.any { instruction ->
