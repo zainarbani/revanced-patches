@@ -8,17 +8,30 @@ import com.android.tools.smali.dexlib2.Opcode
 internal object BuildTestTwoFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PUBLIC or AccessFlags.CONSTRUCTOR,
     returnType = "V",
+    parameters = listOf(
+        "Landroid/net/Uri;",
+        "J",
+        "I",
+        "[B",
+        "Ljava/util/Map;",
+        "J",
+        "J",
+        "Ljava/lang/String;",
+        "I",
+        "Ljava/lang/Object;"
+    ),
     opcodes = listOf(
         Opcode.IPUT_OBJECT,
         Opcode.IPUT_WIDE
     ),
     customFingerprint = { methodDef, classDef ->
         methodDef.name == "<init>" &&
-        methodDef.parameters.size == 10 &&
-        classDef.methods.any { method ->
-            method.implementation?.instructions?.any { instruction ->
-                instruction.toString().contains("media3.datasource")
-            } ?: false
-        }
+        //methodDef.parameters.size == 10 &&
+        classDef.fields.size == 12
+        //classDef.methods.any { method ->
+        //    method.implementation?.instructions?.any { instruction ->
+        //        instruction.toString().contains("media3.datasource")
+        //    } ?: false
+        //}
     }
 ) 
