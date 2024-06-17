@@ -19,7 +19,7 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
                 
                 val reference = instruction as DexBackedInstruction21c
                 
-                if (reference.getReference<StringReference>()?.getString != "media3.datasource") return@any false
+                if (instruction.getString() != "media3.datasource") return@any false
                 true
             } ?: false
         }
