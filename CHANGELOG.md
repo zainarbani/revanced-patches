@@ -1,3 +1,10 @@
+## [4.9.2-dev.132](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.131...v4.9.2-dev.132) (2024-06-17)
+
+
+### Bug Fixes
+
+* **yt:** ddw6 ([bddeb2d](https://github.com/zainarbani/revanced-patches/commit/bddeb2d4d451728d3f5627c9235cb208651d9fe7))
+
 ## [4.9.2-dev.131](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.130...v4.9.2-dev.131) (2024-06-17)
 
 
