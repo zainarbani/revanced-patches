@@ -137,6 +137,46 @@ object SpoofClientPatch : BytecodePatch(
             "$INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerRequestUri(" +
                 "Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;",
         )
+
+        // region Block /initplayback requests to fall back to /get_watch requests.
+
+        BuildInitPlaybackRequestFingerprint.resultOrThrow().let {
+            val moveUriStringIndex = it.scanResult.patternScanResult!!.startIndex
+
+            it.mutableMethod.apply {
+                val targetRegister = getInstruction<OneRegisterInstruction>(moveUriStringIndex).registerA
+
+                addInstructions(
+                    moveUriStringIndex + 1,
+                    """
+                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->blockInitPlaybackRequest(Ljava/lang/String;)Ljava/lang/String;
+                        move-result-object v$targetRegister
+                    """,
+                )
+            }
+        }
+
+        // endregion
+
+        // region Block /get_watch requests to fall back to /player requests.
+
+        BuildPlayerRequestURIFingerprint.resultOrThrow().let {
+            val invokeToStringIndex = it.scanResult.patternScanResult!!.startIndex
+
+            it.mutableMethod.apply {
+                val uriRegister = getInstruction<FiveRegisterInstruction>(invokeToStringIndex).registerC
+
+                addInstructions(
+                    invokeToStringIndex,
+                    """
+                        invoke-static { v$uriRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->blockGetWatchRequest(Landroid/net/Uri;)Landroid/net/Uri;
+                        move-result-object v$uriRegister
+                    """,
+                )
+            }
+        }
+
+        // endregion
         
         BuildFormatStreamModelFingerprint.resultOrThrow().let {
             val testIndex = it.scanResult.patternScanResult!!.startIndex
@@ -160,11 +200,11 @@ object SpoofClientPatch : BytecodePatch(
         BuildTestTwoFingerprint.resultOrThrow().let {
             val initMethod = it.mutableClass
                 .methods.find { method ->
-                    println("zain: Method: ${method.name}, Parameters: ${method.parameters.size}, Instructions: ${method.implementation?.instructions?.count() ?: 0}")
+                    //println("zain: Method: ${method.name}, Parameters: ${method.parameters.size}, Instructions: ${method.implementation?.instructions?.count() ?: 0}")
                     method.name == "<init>" &&
                     method.parameters.size == 10
                 }
-             println("zain: initMethod found: $initMethod")
+             //println("zain: initMethod found: $initMethod")
              initMethod?.apply {
                 addInstructions(
                     4, """
