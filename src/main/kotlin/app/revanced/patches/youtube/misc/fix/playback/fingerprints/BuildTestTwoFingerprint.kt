@@ -4,6 +4,7 @@ import app.revanced.patcher.extensions.or
 import app.revanced.patcher.fingerprint.MethodFingerprint
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
+import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 internal object BuildTestTwoFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PUBLIC or AccessFlags.CONSTRUCTOR,
@@ -15,7 +16,7 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
             method.implementation?.instructions?.any { instruction ->
                 instruction.opcode == Opcode.CONST_STRING &&
                 instruction.getReference<MethodReference>()?.name == "media3.datasource"
-                /)(instruction.getLiteral() as? String == "media3.datasource")
+                //(instruction.getLiteral() as? String == "media3.datasource")
             } ?: false
         }
     }
