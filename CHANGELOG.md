@@ -1,3 +1,17 @@
+## [4.9.2-dev.129](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.128...v4.9.2-dev.129) (2024-06-17)
+
+
+### Bug Fixes
+
+* **yt:** ddo3 ([5649889](https://github.com/zainarbani/revanced-patches/commit/5649889425a06f351a6652faf6e56b52d43f923c))
+* **yt:** ddo4 ([38ea969](https://github.com/zainarbani/revanced-patches/commit/38ea969363197b851362bb17666e031f4a02ca7c))
+* **yt:** ddo5 ([914516d](https://github.com/zainarbani/revanced-patches/commit/914516d7abfb47ec1164eebb23bccd648c12f66a))
+* **yt:** ddo6 ([fcf9f6b](https://github.com/zainarbani/revanced-patches/commit/fcf9f6b56ab4e60d10f6ce7002521686426c67d1))
+* **yt:** ddo7 ([d62cf14](https://github.com/zainarbani/revanced-patches/commit/d62cf14e4447a8a68eca4e2405003ceb960163df))
+* **yt:** ddo8 ([0e59854](https://github.com/zainarbani/revanced-patches/commit/0e5985405bd3d7f5d643528b972fc52789a039a9))
+* **yt:** ddo9 ([20ae4de](https://github.com/zainarbani/revanced-patches/commit/20ae4de2200d63e56948e6d4cc10b3bb84f61a0b))
+* **yt:** ddw ([8113e9b](https://github.com/zainarbani/revanced-patches/commit/8113e9b6a37f7440576398b0a6b487004ad02ac6))
+
 ## [4.9.2-dev.128](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.127...v4.9.2-dev.128) (2024-06-17)
 
 
