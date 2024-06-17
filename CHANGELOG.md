@@ -1,3 +1,10 @@
+## [4.9.2-dev.135](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.134...v4.9.2-dev.135) (2024-06-17)
+
+
+### Bug Fixes
+
+* **yt:** ddw9 ([4d79d91](https://github.com/zainarbani/revanced-patches/commit/4d79d919b01d9e5ea48ff1418eb79dbfa895b2d0))
+
 ## [4.9.2-dev.134](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.133...v4.9.2-dev.134) (2024-06-17)
 
 
