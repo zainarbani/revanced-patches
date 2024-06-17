@@ -160,11 +160,11 @@ object SpoofClientPatch : BytecodePatch(
         BuildTestTwoFingerprint.resultOrThrow().let {
             val initMethod = it.mutableClass
                 .methods.find { method ->
-                    println("Checking method: ${method.name} with ${method.parameters.size} parameters")
+                    println("zain: Method: ${method.name}, Parameters: ${method.parameters.size}, Instructions: ${method.implementation?.instructions?.count() ?: 0}")
                     method.name == "<init>" &&
                     method.parameters.size == 10
                 }
-             println("initMethod found: $initMethod")
+             println("zain: initMethod found: $initMethod")
              initMethod?.apply {
                 addInstructions(
                     0, """
