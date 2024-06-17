@@ -27,7 +27,7 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
     customFingerprint = { methodDef, classDef ->
         methodDef.name == "<init>" &&
         //methodDef.parameters.size == 10 &&
-        classDef.fields.size == 12
+        classDef.fields.count() == 12
         //classDef.methods.any { method ->
         //    method.implementation?.instructions?.any { instruction ->
         //        instruction.toString().contains("media3.datasource")
