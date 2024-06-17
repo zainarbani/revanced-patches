@@ -16,7 +16,7 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
             method.implementation?.instructions?.any { instruction ->
                 if (instruction.opcode != Opcode.CONST_STRING) return@any false
                 
-                val reference = instruction as StringReference
+                val reference = instruction.getReference() as StringReference
                 
                 if (reference.string != "media3.datasource") return@any false
                 true
