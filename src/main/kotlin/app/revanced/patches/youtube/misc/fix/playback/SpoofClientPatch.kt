@@ -95,10 +95,10 @@ import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
 object SpoofClientPatch : BytecodePatch(
     setOf(
         // Client type spoof.
-        BuildInitPlaybackRequestFingerprint,
-        BuildPlayerRequestURIFingerprint,
+        //BuildInitPlaybackRequestFingerprint,
+        //BuildPlayerRequestURIFingerprint,
         //BuildPlayerRequestBuilderFingerprint,
-        BuildFormatStreamModelFingerprint,
+        //BuildFormatStreamModelFingerprint,
         //BuildVideoStreamingDataFingerprint,
         BuildTestTwoFingerprint,
         //BuildShortRecompositionFragmentPeerFingerprint,
@@ -133,88 +133,21 @@ object SpoofClientPatch : BytecodePatch(
             ),
         )
 
-        PlayerResponseMethodHookPatch += PlayerResponseMethodHookPatch.Hook.ProtoBufferParameter(
-            "$INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerRequestUri(" +
-                "Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;",
-        )
-
-        // region Block /initplayback requests to fall back to /get_watch requests.
-
-        BuildInitPlaybackRequestFingerprint.resultOrThrow().let {
-            val moveUriStringIndex = it.scanResult.patternScanResult!!.startIndex
-
-            it.mutableMethod.apply {
-                val targetRegister = getInstruction<OneRegisterInstruction>(moveUriStringIndex).registerA
-
-                addInstructions(
-                    moveUriStringIndex + 1,
-                    """
-                        invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->blockInitPlaybackRequest(Ljava/lang/String;)Ljava/lang/String;
-                        move-result-object v$targetRegister
-                    """,
-                )
-            }
-        }
-
-        // endregion
-
-        // region Block /get_watch requests to fall back to /player requests.
-
-        BuildPlayerRequestURIFingerprint.resultOrThrow().let {
-            val invokeToStringIndex = it.scanResult.patternScanResult!!.startIndex
-
-            it.mutableMethod.apply {
-                val uriRegister = getInstruction<FiveRegisterInstruction>(invokeToStringIndex).registerC
-
-                addInstructions(
-                    invokeToStringIndex,
-                    """
-                        invoke-static { v$uriRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->blockGetWatchRequest(Landroid/net/Uri;)Landroid/net/Uri;
-                        move-result-object v$uriRegister
-                    """,
-                )
-            }
-        }
-
-        // endregion
-        
-        BuildFormatStreamModelFingerprint.resultOrThrow().let {
-            val testIndex = it.scanResult.patternScanResult!!.startIndex
-            
-            it.mutableMethod.apply {
-                val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex)
-
-                addInstructionsWithLabels(
-                    testIndex + 1,
-                    """
-                        if-eqz v1, :skip
-                        if-eqz p2, :skip
-                        invoke-static { v1, p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getStreamingDataUrl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-                        move-result-object v1
-                    """, ExternalLabel("skip", getInstruction(testIndex + 1))
-                )
-            }
-        }
-        
-
         BuildTestTwoFingerprint.resultOrThrow().let {
-            val initMethod = it.mutableClass
-                .methods.find { method ->
-                    //println("zain: Method: ${method.name}, Parameters: ${method.parameters.size}, Instructions: ${method.implementation?.instructions?.count() ?: 0}")
-                    method.name == "<init>" &&
-                    method.parameters.size == 10
-                }
-             //println("zain: initMethod found: $initMethod")
-             initMethod?.apply {
+            val testIndex = it.scanResult.patternScanResult!!.startIndex
+
+            it.mutableMethod.apply {
+                //val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex)
+
                 addInstructions(
-                    4, """
-                            invoke-static { p6 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintMap(Ljava/util/Map;)V
-                        """
+                    testIndex,
+                    """
+                        check-cast v3, Ljava/util/List;
+                        invoke-static { v3 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintList(Ljava/util/List;)V
+                    """,
                 )
-            } ?: throw PatchException("Could not find the init method.")
+            }
         }
-        //                            invoke-static { p8 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
-        // endregion
 
     }
 }
