@@ -10,5 +10,5 @@ import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction21c
 internal object BuildTestTwoFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.STATIC or AccessFlags.CONSTRUCTOR,
     returnType = "V",
-    strings = "media3.datasource"
+    strings = listOf("media3.datasource")
 )
