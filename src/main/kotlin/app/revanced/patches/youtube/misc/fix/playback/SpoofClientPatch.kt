@@ -158,17 +158,23 @@ object SpoofClientPatch : BytecodePatch(
         
 
         BuildTestTwoFingerprint.resultOrThrow().let {
-            //val testIndex = it.scanResult.patternScanResult!!.startIndex
+            val targetMethod = it.mutableMethod.definingClass
+                .methods.firstOrNull { method ->
+                    method.name == "<init>" &&
+                    method.parameters.count() = 10
+                }
             
-            it.mutableMethod.apply {
-                addInstructions(
-                    0,
-                    """
-                        invoke-static { p5 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintMap(Ljava/util/Map;)V
-                        invoke-static { p8 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
-                    """,
-                )
-            }
+            targetMethod?.let { -> method
+                method.apply {
+                    addInstructions(
+                        0,
+                        """
+                            invoke-static { p5 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintMap(Ljava/util/Map;)V
+                            invoke-static { p8 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
+                        """,
+                    )
+                }
+            } ?: throw PatchException("Could not find the target method.")
         }
         
         // endregion

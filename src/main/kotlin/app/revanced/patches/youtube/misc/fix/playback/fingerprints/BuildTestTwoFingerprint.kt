@@ -8,20 +8,7 @@ import com.android.tools.smali.dexlib2.iface.reference.StringReference
 import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction21c
 
 internal object BuildTestTwoFingerprint : MethodFingerprint(
-    accessFlags = AccessFlags.PUBLIC or AccessFlags.CONSTRUCTOR,
+    accessFlags = AccessFlags.STATIC or AccessFlags.CONSTRUCTOR,
     returnType = "V",
-    customFingerprint = { methodDef, classDef ->
-        methodDef.name == "<init>" &&
-        methodDef.parameters.size == 10 &&
-        classDef.methods.any { method ->
-            method.implementation?.instructions?.any { instruction ->
-                if (instruction.opcode != Opcode.CONST_STRING) return@any false
-                
-                val reference = instruction as BuilderInstruction21c
-                
-                if (reference.toString() != "media3.datasource") return@any false
-                true
-            } ?: false
-        }
-    }
+    strings = "media3.datasource"
 )
