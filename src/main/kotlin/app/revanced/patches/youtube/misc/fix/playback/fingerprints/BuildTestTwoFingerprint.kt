@@ -24,10 +24,10 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
         Opcode.IPUT_OBJECT,
         Opcode.IPUT_WIDE
     ),
-    customFingerprint = { methodDef, classDef ->
+    customFingerprint = { methodDef, _ ->
         methodDef.name == "<init>" &&
-        //methodDef.parameters.size == 10 &&
-        classDef.fields.count() == 12
+        methodDef.parameters.size == 10 //&&
+        //classDef.fields.count() == 12
         //classDef.methods.any { method ->
         //    method.implementation?.instructions?.any { instruction ->
         //        instruction.toString().contains("media3.datasource")
