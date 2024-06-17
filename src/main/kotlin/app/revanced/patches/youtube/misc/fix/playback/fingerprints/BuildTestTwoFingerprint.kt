@@ -14,7 +14,8 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
         classDef.methods.any { method ->
             method.implementation?.instructions?.any { instruction ->
                 instruction.opcode == Opcode.CONST_STRING &&
-                (instruction.getLiteral() as? String == "media3.datasource")
+                instruction.getReference<MethodReference>()?.name == "media3.datasource"
+                /)(instruction.getLiteral() as? String == "media3.datasource")
             } ?: false
         }
     }
