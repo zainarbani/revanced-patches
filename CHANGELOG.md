@@ -1,3 +1,11 @@
+## [4.9.2-dev.136](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.135...v4.9.2-dev.136) (2024-06-17)
+
+
+### Bug Fixes
+
+* **yt:** ddt ([7b912dd](https://github.com/zainarbani/revanced-patches/commit/7b912dd2cc6263315a0892763af7fa946a1fc14a))
+* **yt:** ddt1 ([2963acc](https://github.com/zainarbani/revanced-patches/commit/2963acc0d7f720ca481127c91c9f8f393d31bae8))
+
 ## [4.9.2-dev.135](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.134...v4.9.2-dev.135) (2024-06-17)
 
 
