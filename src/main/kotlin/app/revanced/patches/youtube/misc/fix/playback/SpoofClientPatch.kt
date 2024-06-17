@@ -138,12 +138,15 @@ object SpoofClientPatch : BytecodePatch(
 
             it.mutableMethod.apply {
                 //val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex)
-
+                //val targetClass = getInstruction(testIndex).getReference<FieldReference>()!!.definingClass
+                //val targetName = getInstruction(testIndex).getReference<FieldReference>()!!.name
+                //val targetType = getInstruction(testIndex).getReference<FieldReference>()!!.type
+                
                 addInstructions(
-                    testIndex,
+                    testIndex + 1,
                     """
-                        check-cast v3, Ljava/util/List;
-                        invoke-static { v3 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintList(Ljava/util/List;)V
+                        check-cast v0, Ljava/util/List;
+                        invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintList(Ljava/util/List;)V
                     """,
                 )
             }
