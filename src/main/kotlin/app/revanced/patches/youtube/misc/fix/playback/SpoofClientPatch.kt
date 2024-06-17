@@ -208,7 +208,7 @@ object SpoofClientPatch : BytecodePatch(
              initMethod?.apply {
                 addInstructions(
                     4, """
-                            invoke-static { p1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintUri(Landroid/net/Uri;)V
+                            invoke-static { v3 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintMap(Ljava/util/Map;)V
                         """
                 )
             } ?: throw PatchException("Could not find the init method.")
