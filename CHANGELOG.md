@@ -1,3 +1,10 @@
+## [4.9.2-dev.134](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.133...v4.9.2-dev.134) (2024-06-17)
+
+
+### Bug Fixes
+
+* **yt:** ddw8 ([3b374d5](https://github.com/zainarbani/revanced-patches/commit/3b374d56407de22abe80e46e1309a632ef62e142))
+
 ## [4.9.2-dev.133](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.132...v4.9.2-dev.133) (2024-06-17)
 
 
