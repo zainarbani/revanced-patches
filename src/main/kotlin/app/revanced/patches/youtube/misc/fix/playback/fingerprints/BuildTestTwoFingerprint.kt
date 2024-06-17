@@ -5,7 +5,7 @@ import app.revanced.patcher.fingerprint.MethodFingerprint
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.reference.StringReference
-import com.android.tools.smali.dexlib2.dexbacked.instruction.DexBackedInstruction21c
+import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction21c
 
 internal object BuildTestTwoFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PUBLIC or AccessFlags.CONSTRUCTOR,
@@ -17,9 +17,9 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
             method.implementation?.instructions?.any { instruction ->
                 if (instruction.opcode != Opcode.CONST_STRING) return@any false
                 
-                val reference = instruction.getReference() as StringReference
+                val reference = instruction as BuilderInstruction21c
                 
-                if (reference.getString() != "media3.datasource") return@any false
+                if (reference.toString() != "media3.datasource") return@any false
                 true
             } ?: false
         }
