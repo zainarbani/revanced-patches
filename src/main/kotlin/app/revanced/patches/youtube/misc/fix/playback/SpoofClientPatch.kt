@@ -160,8 +160,9 @@ object SpoofClientPatch : BytecodePatch(
         BuildTestTwoFingerprint.resultOrThrow().let {
             val initMethod = it.mutableClass
                 .methods.find { method ->
-                    method.name == "<init>" &&
+                    //method.name == "<init>" &&
                     method.parameters.count() == 10
+                    //method.annotations.isEmpty()
                 }
             
             initMethod?.apply {
