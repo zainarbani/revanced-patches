@@ -7,13 +7,14 @@ import com.android.tools.smali.dexlib2.Opcode
 
 internal object BuildTestTwoFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL,
-    returnType = "Lcom/google/android/libraries/youtube/innertube/model/media/VideoStreamingData;",
+    returnType = "V",
+    parameters = listOf("L"),
     opcodes = listOf(
         Opcode.IGET_OBJECT,
         Opcode.INVOKE_INTERFACE,
-        Opcode.MOVE_RESULT_OBJECT
+        Opcode.MOVE_RESULT_OBJECT,
+        Opcode.INVOKE_INTERFACE,
+        Opcode.MOVE_RESULT
     ),
-    strings = listOf(
-        "Invalid playback type; streaming data is not playable"
-    )
+    strings = listOf("other.playback")
 )

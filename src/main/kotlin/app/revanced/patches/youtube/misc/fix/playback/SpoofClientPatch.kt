@@ -145,8 +145,8 @@ object SpoofClientPatch : BytecodePatch(
                 addInstructions(
                     testIndex + 1,
                     """
-                        check-cast v0, Ljava/util/List;
-                        invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintList(Ljava/util/List;)V
+                        check-cast v4, Ljava/util/List;
+                        invoke-static { v4 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintList(Ljava/util/List;)V
                     """,
                 )
             }
