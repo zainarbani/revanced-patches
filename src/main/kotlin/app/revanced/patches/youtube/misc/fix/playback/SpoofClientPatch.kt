@@ -137,8 +137,6 @@ object SpoofClientPatch : BytecodePatch(
             val testIndex = it.scanResult.patternScanResult!!.startIndex
             val testInstruction = it.mutableMethod.getInstruction(testIndex)
             println("zain: Instruction at test index: $testInstruction")
-            val scanCount = it.count()
-            println("zain: Number of pattern scan results: $scanCount")
 
             it.mutableMethod.apply {
                 //val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex)
