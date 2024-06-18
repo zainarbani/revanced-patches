@@ -9,7 +9,7 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL,
     returnType = "L",
     parameters = emptyList(),
-    opcodes = listOf(,
+    opcodes = listOf(
         Opcode.RETURN_OBJECT
     ),
     customFingerprint = { methodDef, _ -> methodDef.name == "toBuilder" }
