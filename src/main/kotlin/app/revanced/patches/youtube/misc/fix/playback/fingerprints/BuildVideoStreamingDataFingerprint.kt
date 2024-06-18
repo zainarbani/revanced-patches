@@ -6,9 +6,15 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal object BuildVideoStreamingDataFingerprint : MethodFingerprint(
-    accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL,
-    returnType = "Landroid/net/Uri",
-    customFingerprint = { _, classDef ->
+    accessFlags = AccessFlags.PUBLIC or AccessFlags.CONSTRUCTOR,
+    returnType = "V",
+    opcodes = listOf(
+        Opcode.IGET_OBJECT,
+        Opcode.INVOKE_INTERFACE,
+        Opcode.MOVE_RESULT_OBJECT
+    ),
+    customFingerprint = { methodDef, classDef ->
+        methodDef.name == "<init>" &&
         classDef.type.endsWith("VideoStreamingData;")
-    }, 
+    }
 )

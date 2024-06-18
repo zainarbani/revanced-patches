@@ -99,8 +99,8 @@ object SpoofClientPatch : BytecodePatch(
         //BuildPlayerRequestURIFingerprint,
         //BuildPlayerRequestBuilderFingerprint,
         //BuildFormatStreamModelFingerprint,
-        //BuildVideoStreamingDataFingerprint,
-        BuildTestTwoFingerprint,
+        BuildVideoStreamingDataFingerprint,
+        //BuildTestTwoFingerprint,
         //BuildShortRecompositionFragmentPeerFingerprint,
         //SetPlayerRequestClientTypeFingerprint,
         //CreatePlayerRequestBodyFingerprint,
@@ -133,7 +133,7 @@ object SpoofClientPatch : BytecodePatch(
             ),
         )
 
-        BuildTestTwoFingerprint.resultOrThrow().let {
+        BuildVideoStreamingDataFingerprint.resultOrThrow().let {
             val testIndex = it.scanResult.patternScanResult!!.startIndex
 
             it.mutableMethod.apply {
@@ -145,9 +145,7 @@ object SpoofClientPatch : BytecodePatch(
                 addInstructions(
                     testIndex,
                     """
-                        check-cast v0, Ljava/util/List;
-                        invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintList(Ljava/util/List;)V
-                        check-cast v0, Lamgx;
+                        invoke-static { v9 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintList(Ljava/util/List;)V
                     """,
                 )
             }
