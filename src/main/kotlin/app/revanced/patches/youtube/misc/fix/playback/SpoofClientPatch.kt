@@ -143,10 +143,11 @@ object SpoofClientPatch : BytecodePatch(
                 //val targetType = getInstruction(testIndex).getReference<FieldReference>()!!.type
                 
                 addInstructions(
-                    testIndex + 1,
+                    testIndex,
                     """
-                        check-cast v4, Ljava/util/List;
-                        invoke-static { v4 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintList(Ljava/util/List;)V
+                        check-cast v0, Ljava/util/List;
+                        invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintList(Ljava/util/List;)V
+                        check-cast v0, Lamgx;
                     """,
                 )
             }

@@ -7,14 +7,10 @@ import com.android.tools.smali.dexlib2.Opcode
 
 internal object BuildTestTwoFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL,
-    returnType = "V",
-    parameters = listOf("L"),
-    opcodes = listOf(
-        Opcode.IGET_OBJECT,
-        Opcode.INVOKE_INTERFACE,
-        Opcode.MOVE_RESULT_OBJECT,
-        Opcode.INVOKE_INTERFACE,
-        Opcode.MOVE_RESULT
+    returnType = "L",
+    parameters = emptyList(),
+    opcodes = listOf(,
+        Opcode.RETURN_OBJECT
     ),
-    strings = listOf("other.playback")
+    customFingerprint = { methodDef, _ -> methodDef.name == "toBuilder" }
 )
