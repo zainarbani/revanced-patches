@@ -135,6 +135,10 @@ object SpoofClientPatch : BytecodePatch(
 
         BuildVideoStreamingDataFingerprint.resultOrThrow().let {
             val testIndex = it.scanResult.patternScanResult!!.startIndex
+            val testInstruction = it.mutableMethod.getInstruction(testIndex)
+            println("zain: Instruction at test index: $testInstruction")
+            val scanCount = it.scanResult.patternScanResult!!.count()
+            println("zain: Number of pattern scan results: $scanCount")
 
             it.mutableMethod.apply {
                 //val targetRegister = getInstruction<TwoRegisterInstruction>(testIndex)
@@ -143,7 +147,7 @@ object SpoofClientPatch : BytecodePatch(
                 //val targetType = getInstruction(testIndex).getReference<FieldReference>()!!.type
                 
                 addInstructions(
-                    testIndex,
+                    testIndex + 1,
                     """
                         invoke-static { v9 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintList(Ljava/util/List;)V
                     """,
