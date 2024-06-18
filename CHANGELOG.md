@@ -1,3 +1,10 @@
+## [4.9.2-dev.141](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.140...v4.9.2-dev.141) (2024-06-18)
+
+
+### Bug Fixes
+
+* **yt:** ddz ([658492b](https://github.com/zainarbani/revanced-patches/commit/658492be64601044d1f75b83fcad9994ec30ee23))
+
 ## [4.9.2-dev.140](https://github.com/zainarbani/revanced-patches/compare/v4.9.2-dev.139...v4.9.2-dev.140) (2024-06-17)
 
 
