@@ -18,7 +18,7 @@ internal object BuildGetDefaultUserAgentFingerprint : MethodFingerprint(
         " (Linux; U; Android ",
         "; ",
         "; ",
-        "; Build/"
+        "; Build/",
         ";"
     )
 )
