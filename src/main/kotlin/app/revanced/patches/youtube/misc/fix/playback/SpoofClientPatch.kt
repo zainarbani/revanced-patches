@@ -75,6 +75,7 @@ object SpoofClientPatch : BytecodePatch(
         BuildInitPlaybackRequestFingerprint,
         BuildPlayerRequestURIFingerprint,
         SetPlayerRequestClientTypeFingerprint,
+        BuildGetDefaultUserAgentFingerprint,
         CreatePlayerRequestBodyFingerprint,
         CreatePlayerRequestBodyWithModelFingerprint,
 
@@ -247,6 +248,26 @@ object SpoofClientPatch : BytecodePatch(
                     )
                 },
             )
+        }
+
+        // endregion
+
+        // region Change user-agent if spoofing to iOS.
+
+        BuildGetDefaultUserAgentFingerprint.resultOrThrow().let {
+            val scanResult = it.scanResult.patternScanResult!!.startIndex
+
+            it.mutableMethod.apply {
+                val targetRegister = getInstruction<OneRegisterInstruction>(scanResult).registerA
+
+                addInstructions(
+                    scanResult + 1,
+                    """
+                        invoke-static { p$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->getDefaultUserAgent(Ljava/lang/String;)Ljava/lang/String;
+                        move-result-object p$targetRegister
+                    """
+                )
+            }
         }
 
         // endregion
