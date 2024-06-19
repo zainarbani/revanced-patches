@@ -1,3 +1,10 @@
+# [4.11.0-dev.2](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.1...v4.11.0-dev.2) (2024-06-19)
+
+
+### Bug Fixes
+
+* **yt:** aaa4 ([709f6d7](https://github.com/zainarbani/revanced-patches/commit/709f6d7f6248588bd7b507b61dab45e437205946))
+
 # [4.11.0-dev.1](https://github.com/zainarbani/revanced-patches/compare/v4.10.0...v4.11.0-dev.1) (2024-06-18)
 
 
