@@ -258,13 +258,14 @@ object SpoofClientPatch : BytecodePatch(
             val scanResult = it.scanResult.patternScanResult!!.startIndex
 
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<OneRegisterInstruction>(scanResult).registerA
+                val targetRegister = getInstruction<OneRegisterInstruction>(scanResult + 1).registerA
+                printIn("zain: $targetRegister")
 
                 addInstructions(
                     scanResult + 1,
                     """
-                        invoke-static { p$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->getDefaultUserAgent(Ljava/lang/String;)Ljava/lang/String;
-                        move-result-object p$targetRegister
+                        invoke-static { p0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getDefaultUserAgent(Ljava/lang/String;)Ljava/lang/String;
+                        move-result-object p0
                     """
                 )
             }
