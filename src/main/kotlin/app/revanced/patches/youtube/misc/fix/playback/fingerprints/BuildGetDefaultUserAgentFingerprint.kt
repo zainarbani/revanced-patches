@@ -7,18 +7,14 @@ import com.android.tools.smali.dexlib2.Opcode
 
 internal object BuildGetDefaultUserAgentFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PUBLIC or AccessFlags.STATIC,
-    returnType = "Landroid/content/Context;",
-    parameters = listOf("Ljava/lang/String;"),
+    returnType = "Ljava/lang/String;",
+    parameters = listOf("Landroid/content/Context;"),
     opcodes = listOf(
         Opcode.MOVE_RESULT_OBJECT,
         Opcode.RETURN_OBJECT
     ),
     strings = listOf(
-        "Cannot determine package version",
         " (Linux; U; Android ",
-        "; ",
-        "; ",
-        "; Build/",
-        ";"
+        "; Build/"
     )
 )
