@@ -14,7 +14,11 @@ internal object BuildGetDefaultUserAgentFingerprint : MethodFingerprint(
         Opcode.RETURN_OBJECT
     ),
     strings = listOf(
+        "Cannot determine package version",
         " (Linux; U; Android ",
+        ";",
+        ";",
         "; Build/"
+        ";"
     )
 )
