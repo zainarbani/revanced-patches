@@ -16,8 +16,8 @@ internal object BuildGetDefaultUserAgentFingerprint : MethodFingerprint(
     strings = listOf(
         "Cannot determine package version",
         " (Linux; U; Android ",
-        ";",
-        ";",
+        "; ",
+        "; ",
         "; Build/"
         ";"
     )
