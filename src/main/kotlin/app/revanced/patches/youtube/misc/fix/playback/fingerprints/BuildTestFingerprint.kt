@@ -8,7 +8,7 @@ import com.android.tools.smali.dexlib2.Opcode
 internal object BuildTestFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PUBLIC or AccessFlags.CONSTRUCTOR,
     returnType = "V",
-    parameters = "L",
+    parameters = listOf("L"),
     opcodes = listOf(Opcode.RETURN_VOID),
     customFingerprint = { methodDef, classDef ->
         methodDef.name == "<init>" &&
