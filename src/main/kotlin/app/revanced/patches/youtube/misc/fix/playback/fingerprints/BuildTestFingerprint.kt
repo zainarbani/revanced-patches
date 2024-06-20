@@ -11,7 +11,8 @@ internal object BuildTestFingerprint : MethodFingerprint(
     parameters = listOf(
         "Lcom/google/protos/youtube/api/innertube/LivePlayerConfigOuterClass\$LivePlayerConfig;",
         "Lcom/google/protos/youtube/api/innertube/MediaCommonConfigOuterClass\$MediaCommonConfig;",
-        "Lcom/google/protos/youtube/api/innertube/ManifestlessWindowedLiveConfigOuterClass\$ManifestlessWindowedLiveConfig;"
+        "Lcom/google/protos/youtube/api/innertube/ManifestlessWindowedLiveConfigOuterClass\$ManifestlessWindowedLiveConfig;",
+        "I"
     ),
     opcodes = listOf(Opcode.RETURN_VOID),
     customFingerprint = { methodDef, classDef ->
