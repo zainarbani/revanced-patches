@@ -11,7 +11,7 @@ internal object BuildTestFingerprint : MethodFingerprint(
     parameters = emptyList(),
     opcodes = listOf(Opcode.RETURN_OBJECT),
     customFingerprint = { methodDef, classDef ->
-        methodDef.name == "T" &&
+        methodDef.name == "S" &&
         classDef.type.endsWith("PlayerConfigModel;")
     }
 )
