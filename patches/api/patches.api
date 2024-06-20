@@ -51,11 +51,11 @@ public abstract interface class app/revanced/patches/all/misc/transformation/IMe
 	public abstract fun getMethodName ()Ljava/lang/String;
 	public abstract fun getMethodParams ()[Ljava/lang/String;
 	public abstract fun getReturnType ()Ljava/lang/String;
-	public abstract fun replaceInvokeVirtualWithIntegrations (Ljava/lang/String;Lapp/revanced/patcher/util/proxy/mutableTypes/MutableMethod;Lcom/android/tools/smali/dexlib2/iface/instruction/formats/Instruction35c;I)V
+	public abstract fun replaceInvokeVirtualWithExtension (Ljava/lang/String;Lapp/revanced/patcher/util/proxy/mutableTypes/MutableMethod;Lcom/android/tools/smali/dexlib2/iface/instruction/formats/Instruction35c;I)V
 }
 
 public final class app/revanced/patches/all/misc/transformation/IMethodCall$DefaultImpls {
-	public static fun replaceInvokeVirtualWithIntegrations (Lapp/revanced/patches/all/misc/transformation/IMethodCall;Ljava/lang/String;Lapp/revanced/patcher/util/proxy/mutableTypes/MutableMethod;Lcom/android/tools/smali/dexlib2/iface/instruction/formats/Instruction35c;I)V
+	public static fun replaceInvokeVirtualWithExtension (Lapp/revanced/patches/all/misc/transformation/IMethodCall;Ljava/lang/String;Lapp/revanced/patcher/util/proxy/mutableTypes/MutableMethod;Lcom/android/tools/smali/dexlib2/iface/instruction/formats/Instruction35c;I)V
 }
 
 public final class app/revanced/patches/all/misc/transformation/TransformInstructionsPatchKt {
@@ -66,11 +66,11 @@ public final class app/revanced/patches/all/misc/versioncode/ChangeVersionCodePa
 	public static final fun getChangeVersionCodePatch ()Lapp/revanced/patcher/patch/ResourcePatch;
 }
 
-public final class app/revanced/patches/all/screencapture/removerestriction/RemoveCaptureRestrictionPatchKt {
-	public static final fun getRemoveCaptureRestrictionPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
+public final class app/revanced/patches/all/screencapture/RemoveScreenCaptureRestrictionPatchKt {
+	public static final fun getRemoveScreenCaptureRestrictionPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
-public final class app/revanced/patches/all/screenshot/removerestriction/RemoveScreenshotRestrictionPatchKt {
+public final class app/revanced/patches/all/screenshot/RemoveScreenshotRestrictionPatchKt {
 	public static final fun getRemoveScreenshotRestrictionPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
@@ -222,16 +222,16 @@ public final class app/revanced/patches/music/misc/backgroundplayback/Background
 	public static final fun getBackgroundPlaybackPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
+public final class app/revanced/patches/music/misc/extensions/SharedExtensionPatchKt {
+	public static final fun getSharedExtensionPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
+}
+
 public final class app/revanced/patches/music/misc/gms/Constants {
 	public static final field INSTANCE Lapp/revanced/patches/music/misc/gms/Constants;
 }
 
 public final class app/revanced/patches/music/misc/gms/GmsCoreSupportPatchKt {
 	public static final fun getGmsCoreSupportPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
-}
-
-public final class app/revanced/patches/music/misc/integrations/IntegrationsPatchKt {
-	public static final fun getIntegrationsPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
 public final class app/revanced/patches/myexpenses/misc/pro/UnlockProPatchKt {
@@ -327,12 +327,12 @@ public final class app/revanced/patches/reddit/customclients/boostforreddit/fix/
 }
 
 public final class app/revanced/patches/reddit/customclients/boostforreddit/fix/slink/FixSLinksPatchKt {
-	public static final field INTEGRATIONS_CLASS_DESCRIPTOR Ljava/lang/String;
+	public static final field EXTENSION_CLASS_DESCRIPTOR Ljava/lang/String;
 	public static final fun getFixSlinksPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
-public final class app/revanced/patches/reddit/customclients/boostforreddit/misc/integrations/IntegrationsPatchKt {
-	public static final fun getIntegrationsPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
+public final class app/revanced/patches/reddit/customclients/boostforreddit/misc/extensions/SharedExtensionPatchKt {
+	public static final fun getSharedExtensionPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
 public final class app/revanced/patches/reddit/customclients/infinityforreddit/api/SpoofClientPatchKt {
@@ -396,13 +396,13 @@ public final class app/revanced/patches/reddit/customclients/sync/syncforreddit/
 	public static final fun getSpoofClientPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
-public final class app/revanced/patches/reddit/customclients/sync/syncforreddit/fix/slink/FixSLinksPatchKt {
-	public static final field INTEGRATIONS_CLASS_DESCRIPTOR Ljava/lang/String;
-	public static final fun getFixSLinksPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
+public final class app/revanced/patches/reddit/customclients/sync/syncforreddit/extensions/SharedExtensionPatchKt {
+	public static final fun getSharedExtensionPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
-public final class app/revanced/patches/reddit/customclients/sync/syncforreddit/misc/integrations/IntegrationsPatchKt {
-	public static final fun getIntegrationsPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
+public final class app/revanced/patches/reddit/customclients/sync/syncforreddit/fix/slink/FixSLinksPatchKt {
+	public static final field EXTENSION_CLASS_DESCRIPTOR Ljava/lang/String;
+	public static final fun getFixSLinksPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
 public final class app/revanced/patches/reddit/layout/disablescreenshotpopup/DisableScreenshotPopupPatchKt {
@@ -423,6 +423,17 @@ public final class app/revanced/patches/scbeasy/detection/debugging/RemoveDebugg
 
 public final class app/revanced/patches/serviceportalbund/detection/root/RootDetectionPatchKt {
 	public static final fun getRootDetectionPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
+}
+
+public final class app/revanced/patches/shared/misc/extensions/ExtensionsHook {
+	public final fun getFingerprint ()Lapp/revanced/patcher/Fingerprint;
+	public final fun invoke (Ljava/lang/String;)V
+}
+
+public final class app/revanced/patches/shared/misc/extensions/SharedExtensionPatchKt {
+	public static final fun extensionsHook (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Lapp/revanced/patches/shared/misc/extensions/ExtensionsHook;
+	public static synthetic fun extensionsHook$default (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lapp/revanced/patches/shared/misc/extensions/ExtensionsHook;
+	public static final fun sharedExtensionPatch ([Lapp/revanced/patches/shared/misc/extensions/ExtensionsHook;)Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
 public final class app/revanced/patches/shared/misc/fix/verticalscroll/VerticalScrollPatchKt {
@@ -451,17 +462,6 @@ public final class app/revanced/patches/shared/misc/hex/Replacement {
 }
 
 public final class app/revanced/patches/shared/misc/hex/Replacement$Companion {
-}
-
-public final class app/revanced/patches/shared/misc/integrations/IntegrationsHook {
-	public final fun getFingerprint ()Lapp/revanced/patcher/Fingerprint;
-	public final fun invoke (Ljava/lang/String;)V
-}
-
-public final class app/revanced/patches/shared/misc/integrations/IntegrationsPatchKt {
-	public static final fun integrationsHook (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Lapp/revanced/patches/shared/misc/integrations/IntegrationsHook;
-	public static synthetic fun integrationsHook$default (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lapp/revanced/patches/shared/misc/integrations/IntegrationsHook;
-	public static final fun integrationsPatch ([Lapp/revanced/patches/shared/misc/integrations/IntegrationsHook;)Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
 public final class app/revanced/patches/shared/misc/mapping/ResourceElement {
@@ -698,8 +698,8 @@ public final class app/revanced/patches/tiktok/interaction/speed/PlaybackSpeedPa
 	public static final fun getPlaybackSpeedPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
-public final class app/revanced/patches/tiktok/misc/integrations/IntegrationsPatchKt {
-	public static final fun getIntegrationsPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
+public final class app/revanced/patches/tiktok/misc/extensions/ExtensionPatchKt {
+	public static final fun getSharedExtensionPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
 public final class app/revanced/patches/tiktok/misc/login/disablerequirement/DisableLoginRequirementPatchKt {
@@ -758,10 +758,10 @@ public final class app/revanced/patches/tumblr/live/DisableTumblrLivePatchKt {
 	public static final fun getDisableTumblrLivePatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
-public final class app/revanced/patches/tumblr/timelinefilter/TimelineFilterPatchKt {
+public final class app/revanced/patches/tumblr/timelinefilter/FilterTimelineObjectsPatchKt {
 	public static field addTimelineObjectTypeFilter Lkotlin/jvm/functions/Function1;
 	public static final fun getAddTimelineObjectTypeFilter ()Lkotlin/jvm/functions/Function1;
-	public static final fun getTimelineFilterPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
+	public static final fun getFilterTimelineObjectsPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 	public static final fun setAddTimelineObjectTypeFilter (Lkotlin/jvm/functions/Function1;)V
 }
 
@@ -804,8 +804,8 @@ public final class app/revanced/patches/twitch/debug/DebugModePatchKt {
 	public static final fun getDebugModePatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
-public final class app/revanced/patches/twitch/misc/integrations/IntegrationsPatchKt {
-	public static final fun getIntegrationsPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
+public final class app/revanced/patches/twitch/misc/extensions/SharedExtensionPatchKt {
+	public static final fun getSharedExtensionPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
 public final class app/revanced/patches/twitch/misc/settings/SettingsPatchKt {
@@ -1085,7 +1085,7 @@ public final class app/revanced/patches/youtube/layout/startupshortsreset/Disabl
 }
 
 public final class app/revanced/patches/youtube/layout/tablet/EnableTabletLayoutPatchKt {
-	public static final field INTEGRATIONS_CLASS_DESCRIPTOR Ljava/lang/String;
+	public static final field EXTENSION_CLASS_DESCRIPTOR Ljava/lang/String;
 	public static final fun getEnableTabletLayoutPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
@@ -1122,6 +1122,10 @@ public final class app/revanced/patches/youtube/misc/dimensions/spoof/SpoofDevic
 	public static final fun getSpoofDeviceDimensionsPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
+public final class app/revanced/patches/youtube/misc/extensions/SharedExtensionPatchKt {
+	public static final fun getSharedExtensionPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
+}
+
 public final class app/revanced/patches/youtube/misc/fix/playback/SpoofClientPatchKt {
 	public static final fun getSpoofClientPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
@@ -1132,10 +1136,6 @@ public final class app/revanced/patches/youtube/misc/fix/playback/UserAgentClien
 
 public final class app/revanced/patches/youtube/misc/gms/GmsCoreSupportPatchKt {
 	public static final fun getGmsCoreSupportPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
-}
-
-public final class app/revanced/patches/youtube/misc/integrations/IntegrationsPatchKt {
-	public static final fun getIntegrationsPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
 public final class app/revanced/patches/youtube/misc/links/BypassURLRedirectsPatchKt {
