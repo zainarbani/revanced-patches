@@ -84,7 +84,6 @@ object SpoofClientPatch : BytecodePatch(
 
         // Player speed menu item.
         CreatePlaybackSpeedMenuItemFingerprint,
-        BuildTestFingerprint,
     ),
 ) {
     private const val INTEGRATIONS_CLASS_DESCRIPTOR =
@@ -274,19 +273,6 @@ object SpoofClientPatch : BytecodePatch(
 
         // endregion
 
-        BuildTestFingerprint.resultOrThrow().let {
-            val scanResult = it.scanResult.patternScanResult!!.endIndex
-
-            it.mutableMethod.apply {
-                addInstructions(
-                    scanResult,
-                    """
-                        invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintSet(Ljava/util/Set;)V
-                    """
-                )
-            }
-        }
-        
         // region Fix player gesture if spoofing to iOS.
 
         PlayerGestureConfigSyntheticFingerprint.resultOrThrow().let {
