@@ -77,6 +77,7 @@ object SpoofClientPatch : BytecodePatch(
         SetPlayerRequestClientTypeFingerprint,
         CreatePlayerRequestBodyFingerprint,
         CreatePlayerRequestBodyWithModelFingerprint,
+        GetDefaultUserAgentFingerprint,
 
         // Player gesture config.
         PlayerGestureConfigSyntheticFingerprint,
@@ -251,6 +252,24 @@ object SpoofClientPatch : BytecodePatch(
 
         // endregion
 
+        // region Change default user agent if spoofing to iOS.
+
+        GetDefaultUserAgentFingerprint.resultOrThrow().let {
+            val returnIndex = it.scanResult.patternScanResult!!.endIndex
+
+            it.mutableMethod.apply {
+                addInstructions(
+                    returnIndex,
+                    """
+                        invoke-static { p0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getDefaultUserAgent(Ljava/lang/String;)Ljava/lang/String;
+                        move-result-object p0
+                    """
+                )
+            }
+        }
+
+        // endregion
+        
         // region Fix player gesture if spoofing to iOS.
 
         PlayerGestureConfigSyntheticFingerprint.resultOrThrow().let {
