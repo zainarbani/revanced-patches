@@ -255,14 +255,14 @@ object SpoofClientPatch : BytecodePatch(
         // region Change user-agent if spoofing to iOS.
 
         BuildGetDefaultUserAgentFingerprint.resultOrThrow().let {
-            val scanResult = it.scanResult.patternScanResult!!.startIndex
+            val scanResult = it.scanResult.patternScanResult!!.endIndex
 
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<OneRegisterInstruction>(scanResult + 1).registerA
+                val targetRegister = getInstruction<OneRegisterInstruction>(scanResult).registerA
                 println("zain: $targetRegister")
 
                 addInstructions(
-                    scanResult + 1,
+                    scanResult,
                     """
                         invoke-static { p0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getDefaultUserAgent(Ljava/lang/String;)Ljava/lang/String;
                         move-result-object p0

@@ -10,7 +10,6 @@ internal object BuildGetDefaultUserAgentFingerprint : MethodFingerprint(
     returnType = "Ljava/lang/String;",
     parameters = listOf("Landroid/content/Context;"),
     opcodes = listOf(
-        Opcode.MOVE_RESULT_OBJECT,
         Opcode.RETURN_OBJECT
     ),
     strings = listOf(
