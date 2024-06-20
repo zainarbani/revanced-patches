@@ -19,23 +19,23 @@ internal val fixBackToExitGesturePatch = bytecodePatch(
         }
 
         /**
-         * Inject a call to a method from the integrations.
+         * Inject a call to a method from the extension.
          *
          * @param targetMethod The target method to call.
          */
-        fun Match.injectCall(targetMethod: IntegrationsMethod) = mutableMethod.addInstruction(
+        fun Match.injectCall(targetMethod: ExtensionMethod) = mutableMethod.addInstruction(
             patternMatch!!.endIndex,
             targetMethod.toString(),
         )
 
         mapOf(
-            recyclerViewTopScrollingFingerprint.matchOrThrow() to IntegrationsMethod(
+            recyclerViewTopScrollingFingerprint.matchOrThrow() to ExtensionMethod(
                 methodName = "onTopView",
             ),
-            recyclerViewScrollingMatch to IntegrationsMethod(
+            recyclerViewScrollingMatch to ExtensionMethod(
                 methodName = "onScrollingViews",
             ),
-            onBackPressedMatch to IntegrationsMethod(
+            onBackPressedMatch to ExtensionMethod(
                 "p0",
                 "onBackPressed",
                 "Landroid/app/Activity;",
@@ -45,17 +45,17 @@ internal val fixBackToExitGesturePatch = bytecodePatch(
 }
 
 /**
- * A reference to a method from the integrations for [fixBackToExitGesturePatch].
+ * A reference to a method from the extension for [fixBackToExitGesturePatch].
  *
  * @param register The method registers.
  * @param methodName The method name.
  * @param parameterTypes The parameters of the method.
  */
-private class IntegrationsMethod(
+private class ExtensionMethod(
     val register: String = "",
     val methodName: String,
     val parameterTypes: String = "",
 ) {
     override fun toString() =
-        "invoke-static {$register}, Lapp/revanced/integrations/youtube/patches/FixBackToExitGesturePatch;->$methodName($parameterTypes)V"
+        "invoke-static {$register}, Lapp/revanced/extension/youtube/patches/FixBackToExitGesturePatch;->$methodName($parameterTypes)V"
 }

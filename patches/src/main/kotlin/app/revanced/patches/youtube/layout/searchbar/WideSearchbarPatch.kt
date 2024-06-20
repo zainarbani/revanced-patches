@@ -9,13 +9,13 @@ import app.revanced.patcher.util.proxy.mutableTypes.MutableMethod
 import app.revanced.patches.all.misc.resources.addResources
 import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
-private const val INTEGRATIONS_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/patches/WideSearchbarPatch;"
+private const val EXTENSION_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/patches/WideSearchbarPatch;"
 
 @Suppress("unused")
 val wideSearchbarPatch = bytecodePatch(
@@ -23,7 +23,7 @@ val wideSearchbarPatch = bytecodePatch(
     description = "Adds an option to replace the search icon with a wide search bar. This will hide the YouTube logo when active.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         addResourcesPatch,
     )
@@ -86,7 +86,7 @@ val wideSearchbarPatch = bytecodePatch(
             addInstructions(
                 insertIndex,
                 """
-                invoke-static {v$insertRegister}, $INTEGRATIONS_CLASS_DESCRIPTOR->enableWideSearchbar(Z)Z
+                invoke-static {v$insertRegister}, $EXTENSION_CLASS_DESCRIPTOR->enableWideSearchbar(Z)Z
                 move-result v$insertRegister
             """,
             )

@@ -5,7 +5,7 @@ import app.revanced.patcher.extensions.InstructionExtensions.addInstructions
 import app.revanced.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.revanced.patcher.extensions.InstructionExtensions.replaceInstructions
 import app.revanced.patcher.patch.bytecodePatch
-import app.revanced.patches.tiktok.misc.integrations.integrationsPatch
+import app.revanced.patches.tiktok.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.tiktok.misc.settings.settingsPatch
 import app.revanced.patches.tiktok.misc.settings.settingsStatusLoadFingerprint
 import app.revanced.util.indexOfFirstInstructionOrThrow
@@ -19,7 +19,7 @@ val downloadsPatch = bytecodePatch(
     description = "Removes download restrictions and changes the default path to download to.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
     )
 
@@ -55,7 +55,7 @@ val downloadsPatch = bytecodePatch(
         aclCommonShare3Match.mutableMethod.addInstructionsWithLabels(
             0,
             """
-                    invoke-static {}, Lapp/revanced/integrations/tiktok/download/DownloadsPatch;->shouldRemoveWatermark()Z
+                    invoke-static {}, Lapp/revanced/extension/tiktok/download/DownloadsPatch;->shouldRemoveWatermark()Z
                     move-result v0
                     if-eqz v0, :noremovewatermark
                     const/4 v0, 0x1
@@ -85,7 +85,7 @@ val downloadsPatch = bytecodePatch(
             downloadUriMethod.addInstructions(
                 secondIndex,
                 """
-                    invoke-static {}, Lapp/revanced/integrations/tiktok/download/DownloadsPatch;->getDownloadPath()Ljava/lang/String;
+                    invoke-static {}, Lapp/revanced/extension/tiktok/download/DownloadsPatch;->getDownloadPath()Ljava/lang/String;
                     move-result-object v0
                 """,
             )
@@ -93,7 +93,7 @@ val downloadsPatch = bytecodePatch(
             downloadUriMethod.addInstructions(
                 firstIndex,
                 """
-                    invoke-static {}, Lapp/revanced/integrations/tiktok/download/DownloadsPatch;->getDownloadPath()Ljava/lang/String;
+                    invoke-static {}, Lapp/revanced/extension/tiktok/download/DownloadsPatch;->getDownloadPath()Ljava/lang/String;
                     move-result-object v0
                 """,
             )
@@ -101,7 +101,7 @@ val downloadsPatch = bytecodePatch(
 
         settingsStatusLoadMatch.mutableMethod.addInstruction(
             0,
-            "invoke-static {}, Lapp/revanced/integrations/tiktok/settings/SettingsStatus;->enableDownload()V",
+            "invoke-static {}, Lapp/revanced/extension/tiktok/settings/SettingsStatus;->enableDownload()V",
         )
     }
 }

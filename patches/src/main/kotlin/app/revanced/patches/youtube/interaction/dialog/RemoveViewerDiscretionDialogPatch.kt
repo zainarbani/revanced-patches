@@ -6,7 +6,7 @@ import app.revanced.patcher.patch.bytecodePatch
 import app.revanced.patches.all.misc.resources.addResources
 import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -18,7 +18,7 @@ val removeViewerDiscretionDialogPatch = bytecodePatch(
         "by accepting it automatically. This does not bypass the age restriction.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         addResourcesPatch,
     )
@@ -54,8 +54,8 @@ val removeViewerDiscretionDialogPatch = bytecodePatch(
 
     val createDialogMatch by createDialogFingerprint()
 
-    val integrationsMethodDescriptor =
-        "Lapp/revanced/integrations/youtube/patches/RemoveViewerDiscretionDialogPatch;->" +
+    val extensionMethodDescriptor =
+        "Lapp/revanced/extension/youtube/patches/RemoveViewerDiscretionDialogPatch;->" +
             "confirmDialog(Landroid/app/AlertDialog;)V"
 
     execute {
@@ -71,7 +71,7 @@ val removeViewerDiscretionDialogPatch = bytecodePatch(
 
             replaceInstructions(
                 showDialogIndex,
-                "invoke-static { v$dialogRegister }, $integrationsMethodDescriptor",
+                "invoke-static { v$dialogRegister }, $extensionMethodDescriptor",
             )
         }
     }

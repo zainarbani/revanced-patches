@@ -21,10 +21,10 @@ internal val timelineConstructorFingerprint = fingerprint {
     }
 }
 
-// This fingerprints the Integration TimelineFilterPatch.filterTimeline method.
+// This fingerprints the extension TimelineFilterPatch.filterTimeline method.
 // The opcode fingerprint is searching for
 //   if ("BLOCKED_OBJECT_DUMMY".equals(elementType)) iterator.remove();
-internal val timelineFilterIntegrationFingerprint = fingerprint {
+internal val timelineFilterExtensionFingerprint = fingerprint {
     opcodes(
         Opcode.CONST_STRING, // "BLOCKED_OBJECT_DUMMY"
         Opcode.INVOKE_VIRTUAL, // HashSet.add(^)

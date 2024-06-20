@@ -11,16 +11,17 @@ import com.android.tools.smali.dexlib2.iface.instruction.formats.Instruction35c
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
-internal const val INTEGRATIONS_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/tudortmund/lockscreen/ShowOnLockscreenPatch;"
+internal const val EXTENSION_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/tudortmund/lockscreen/ShowOnLockscreenPatch;"
 
 @Suppress("unused")
 val showOnLockscreenPatch = bytecodePatch(
     name = "Show on lockscreen",
     description = "Shows student id and student ticket on lockscreen.",
-    requiresIntegrations = true,
 ) {
     compatibleWith("de.tudortmund.app")
+
+    extendWith("extensions/tudortmund/lockscreen/show-on-lockscreen.rve")
 
     val brightnessMatch by brightnessFingerprint()
 
@@ -62,7 +63,7 @@ val showOnLockscreenPatch = bytecodePatch(
             replaceInstruction(
                 windowIndex,
                 "invoke-static { v$activityRegister, v$brightnessRegister }, " +
-                    "$INTEGRATIONS_CLASS_DESCRIPTOR->" +
+                    "$EXTENSION_CLASS_DESCRIPTOR->" +
                     "getWindow" +
                     "(Landroidx/appcompat/app/AppCompatActivity;F)" +
                     "Landroid/view/Window;",

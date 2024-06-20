@@ -4,11 +4,10 @@ import app.revanced.patcher.patch.bytecodePatch
 import app.revanced.patches.all.misc.transformation.IMethodCall
 import app.revanced.patches.all.misc.transformation.filterMapInstruction35c
 import app.revanced.patches.all.misc.transformation.transformInstructionsPatch
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
 
-internal const val INTEGRATIONS_CLASS_DESCRIPTOR_PREFIX = "Lapp/revanced/integrations/all/connectivity/wifi/spoof/SpoofWifiPatch"
+internal const val EXTENSION_CLASS_DESCRIPTOR_PREFIX = "Lapp/revanced/extension/all/connectivity/wifi/spoof/SpoofWifiPatch"
 
-internal const val INTEGRATIONS_CLASS_DESCRIPTOR = "$INTEGRATIONS_CLASS_DESCRIPTOR_PREFIX;"
+internal const val EXTENSION_CLASS_DESCRIPTOR = "$EXTENSION_CLASS_DESCRIPTOR_PREFIX;"
 
 @Suppress("unused")
 val spoofWifiPatch = bytecodePatch(
@@ -17,11 +16,10 @@ val spoofWifiPatch = bytecodePatch(
     use = false,
 ) {
     dependsOn(
-        integrationsPatch,
         transformInstructionsPatch(
             filterMap = { classDef, _, instruction, instructionIndex ->
                 filterMapInstruction35c<MethodCall>(
-                    INTEGRATIONS_CLASS_DESCRIPTOR_PREFIX,
+                    EXTENSION_CLASS_DESCRIPTOR_PREFIX,
                     classDef,
                     instruction,
                     instructionIndex,
@@ -29,15 +27,17 @@ val spoofWifiPatch = bytecodePatch(
             },
             transform = { method, entry ->
                 val (methodType, instruction, instructionIndex) = entry
-                methodType.replaceInvokeVirtualWithIntegrations(
-                    INTEGRATIONS_CLASS_DESCRIPTOR,
+                methodType.replaceInvokeVirtualWithExtension(
+                    EXTENSION_CLASS_DESCRIPTOR,
                     method,
                     instruction,
                     instructionIndex,
                 )
             },
-        )
+        ),
     )
+
+    extendWith("extensions/all/connectivity/wifi/spoof/spoof-wifi.rve")
 }
 
 // Information about method calls we want to replace

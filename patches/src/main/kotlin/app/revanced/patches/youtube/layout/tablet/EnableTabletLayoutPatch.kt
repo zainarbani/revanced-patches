@@ -8,11 +8,11 @@ import app.revanced.patcher.util.smali.ExternalLabel
 import app.revanced.patches.all.misc.resources.addResources
 import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 
-const val INTEGRATIONS_CLASS_DESCRIPTOR = "Lapp/revanced/integrations/youtube/patches/TabletLayoutPatch;"
+const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/revanced/extension/youtube/patches/TabletLayoutPatch;"
 
 @Suppress("unused")
 val enableTabletLayoutPatch = bytecodePatch(
@@ -20,7 +20,7 @@ val enableTabletLayoutPatch = bytecodePatch(
     description = "Adds an option to enable tablet layout.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         addResourcesPatch,
     )
@@ -70,7 +70,7 @@ val enableTabletLayoutPatch = bytecodePatch(
             addInstructionsWithLabels(
                 0,
                 """
-                      invoke-static { }, $INTEGRATIONS_CLASS_DESCRIPTOR->getTabletLayoutEnabled()Z
+                      invoke-static { }, $EXTENSION_CLASS_DESCRIPTOR->getTabletLayoutEnabled()Z
                       move-result v0
                       if-nez v0, :is_large_form_factor
                 """,

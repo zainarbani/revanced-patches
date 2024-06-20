@@ -4,7 +4,7 @@ import app.revanced.patcher.patch.bytecodePatch
 import app.revanced.patches.tumblr.featureflags.addFeatureFlagOverride
 import app.revanced.patches.tumblr.featureflags.overrideFeatureFlagsPatch
 import app.revanced.patches.tumblr.timelinefilter.addTimelineObjectTypeFilter
-import app.revanced.patches.tumblr.timelinefilter.timelineFilterPatch
+import app.revanced.patches.tumblr.timelinefilter.filterTimelineObjectsPatch
 
 @Suppress("unused")
 @Deprecated("Tumblr Live was removed and is no longer served in the feed, making this patch useless.")
@@ -13,7 +13,7 @@ val disableTumblrLivePatch = bytecodePatch(
 ) {
     dependsOn(
         overrideFeatureFlagsPatch,
-        timelineFilterPatch,
+        filterTimelineObjectsPatch,
     )
 
     compatibleWith("com.tumblr")

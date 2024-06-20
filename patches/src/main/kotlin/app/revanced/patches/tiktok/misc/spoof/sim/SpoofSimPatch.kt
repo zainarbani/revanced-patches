@@ -4,7 +4,7 @@ import app.revanced.patcher.extensions.InstructionExtensions.addInstruction
 import app.revanced.patcher.extensions.InstructionExtensions.addInstructions
 import app.revanced.patcher.extensions.InstructionExtensions.getInstruction
 import app.revanced.patcher.patch.bytecodePatch
-import app.revanced.patches.tiktok.misc.integrations.integrationsPatch
+import app.revanced.patches.tiktok.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.tiktok.misc.settings.settingsStatusLoadFingerprint
 import app.revanced.patches.twitch.misc.settings.settingsPatch
 import app.revanced.util.findMutableMethodOf
@@ -20,7 +20,7 @@ val spoofSimPatch = bytecodePatch(
     use = false,
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
     )
 
@@ -83,7 +83,7 @@ val spoofSimPatch = bytecodePatch(
                             addInstructions(
                                 index + 2,
                                 """
-                                    invoke-static {v$resultReg}, Lapp/revanced/integrations/tiktok/spoof/sim/SpoofSimPatch;->$replacement(Ljava/lang/String;)Ljava/lang/String;
+                                    invoke-static {v$resultReg}, Lapp/revanced/extension/tiktok/spoof/sim/SpoofSimPatch;->$replacement(Ljava/lang/String;)Ljava/lang/String;
                                     move-result-object v$resultReg
                                 """,
                             )
@@ -96,7 +96,7 @@ val spoofSimPatch = bytecodePatch(
         // Enable patch in settings.
         settingsStatusLoadMatch.mutableMethod.addInstruction(
             0,
-            "invoke-static {}, Lapp/revanced/integrations/tiktok/settings/SettingsStatus;->enableSimSpoof()V",
+            "invoke-static {}, Lapp/revanced/extension/tiktok/settings/SettingsStatus;->enableSimSpoof()V",
         )
     }
 }

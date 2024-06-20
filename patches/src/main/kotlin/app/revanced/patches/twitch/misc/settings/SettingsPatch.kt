@@ -14,7 +14,7 @@ import app.revanced.patches.shared.misc.settings.preference.BasePreferenceScreen
 import app.revanced.patches.shared.misc.settings.preference.PreferenceCategory
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
 import app.revanced.patches.shared.misc.settings.settingsPatch
-import app.revanced.patches.twitch.misc.integrations.integrationsPatch
+import app.revanced.patches.twitch.misc.extensions.sharedExtensionPatch
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.immutable.ImmutableField
 
@@ -29,16 +29,16 @@ private const val MENU_ITEM_ENUM_CLASS_DESCRIPTOR = "Ltv/twitch/android/feature/
 private const val MENU_DISMISS_EVENT_CLASS_DESCRIPTOR =
     "Ltv/twitch/android/feature/settings/menu/SettingsMenuViewDelegate\$Event\$OnDismissClicked;"
 
-private const val INTEGRATIONS_PACKAGE = "app/revanced/integrations/twitch"
-private const val ACTIVITY_HOOKS_CLASS_DESCRIPTOR = "L$INTEGRATIONS_PACKAGE/settings/AppCompatActivityHook;"
-private const val UTILS_CLASS_DESCRIPTOR = "L$INTEGRATIONS_PACKAGE/Utils;"
+private const val EXTENSION_PACKAGE = "app/revanced/extension/twitch"
+private const val ACTIVITY_HOOKS_CLASS_DESCRIPTOR = "L$EXTENSION_PACKAGE/settings/AppCompatActivityHook;"
+private const val UTILS_CLASS_DESCRIPTOR = "L$EXTENSION_PACKAGE/Utils;"
 
 val settingsPatch = bytecodePatch(
     name = "Settings",
     description = "Adds settings menu to Twitch.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         addResourcesPatch,
         settingsPatch(preferences = preferences),
     )
@@ -193,7 +193,7 @@ internal object PreferenceScreen : BasePreferenceScreen() {
             override fun transform(): PreferenceCategory = PreferenceCategory(
                 key,
                 preferences = preferences,
-                tag = "app.revanced.integrations.twitch.settings.preference.CustomPreferenceCategory",
+                tag = "app.revanced.extension.twitch.settings.preference.CustomPreferenceCategory",
             )
         }
     }

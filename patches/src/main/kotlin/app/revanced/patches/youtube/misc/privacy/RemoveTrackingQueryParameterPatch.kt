@@ -8,14 +8,14 @@ import app.revanced.patcher.util.proxy.mutableTypes.MutableMethod
 import app.revanced.patches.all.misc.resources.addResources
 import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 
-private const val INTEGRATIONS_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/patches/RemoveTrackingQueryParameterPatch;"
+private const val EXTENSION_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/patches/RemoveTrackingQueryParameterPatch;"
 
 @Suppress("unused")
 val removeTrackingQueryParameterPatch = bytecodePatch(
@@ -23,7 +23,7 @@ val removeTrackingQueryParameterPatch = bytecodePatch(
     description = "Adds an option to remove the tracking info from links you share.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         addResourcesPatch,
     )
@@ -75,7 +75,7 @@ val removeTrackingQueryParameterPatch = bytecodePatch(
             mutableMethod.addInstructions(
                 insertIndex,
                 """
-                    invoke-static {v$urlRegister}, $INTEGRATIONS_CLASS_DESCRIPTOR->sanitize(Ljava/lang/String;)Ljava/lang/String;
+                    invoke-static {v$urlRegister}, $EXTENSION_CLASS_DESCRIPTOR->sanitize(Ljava/lang/String;)Ljava/lang/String;
                     move-result-object v$urlRegister
                 """,
             )

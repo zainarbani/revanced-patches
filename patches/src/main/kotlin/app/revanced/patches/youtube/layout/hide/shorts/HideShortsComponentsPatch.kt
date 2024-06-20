@@ -11,7 +11,7 @@ import app.revanced.patches.shared.misc.mapping.get
 import app.revanced.patches.shared.misc.mapping.resourceMappingPatch
 import app.revanced.patches.shared.misc.mapping.resourceMappings
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.litho.filter.addLithoFilter
 import app.revanced.patches.youtube.misc.litho.filter.lithoFilterPatch
 import app.revanced.patches.youtube.misc.navigation.navigationBarHookPatch
@@ -91,7 +91,7 @@ private val hideShortsComponentsResourcePatch = resourcePatch {
     }
 }
 
-private const val FILTER_CLASS_DESCRIPTOR = "Lapp/revanced/integrations/youtube/patches/components/ShortsFilter;"
+private const val FILTER_CLASS_DESCRIPTOR = "Lapp/revanced/extension/youtube/patches/components/ShortsFilter;"
 
 @Suppress("unused")
 val hideShortsComponentsPatch = bytecodePatch(
@@ -99,7 +99,7 @@ val hideShortsComponentsPatch = bytecodePatch(
     description = "Adds options to hide components related to YouTube Shorts.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         lithoFilterPatch,
         hideShortsComponentsResourcePatch,
         resourceMappingPatch,

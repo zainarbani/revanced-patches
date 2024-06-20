@@ -18,8 +18,8 @@ interface IMethodCall {
 
     /**
      * Replaces an invoke-virtual instruction with an invoke-static instruction,
-     * which calls a static replacement method in the respective integrations class.
-     * The method definition in the integrations class is expected to be the same,
+     * which calls a static replacement method in the respective extension class.
+     * The method definition in the extension class is expected to be the same,
      * except that the method should be static and take as a first parameter
      * an instance of the class, in which the original method was defined in.
      *
@@ -27,9 +27,9 @@ interface IMethodCall {
      *
      * original method: Window#setFlags(int, int)
      *
-     * replacement method: Integrations#setFlags(Window, int, int)
+     * replacement method: Extension#setFlags(Window, int, int)
      */
-    fun replaceInvokeVirtualWithIntegrations(
+    fun replaceInvokeVirtualWithExtension(
         definingClassDescriptor: String,
         method: MutableMethod,
         instruction: Instruction35c,
@@ -73,12 +73,12 @@ inline fun <reified E> fromMethodReference(
 }
 
 inline fun <reified E> filterMapInstruction35c(
-    integrationsClassDescriptorPrefix: String,
+    extensionClassDescriptorPrefix: String,
     classDef: ClassDef,
     instruction: Instruction,
     instructionIndex: Int,
 ): Instruction35cInfo? where E : Enum<E>, E : IMethodCall {
-    if (classDef.startsWith(integrationsClassDescriptorPrefix)) {
+    if (classDef.startsWith(extensionClassDescriptorPrefix)) {
         // avoid infinite recursion
         return null
     }

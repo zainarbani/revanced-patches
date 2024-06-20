@@ -17,7 +17,7 @@ import app.revanced.patches.shared.misc.settings.preference.*
 import app.revanced.patches.shared.misc.settings.preference.PreferenceScreenPreference.Sorting
 import app.revanced.patches.shared.misc.settings.settingsPatch
 import app.revanced.patches.twitch.misc.settings.preferences
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.util.ResourceGroup
 import app.revanced.util.asSequence
 import app.revanced.util.copyResources
@@ -114,7 +114,7 @@ val settingsPatch = bytecodePatch(
     description = "Adds settings for ReVanced to YouTube.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsResourcePatch,
         addResourcesPatch,
     )
@@ -122,10 +122,10 @@ val settingsPatch = bytecodePatch(
     val setThemeMatch by setThemeFingerprint()
     val licenseActivityOnCreateMatch by licenseActivityOnCreateFingerprint()
 
-    val integrationsPackage = "app/revanced/integrations/youtube"
-    val activityHookClassDescriptor = "L$integrationsPackage/settings/LicenseActivityHook;"
+    val extensionPackage = "app/revanced/extension/youtube"
+    val activityHookClassDescriptor = "L$extensionPackage/settings/LicenseActivityHook;"
 
-    val themeHelperDescriptor = "L$integrationsPackage/ThemeHelper;"
+    val themeHelperDescriptor = "L$extensionPackage/ThemeHelper;"
     val setThemeMethodName = "setTheme"
 
     execute {
@@ -135,7 +135,7 @@ val settingsPatch = bytecodePatch(
         preferences += NonInteractivePreference(
             key = "revanced_settings_screen_00_about",
             summaryKey = null,
-            tag = "app.revanced.integrations.youtube.settings.preference.ReVancedYouTubeAboutPreference",
+            tag = "app.revanced.extension.youtube.settings.preference.ReVancedYouTubeAboutPreference",
             selectable = true,
         )
 
@@ -145,7 +145,7 @@ val settingsPatch = bytecodePatch(
                 titleKey = "revanced_pref_import_export_title",
                 summaryKey = "revanced_pref_import_export_summary",
                 inputType = InputType.TEXT_MULTI_LINE,
-                tag = "app.revanced.integrations.shared.settings.preference.ImportExportPreference",
+                tag = "app.revanced.extension.shared.settings.preference.ImportExportPreference",
             ),
         )
 

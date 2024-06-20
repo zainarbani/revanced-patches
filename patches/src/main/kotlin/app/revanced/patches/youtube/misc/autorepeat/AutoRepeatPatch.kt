@@ -7,7 +7,7 @@ import app.revanced.patcher.patch.bytecodePatch
 import app.revanced.patches.all.misc.resources.addResources
 import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.shared.autoRepeatFingerprint
 import app.revanced.patches.youtube.shared.autoRepeatParentFingerprint
@@ -19,7 +19,7 @@ val autoRepeatPatch = bytecodePatch(
     description = "Adds an option to always repeat videos when they end.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         addResourcesPatch,
     )
 
@@ -73,7 +73,7 @@ val autoRepeatPatch = bytecodePatch(
             addInstructionsWithLabels(
                 index,
                 """
-                    invoke-static {}, Lapp/revanced/integrations/youtube/patches/AutoRepeatPatch;->shouldAutoRepeat()Z
+                    invoke-static {}, Lapp/revanced/extension/youtube/patches/AutoRepeatPatch;->shouldAutoRepeat()Z
                     move-result v0
                     if-eqz v0, :noautorepeat
                     invoke-virtual { p0 }, $playMethod

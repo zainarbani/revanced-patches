@@ -17,7 +17,7 @@ import app.revanced.patches.shared.misc.mapping.get
 import app.revanced.patches.shared.misc.mapping.resourceMappingPatch
 import app.revanced.patches.shared.misc.mapping.resourceMappings
 import app.revanced.patches.shared.misc.settings.preference.*
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import app.revanced.util.*
@@ -108,7 +108,7 @@ private val miniplayerResourcePatch = resourcePatch {
             "player_overlays",
         ]
 
-        // Resource id is not used during patching, but is used by integrations.
+        // Resource id is not used during patching, but is used by the extension.
         // Verify the resource is present while patching.
         resourceMappings[
             "id",
@@ -117,7 +117,7 @@ private val miniplayerResourcePatch = resourcePatch {
     }
 }
 
-private const val INTEGRATIONS_CLASS_DESCRIPTOR = "Lapp/revanced/integrations/youtube/patches/MiniplayerPatch;"
+private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/revanced/extension/youtube/patches/MiniplayerPatch;"
 
 @Suppress("unused")
 val miniplayerPatch = bytecodePatch(
@@ -127,7 +127,7 @@ val miniplayerPatch = bytecodePatch(
 
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         addResourcesPatch,
         miniplayerResourcePatch,
@@ -216,7 +216,7 @@ val miniplayerPatch = bytecodePatch(
             addInstructions(
                 index,
                 """
-                invoke-static {v$register}, $INTEGRATIONS_CLASS_DESCRIPTOR->$methodName(Z)Z
+                invoke-static {v$register}, $EXTENSION_CLASS_DESCRIPTOR->$methodName(Z)Z
                 move-result v$register
             """,
             )
@@ -246,7 +246,7 @@ val miniplayerPatch = bytecodePatch(
             addInstructions(
                 iPutIndex + 1,
                 """
-                invoke-static { v${targetInstruction.registerA} }, $INTEGRATIONS_CLASS_DESCRIPTOR->getModernMiniplayerOverrideType(I)I
+                invoke-static { v${targetInstruction.registerA} }, $EXTENSION_CLASS_DESCRIPTOR->getModernMiniplayerOverrideType(I)I
                 move-result v${targetInstruction.registerA}
                 # Original instruction
                 iput v${targetInstruction.registerA}, v${targetInstruction.registerB}, $targetReference 
@@ -258,7 +258,7 @@ val miniplayerPatch = bytecodePatch(
         fun Fingerprint.hookInflatedView(
             literalValue: Long,
             hookedClassType: String,
-            integrationsMethodName: String,
+            extensionMethodDescriptor: String,
         ) {
             matchOrThrow().mutableMethod.apply {
                 val imageViewIndex = indexOfFirstInstructionOrThrow(
@@ -270,7 +270,7 @@ val miniplayerPatch = bytecodePatch(
                 val register = getInstruction<OneRegisterInstruction>(imageViewIndex).registerA
                 addInstruction(
                     imageViewIndex + 1,
-                    "invoke-static { v$register }, $integrationsMethodName",
+                    "invoke-static { v$register }, $extensionMethodDescriptor",
                 )
             }
         }
@@ -378,7 +378,7 @@ val miniplayerPatch = bytecodePatch(
             }.hookInflatedView(
                 literalValue,
                 "Landroid/widget/ImageView;",
-                "$INTEGRATIONS_CLASS_DESCRIPTOR->$methodName(Landroid/widget/ImageView;)V",
+                "$EXTENSION_CLASS_DESCRIPTOR->$methodName(Landroid/widget/ImageView;)V",
             )
         }
 
@@ -389,14 +389,14 @@ val miniplayerPatch = bytecodePatch(
             )
         }.matchOrThrow().mutableMethod.addInstruction(
             0,
-            "invoke-static { p1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->" +
+            "invoke-static { p1 }, $EXTENSION_CLASS_DESCRIPTOR->" +
                 "hideMiniplayerSubTexts(Landroid/view/View;)V",
         )
 
         // Modern 2 has a broken overlay subtitle view that is always present.
         // Modern 2 uses the same overlay controls as the regular video player,
         // and the overlay views are added at runtime.
-        // Add a hook to the overlay class, and pass the added views to integrations.
+        // Add a hook to the overlay class, and pass the added views to the extension.
         youTubePlayerOverlaysLayoutMatch.mutableClass.methods.add(
             ImmutableMethod(
                 YOUTUBE_PLAYER_OVERLAYS_LAYOUT_CLASS_NAME,
@@ -415,7 +415,7 @@ val miniplayerPatch = bytecodePatch(
                 addInstructions(
                     """
                         invoke-super { p0, p1, p2, p3 }, Landroid/view/ViewGroup;->addView(Landroid/view/View;ILandroid/view/ViewGroup${'$'}LayoutParams;)V
-                        invoke-static { p1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->playerOverlayGroupCreated(Landroid/view/View;)V
+                        invoke-static { p1 }, $EXTENSION_CLASS_DESCRIPTOR->playerOverlayGroupCreated(Landroid/view/View;)V
                         return-void
                     """,
                 )

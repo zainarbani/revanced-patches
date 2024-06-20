@@ -69,6 +69,6 @@ val hideButtonsPatch = resourcePatch(
             ),
         )
 
-        addLithoFilter("Lapp/revanced/integrations/youtube/patches/components/ButtonsFilter;")
+        addLithoFilter("Lapp/revanced/extension/youtube/patches/components/ButtonsFilter;")
     }
 }

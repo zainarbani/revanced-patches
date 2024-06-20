@@ -12,7 +12,6 @@ internal class JsonPatchesFileGenerator : PatchesFileGenerator {
             it.description,
             it.compatiblePackages,
             it.use,
-            it.requiresIntegrations,
             it.options.values.map { option ->
                 JsonPatch.Option(
                     option.key,
@@ -34,7 +33,6 @@ internal class JsonPatchesFileGenerator : PatchesFileGenerator {
         val description: String? = null,
         val compatiblePackages: Set<Package>? = null,
         val use: Boolean = true,
-        val requiresIntegrations: Boolean = false,
         val options: List<Option>,
     ) {
         class Option(

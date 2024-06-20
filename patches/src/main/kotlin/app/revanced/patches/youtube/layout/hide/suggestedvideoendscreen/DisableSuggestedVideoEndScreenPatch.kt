@@ -10,7 +10,7 @@ import app.revanced.patches.shared.misc.mapping.get
 import app.revanced.patches.shared.misc.mapping.resourceMappingPatch
 import app.revanced.patches.shared.misc.mapping.resourceMappings
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -39,8 +39,8 @@ internal val disableSuggestedVideoEndScreenResourcePatch = resourcePatch {
     }
 }
 
-private const val INTEGRATIONS_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/patches/DisableSuggestedVideoEndScreenPatch;"
+private const val EXTENSION_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/patches/DisableSuggestedVideoEndScreenPatch;"
 
 @Suppress("unused")
 val disableSuggestedVideoEndScreenPatch = bytecodePatch(
@@ -48,7 +48,7 @@ val disableSuggestedVideoEndScreenPatch = bytecodePatch(
     description = "Adds an option to disable the suggested video end screen at the end of videos.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         disableSuggestedVideoEndScreenResourcePatch,
     )
 
@@ -90,7 +90,7 @@ val disableSuggestedVideoEndScreenPatch = bytecodePatch(
             addInstruction(
                 addOnClickEventListenerIndex + 1,
                 "invoke-static {v$viewRegister}, " +
-                    "$INTEGRATIONS_CLASS_DESCRIPTOR->closeEndScreen(Landroid/widget/ImageView;)V",
+                    "$EXTENSION_CLASS_DESCRIPTOR->closeEndScreen(Landroid/widget/ImageView;)V",
             )
         }
     }

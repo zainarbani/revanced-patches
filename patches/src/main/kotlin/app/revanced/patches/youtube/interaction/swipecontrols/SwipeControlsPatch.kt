@@ -8,7 +8,7 @@ import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.InputType
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
 import app.revanced.patches.shared.misc.settings.preference.TextPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.playertype.playerTypeHookPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
@@ -61,7 +61,7 @@ val swipeControlsPatch = bytecodePatch(
     description = "Adds options to enable and configure volume and brightness swipe controls.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         playerTypeHookPatch,
         swipeControlsResourcePatch,
     )
@@ -102,11 +102,11 @@ val swipeControlsPatch = bytecodePatch(
         val wrapperClass = swipeControlsHostActivityMatch.mutableClass
         val targetClass = mainActivityMatch.mutableClass
 
-        // Inject the wrapper class from integrations into the class hierarchy of MainActivity.
+        // Inject the wrapper class from the extension into the class hierarchy of MainActivity.
         wrapperClass.setSuperClass(targetClass.superclass)
         targetClass.setSuperClass(wrapperClass.type)
 
-        // Ensure all classes and methods in the hierarchy are non-final, so we can override them in integrations.
+        // Ensure all classes and methods in the hierarchy are non-final, so we can override them in the extension.
         context.traverseClassHierarchy(targetClass) {
             accessFlags = accessFlags and AccessFlags.FINAL.value.inv()
             transformMethods {

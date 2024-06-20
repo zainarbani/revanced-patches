@@ -29,7 +29,7 @@ internal val settingsEntryInfoFingerprint = fingerprint {
 
 internal val settingsStatusLoadFingerprint = fingerprint {
     custom { method, classDef ->
-        classDef.endsWith("Lapp/revanced/integrations/tiktok/settings/SettingsStatus;") &&
+        classDef.endsWith("Lapp/revanced/extension/tiktok/settings/SettingsStatus;") &&
             method.name == "load"
     }
 }

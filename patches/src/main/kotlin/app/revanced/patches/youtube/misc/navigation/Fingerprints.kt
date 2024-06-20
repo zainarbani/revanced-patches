@@ -41,16 +41,16 @@ internal val mainActivityOnBackPressedFingerprint = fingerprint {
 }
 
 /**
- * Integrations method, used for callback into to other patches.
+ * Extension method, used for callback into to other patches.
  * Specifically, [navigationButtonsPatch].
  */
 internal val navigationBarHookCallbackFingerprint = fingerprint {
     accessFlags(AccessFlags.PRIVATE, AccessFlags.STATIC)
     returns("V")
-    parameters(INTEGRATIONS_NAVIGATION_BUTTON_DESCRIPTOR, "Landroid/view/View;")
+    parameters(EXTENSION_NAVIGATION_BUTTON_DESCRIPTOR, "Landroid/view/View;")
     custom { method, _ ->
         method.name == "navigationTabCreatedCallback" &&
-            method.definingClass == INTEGRATIONS_CLASS_DESCRIPTOR
+            method.definingClass == EXTENSION_CLASS_DESCRIPTOR
     }
 }
 

@@ -6,7 +6,7 @@ import app.revanced.patcher.patch.bytecodePatch
 import app.revanced.patches.all.misc.resources.addResources
 import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import com.android.tools.smali.dexlib2.iface.instruction.formats.Instruction3rc
@@ -17,7 +17,7 @@ val hidePlayerButtonsPatch = bytecodePatch(
     description = "Adds an option to hide the previous and next buttons in the video player.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         addResourcesPatch,
     )
@@ -76,10 +76,10 @@ val hidePlayerButtonsPatch = bytecodePatch(
             mutableMethod.addInstructions(
                 callIndex,
                 """
-                    invoke-static { v$hasNextParameterRegister }, Lapp/revanced/integrations/youtube/patches/HidePlayerButtonsPatch;->previousOrNextButtonIsVisible(Z)Z
+                    invoke-static { v$hasNextParameterRegister }, Lapp/revanced/extension/youtube/patches/HidePlayerButtonsPatch;->previousOrNextButtonIsVisible(Z)Z
                     move-result v$hasNextParameterRegister
                     
-                    invoke-static { v$hasPreviousParameterRegister }, Lapp/revanced/integrations/youtube/patches/HidePlayerButtonsPatch;->previousOrNextButtonIsVisible(Z)Z
+                    invoke-static { v$hasPreviousParameterRegister }, Lapp/revanced/extension/youtube/patches/HidePlayerButtonsPatch;->previousOrNextButtonIsVisible(Z)Z
                     move-result v$hasPreviousParameterRegister
                 """,
             )

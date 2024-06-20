@@ -3,7 +3,7 @@ package app.revanced.patches.tiktok.feedfilter
 import app.revanced.patcher.extensions.InstructionExtensions.addInstruction
 import app.revanced.patcher.extensions.InstructionExtensions.instructions
 import app.revanced.patcher.patch.bytecodePatch
-import app.revanced.patches.tiktok.misc.integrations.integrationsPatch
+import app.revanced.patches.tiktok.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.tiktok.misc.settings.settingsPatch
 import app.revanced.patches.tiktok.misc.settings.settingsStatusLoadFingerprint
 import com.android.tools.smali.dexlib2.Opcode
@@ -16,7 +16,7 @@ val feedFilterPatch = bytecodePatch(
         "and videos with a specific amount of views or likes from the feed.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
     )
 
@@ -36,13 +36,13 @@ val feedFilterPatch = bytecodePatch(
             addInstruction(
                 returnFeedItemInstruction.location.index,
                 "invoke-static { v$feedItemsRegister }, " +
-                    "Lapp/revanced/integrations/tiktok/feedfilter/FeedItemsFilter;->filter(Lcom/ss/android/ugc/aweme/feed/model/FeedItemList;)V",
+                    "Lapp/revanced/extension/tiktok/feedfilter/FeedItemsFilter;->filter(Lcom/ss/android/ugc/aweme/feed/model/FeedItemList;)V",
             )
         }
 
         settingsStatusLoadMatch.mutableMethod.addInstruction(
             0,
-            "invoke-static {}, Lapp/revanced/integrations/tiktok/settings/SettingsStatus;->enableFeedFilter()V",
+            "invoke-static {}, Lapp/revanced/extension/tiktok/settings/SettingsStatus;->enableFeedFilter()V",
         )
     }
 }

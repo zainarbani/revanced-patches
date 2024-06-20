@@ -32,7 +32,7 @@ val rememberClearDisplayPatch = bytecodePatch(
             it.addInstructions(
                 isEnabledIndex,
                 "invoke-static { v$isEnabledRegister }, " +
-                    "Lapp/revanced/integrations/tiktok/cleardisplay/RememberClearDisplayPatch;->rememberClearDisplayState(Z)V",
+                    "Lapp/revanced/extension/tiktok/cleardisplay/RememberClearDisplayPatch;->rememberClearDisplayState(Z)V",
             )
 
             // endregion
@@ -46,7 +46,7 @@ val rememberClearDisplayPatch = bytecodePatch(
                         # Create a new clearDisplayEvent and post it to the EventBus (https://github.com/greenrobot/EventBus)
 
                         # The state of clear display.
-                        invoke-static { }, Lapp/revanced/integrations/tiktok/cleardisplay/RememberClearDisplayPatch;->getClearDisplayState()Z
+                        invoke-static { }, Lapp/revanced/extension/tiktok/cleardisplay/RememberClearDisplayPatch;->getClearDisplayState()Z
                         move-result v3
                         if-eqz v3, :clear_display_disabled
 

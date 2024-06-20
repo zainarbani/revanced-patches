@@ -14,7 +14,7 @@ import app.revanced.patches.shared.misc.settings.preference.ListPreference
 import app.revanced.patches.shared.misc.settings.preference.NonInteractivePreference
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
 import app.revanced.patches.shared.misc.settings.preference.TextPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.navigation.navigationBarHookPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
@@ -26,8 +26,8 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
 
-private const val INTEGRATIONS_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/patches/AlternativeThumbnailsPatch;"
+private const val EXTENSION_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/patches/AlternativeThumbnailsPatch;"
 
 private lateinit var loadImageUrlMethod: MutableMethod
 private var loadImageUrlIndex = 0
@@ -44,7 +44,7 @@ val alternativeThumbnailsPatch = bytecodePatch(
     description = "Adds options to replace video thumbnails using the DeArrow API or image captures from the video.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         addResourcesPatch,
         navigationBarHookPatch,
@@ -122,7 +122,7 @@ val alternativeThumbnailsPatch = bytecodePatch(
             NonInteractivePreference(
                 "revanced_alt_thumbnail_dearrow_about",
                 // Custom about preference with link to the DeArrow website.
-                tag = "app.revanced.integrations.youtube.settings.preference.AlternativeThumbnailsAboutDeArrowPreference",
+                tag = "app.revanced.extension.youtube.settings.preference.AlternativeThumbnailsAboutDeArrowPreference",
                 selectable = true,
             ),
             SwitchPreference("revanced_alt_thumbnail_dearrow_connection_toast"),
@@ -143,17 +143,17 @@ val alternativeThumbnailsPatch = bytecodePatch(
 
         messageDigestImageUrlFingerprint.resolveAndLetMutableMethod(messageDigestImageUrlParentMatch) {
             loadImageUrlMethod = it
-            addImageUrlHook(INTEGRATIONS_CLASS_DESCRIPTOR, true)
+            addImageUrlHook(EXTENSION_CLASS_DESCRIPTOR, true)
         }
 
         onSucceededFingerprint.resolveAndLetMutableMethod(onResponseStartedMatch) {
             loadImageSuccessCallbackMethod = it
-            addImageUrlSuccessCallbackHook(INTEGRATIONS_CLASS_DESCRIPTOR)
+            addImageUrlSuccessCallbackHook(EXTENSION_CLASS_DESCRIPTOR)
         }
 
         onFailureFingerprint.resolveAndLetMutableMethod(onResponseStartedMatch) {
             loadImageErrorCallbackMethod = it
-            addImageUrlErrorCallbackHook(INTEGRATIONS_CLASS_DESCRIPTOR)
+            addImageUrlErrorCallbackHook(EXTENSION_CLASS_DESCRIPTOR)
         }
 
         // The URL is required for the failure callback hook, but the URL field is obfuscated.

@@ -10,7 +10,7 @@ import app.revanced.patcher.util.proxy.mutableTypes.MutableMethod
 import app.revanced.patches.shared.misc.mapping.get
 import app.revanced.patches.shared.misc.mapping.resourceMappingPatch
 import app.revanced.patches.shared.misc.mapping.resourceMappings
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.playertype.playerTypeHookPatch
 import app.revanced.util.getReference
 import app.revanced.util.indexOfFirstInstructionOrThrow
@@ -36,17 +36,17 @@ private val navigationBarHookResourcePatch = resourcePatch {
     }
 }
 
-internal const val INTEGRATIONS_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/shared/NavigationBar;"
-internal const val INTEGRATIONS_NAVIGATION_BUTTON_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/shared/NavigationBar\$NavigationButton;"
+internal const val EXTENSION_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/shared/NavigationBar;"
+internal const val EXTENSION_NAVIGATION_BUTTON_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/shared/NavigationBar\$NavigationButton;"
 
 lateinit var hookNavigationButtonCreated: (String) -> Unit
 
 @Suppress("unused")
 val navigationBarHookPatch = bytecodePatch(description = "Hooks the active navigation or search bar.") {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         navigationBarHookResourcePatch,
         playerTypeHookPatch, // Required to detect the search bar in all situations.
     )
@@ -71,7 +71,7 @@ val navigationBarHookPatch = bytecodePatch(description = "Hooks the active navig
                 addInstruction(
                     insertIndex,
                     "invoke-static { v$register }, " +
-                        "$INTEGRATIONS_CLASS_DESCRIPTOR->${hook.methodName}(${hook.parameters})V",
+                        "$EXTENSION_CLASS_DESCRIPTOR->${hook.methodName}(${hook.parameters})V",
                 )
             }
         }
@@ -113,7 +113,7 @@ val navigationBarHookPatch = bytecodePatch(description = "Hooks the active navig
             addInstruction(
                 index + 1,
                 "invoke-static { v$viewRegister, v$isSelectedRegister }, " +
-                    "$INTEGRATIONS_CLASS_DESCRIPTOR->navigationTabSelected(Landroid/view/View;Z)V",
+                    "$EXTENSION_CLASS_DESCRIPTOR->navigationTabSelected(Landroid/view/View;Z)V",
             )
         }
 
@@ -122,7 +122,7 @@ val navigationBarHookPatch = bytecodePatch(description = "Hooks the active navig
         mainActivityOnBackPressedMatch.mutableMethod.addInstruction(
             0,
             "invoke-static { p0 }, " +
-                "$INTEGRATIONS_CLASS_DESCRIPTOR->onBackPressed(Landroid/app/Activity;)V",
+                "$EXTENSION_CLASS_DESCRIPTOR->onBackPressed(Landroid/app/Activity;)V",
         )
 
         // Hook the search bar.
@@ -140,16 +140,16 @@ val navigationBarHookPatch = bytecodePatch(description = "Hooks the active navig
             addInstruction(
                 instructionIndex,
                 "invoke-static { v$viewRegister }, " +
-                    "$INTEGRATIONS_CLASS_DESCRIPTOR->searchBarResultsViewLoaded(Landroid/view/View;)V",
+                    "$EXTENSION_CLASS_DESCRIPTOR->searchBarResultsViewLoaded(Landroid/view/View;)V",
             )
         }
 
-        hookNavigationButtonCreated = { integrationsClassDescriptor ->
+        hookNavigationButtonCreated = { extensionClassDescriptor ->
             navigationBarHookCallbackMatch.mutableMethod.addInstruction(
                 0,
                 "invoke-static { p0, p1 }, " +
-                    "$integrationsClassDescriptor->navigationTabCreated" +
-                    "(${INTEGRATIONS_NAVIGATION_BUTTON_DESCRIPTOR}Landroid/view/View;)V",
+                    "$extensionClassDescriptor->navigationTabCreated" +
+                    "(${EXTENSION_NAVIGATION_BUTTON_DESCRIPTOR}Landroid/view/View;)V",
             )
         }
     }

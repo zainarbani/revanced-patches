@@ -2,14 +2,14 @@ package app.revanced.patches.tumblr.ads
 
 import app.revanced.patcher.patch.bytecodePatch
 import app.revanced.patches.tumblr.timelinefilter.addTimelineObjectTypeFilter
-import app.revanced.patches.tumblr.timelinefilter.timelineFilterPatch
+import app.revanced.patches.tumblr.timelinefilter.filterTimelineObjectsPatch
 
 @Suppress("unused")
 val disableDashboardAdsPatch = bytecodePatch(
     name = "Disable dashboard ads",
     description = "Disables ads in the dashboard.",
 ) {
-    dependsOn(timelineFilterPatch)
+    dependsOn(filterTimelineObjectsPatch)
 
     compatibleWith("com.tumblr")
 

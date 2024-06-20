@@ -8,7 +8,7 @@ import app.revanced.patches.all.misc.resources.addResources
 import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.mapping.resourceMappingPatch
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import app.revanced.patches.youtube.shared.layoutConstructorFingerprint
@@ -19,8 +19,8 @@ import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
-private const val INTEGRATIONS_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/patches/HideAutoplayButtonPatch;"
+private const val EXTENSION_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/patches/HideAutoplayButtonPatch;"
 
 @Suppress("unused")
 val hideAutoplayButtonPatch = bytecodePatch(
@@ -28,7 +28,7 @@ val hideAutoplayButtonPatch = bytecodePatch(
     description = "Adds an option to hide the autoplay button in the video player.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         resourceMappingPatch,
         addResourcesPatch,
@@ -87,7 +87,7 @@ val hideAutoplayButtonPatch = bytecodePatch(
             addInstructionsWithLabels(
                 constIndex,
                 """
-                    invoke-static {}, $INTEGRATIONS_CLASS_DESCRIPTOR->hideAutoPlayButton()Z
+                    invoke-static {}, $EXTENSION_CLASS_DESCRIPTOR->hideAutoPlayButton()Z
                     move-result v$constRegister
                     if-nez v$constRegister, :hidden
                 """,

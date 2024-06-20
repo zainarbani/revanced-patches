@@ -7,7 +7,7 @@ import app.revanced.patcher.util.smali.ExternalLabel
 import app.revanced.patches.all.misc.resources.addResources
 import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
@@ -20,7 +20,7 @@ val enableSeekbarTappingPatch = bytecodePatch(
     description = "Adds an option to enable tap-to-seek on the seekbar of the video player.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         addResourcesPatch,
     )
@@ -89,7 +89,7 @@ val enableSeekbarTappingPatch = bytecodePatch(
             addInstructionsWithLabels(
                 insertIndex,
                 """
-                        invoke-static { }, Lapp/revanced/integrations/youtube/patches/SeekbarTappingPatch;->seekbarTappingEnabled()Z
+                        invoke-static { }, Lapp/revanced/extension/youtube/patches/SeekbarTappingPatch;->seekbarTappingEnabled()Z
                         move-result v$freeRegister
                         if-eqz v$freeRegister, :disabled
                         ${oMethod.toInvokeInstructionString()}

@@ -8,19 +8,19 @@ import app.revanced.patches.all.misc.resources.addResources
 import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.ListPreference
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import app.revanced.patches.youtube.video.information.*
 import app.revanced.patches.youtube.video.speed.custom.customPlaybackSpeedPatch
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 
-private const val INTEGRATIONS_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/patches/playback/speed/RememberPlaybackSpeedPatch;"
+private const val EXTENSION_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/patches/playback/speed/RememberPlaybackSpeedPatch;"
 
 internal val rememberPlaybackSpeedPatch = bytecodePatch {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         videoInformationPatch,
         customPlaybackSpeedPatch,
@@ -37,15 +37,15 @@ internal val rememberPlaybackSpeedPatch = bytecodePatch {
             ListPreference(
                 key = "revanced_playback_speed_default",
                 summaryKey = null,
-                // Entries and values are set by Integrations code based on the actual speeds available.
+                // Entries and values are set by the extension code based on the actual speeds available.
                 entriesKey = null,
                 entryValuesKey = null,
             ),
         )
 
-        playerControllerOnCreateHook(INTEGRATIONS_CLASS_DESCRIPTOR, "newVideoStarted")
+        playerControllerOnCreateHook(EXTENSION_CLASS_DESCRIPTOR, "newVideoStarted")
         userSelectedPlaybackSpeedHook(
-            INTEGRATIONS_CLASS_DESCRIPTOR,
+            EXTENSION_CLASS_DESCRIPTOR,
             "userSelectedPlaybackSpeed",
         )
 
@@ -60,7 +60,7 @@ internal val rememberPlaybackSpeedPatch = bytecodePatch {
             addInstructionsWithLabels(
                 0,
                 """
-                    invoke-static { }, $INTEGRATIONS_CLASS_DESCRIPTOR->getPlaybackSpeedOverride()F
+                    invoke-static { }, $EXTENSION_CLASS_DESCRIPTOR->getPlaybackSpeedOverride()F
                     move-result v0
                     
                     # Check if the playback speed is not 1.0x.

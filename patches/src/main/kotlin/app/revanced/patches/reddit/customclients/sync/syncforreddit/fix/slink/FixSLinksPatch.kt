@@ -7,13 +7,13 @@ import app.revanced.patcher.util.smali.ExternalLabel
 import app.revanced.patches.reddit.customclients.RESOLVE_S_LINK_METHOD
 import app.revanced.patches.reddit.customclients.SET_ACCESS_TOKEN_METHOD
 import app.revanced.patches.reddit.customclients.fixSLinksPatch
-import app.revanced.patches.reddit.customclients.sync.syncforreddit.misc.integrations.integrationsPatch
+import app.revanced.patches.reddit.customclients.sync.syncforreddit.extensions.sharedExtensionPatch
 
-const val INTEGRATIONS_CLASS_DESCRIPTOR = "Lapp/revanced/integrations/syncforreddit/FixSLinksPatch;"
+const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/revanced/extension/syncforreddit/FixSLinksPatch;"
 
 @Suppress("unused")
 val fixSLinksPatch = fixSLinksPatch(
-    integrationsPatch = integrationsPatch,
+    extensionPatch = sharedExtensionPatch,
 ) {
     compatibleWith(
         "com.laurencedawson.reddit_sync",
@@ -34,7 +34,7 @@ val fixSLinksPatch = fixSLinksPatch(
             addInstructionsWithLabels(
                 0,
                 """
-                    invoke-static { $urlRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->$RESOLVE_S_LINK_METHOD
+                    invoke-static { $urlRegister }, $EXTENSION_CLASS_DESCRIPTOR->$RESOLVE_S_LINK_METHOD
                     move-result $tempRegister
                     if-eqz $tempRegister, :continue
                     return $tempRegister
@@ -49,7 +49,7 @@ val fixSLinksPatch = fixSLinksPatch(
 
         setAccessTokenMatch.mutableMethod.addInstruction(
             0,
-            "invoke-static { p0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->$SET_ACCESS_TOKEN_METHOD",
+            "invoke-static { p0 }, $EXTENSION_CLASS_DESCRIPTOR->$SET_ACCESS_TOKEN_METHOD",
         )
 
         // endregion

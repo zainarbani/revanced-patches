@@ -8,14 +8,14 @@ import app.revanced.patcher.util.smali.ExternalLabel
 import app.revanced.patches.all.misc.resources.addResources
 import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import app.revanced.patches.youtube.shared.rollingNumberTextViewAnimationUpdateFingerprint
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
-private const val INTEGRATIONS_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/patches/DisableRollingNumberAnimationsPatch;"
+private const val EXTENSION_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/patches/DisableRollingNumberAnimationsPatch;"
 
 @Suppress("unused")
 val disableRollingNumberAnimationPatch = bytecodePatch(
@@ -23,7 +23,7 @@ val disableRollingNumberAnimationPatch = bytecodePatch(
     description = "Adds an option to disable rolling number animations of video view count, user likes, and upload time.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         addResourcesPatch,
     )
@@ -79,7 +79,7 @@ val disableRollingNumberAnimationPatch = bytecodePatch(
             addInstructionsWithLabels(
                 blockStartIndex,
                 """
-                        invoke-static { }, $INTEGRATIONS_CLASS_DESCRIPTOR->disableRollingNumberAnimations()Z
+                        invoke-static { }, $EXTENSION_CLASS_DESCRIPTOR->disableRollingNumberAnimations()Z
                         move-result v$freeRegister
                         if-nez v$freeRegister, :disable_animations
                     """,

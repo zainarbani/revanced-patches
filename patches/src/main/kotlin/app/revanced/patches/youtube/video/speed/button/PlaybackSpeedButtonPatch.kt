@@ -29,7 +29,7 @@ private val playbackSpeedButtonResourcePatch = resourcePatch {
 }
 
 private const val SPEED_BUTTON_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/videoplayer/PlaybackSpeedDialogButton;"
+    "Lapp/revanced/extension/youtube/videoplayer/PlaybackSpeedDialogButton;"
 
 @Suppress("unused")
 val playbackSpeedButtonPatch = bytecodePatch(

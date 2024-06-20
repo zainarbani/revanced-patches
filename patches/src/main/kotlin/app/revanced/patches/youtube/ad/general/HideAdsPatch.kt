@@ -48,7 +48,7 @@ private val hideAdsResourcePatch = resourcePatch {
             SwitchPreference("revanced_hide_merchandise_banners"),
         )
 
-        addLithoFilter("Lapp/revanced/integrations/youtube/patches/components/AdsFilter;")
+        addLithoFilter("Lapp/revanced/extension/youtube/patches/components/AdsFilter;")
 
         adAttributionId = resourceMappings["id", "ad_attribution"]
     }
@@ -124,7 +124,7 @@ val hideAdsPatch = bytecodePatch(
                                 .injectHideViewCall(
                                     insertIndex,
                                     viewRegister,
-                                    "Lapp/revanced/integrations/youtube/patches/components/AdsFilter;",
+                                    "Lapp/revanced/extension/youtube/patches/components/AdsFilter;",
                                     "hideAdAttributionView",
                                 )
                         }

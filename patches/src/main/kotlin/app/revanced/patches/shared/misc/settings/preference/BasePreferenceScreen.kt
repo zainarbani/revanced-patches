@@ -35,7 +35,7 @@ abstract class BasePreferenceScreen(
                 titleKey,
                 summaryKey,
                 sorting,
-                // Screens and preferences are sorted at runtime by integrations code,
+                // Screens and preferences are sorted at runtime by extension code,
                 // so title sorting uses the localized language in use.
                 preferences = preferences + categories.map { it.transform() },
             )

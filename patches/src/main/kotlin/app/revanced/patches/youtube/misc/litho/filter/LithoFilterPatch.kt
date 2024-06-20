@@ -11,7 +11,7 @@ import app.revanced.patcher.extensions.InstructionExtensions.removeInstructions
 import app.revanced.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.revanced.patcher.patch.bytecodePatch
 import app.revanced.patcher.util.smali.ExternalLabel
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.util.exception
 import app.revanced.util.getReference
 import app.revanced.util.indexOfFirstInstructionOrThrow
@@ -34,13 +34,13 @@ private val Instruction.descriptor
 lateinit var addLithoFilter: (String) -> Unit
     private set
 
-internal const val INTEGRATIONS_CLASS_DESCRIPTOR = "Lapp/revanced/integrations/youtube/patches/components/LithoFilterPatch;"
+internal const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/revanced/extension/youtube/patches/components/LithoFilterPatch;"
 
 val lithoFilterPatch = bytecodePatch(
     description = "Hooks the method which parses the bytes into a ComponentContext to filter components.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
     )
 
     val componentContextParserMatch by componentContextParserFingerprint()
@@ -66,7 +66,7 @@ val lithoFilterPatch = bytecodePatch(
      * class SomeOtherClass {
      *    // Called before ComponentContextParser.parseBytesToComponentContext method.
      *    public void someOtherMethod(ByteBuffer byteBuffer) {
-     *        IntegrationsClass.setProtoBuffer(byteBuffer); // Inserted by this patch.
+     *        ExtensionClass.setProtoBuffer(byteBuffer); // Inserted by this patch.
      *        ...
      *   }
      * }
@@ -75,7 +75,7 @@ val lithoFilterPatch = bytecodePatch(
      *
      *    public ComponentContext parseBytesToComponentContext(...) {
      *        ...
-     *        if (IntegrationsClass.filter(identifier, pathBuilder)); // Inserted by this patch.
+     *        if (extensionClass.filter(identifier, pathBuilder)); // Inserted by this patch.
      *            return emptyComponent;
      *        ...
      *    }
@@ -92,11 +92,11 @@ val lithoFilterPatch = bytecodePatch(
             }
         }.let { bytesToComponentContextMethod ->
 
-            // region Pass the buffer into Integrations.
+            // region Pass the buffer into the extension.
 
             protobufBufferReferenceMatch.mutableMethod.addInstruction(
                 0,
-                " invoke-static { p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->setProtoBuffer(Ljava/nio/ByteBuffer;)V",
+                " invoke-static { p2 }, $EXTENSION_CLASS_DESCRIPTOR->setProtoBuffer(Ljava/nio/ByteBuffer;)V",
             )
 
             // endregion
@@ -148,7 +148,7 @@ val lithoFilterPatch = bytecodePatch(
                     """
                         # Invoke the filter method.
                       
-                        invoke-static { v$identifierRegister, v$stringBuilderRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->filter(Ljava/lang/String;Ljava/lang/StringBuilder;)Z
+                        invoke-static { v$identifierRegister, v$stringBuilderRegister }, $EXTENSION_CLASS_DESCRIPTOR->filter(Ljava/lang/String;Ljava/lang/StringBuilder;)Z
                         move-result v$free1
                        
                         if-eqz v$free1, :unfiltered

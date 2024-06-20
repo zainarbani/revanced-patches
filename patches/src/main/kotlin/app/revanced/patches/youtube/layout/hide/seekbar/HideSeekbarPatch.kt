@@ -6,7 +6,7 @@ import app.revanced.patches.all.misc.resources.addResources
 import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
 import app.revanced.patches.youtube.layout.seekbar.seekbarColorPatch
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import app.revanced.patches.youtube.shared.seekbarFingerprint
@@ -19,7 +19,7 @@ val hideSeekbarPatch = bytecodePatch(
     description = "Adds an option to hide the seekbar.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         seekbarColorPatch,
         addResourcesPatch,
@@ -70,7 +70,7 @@ val hideSeekbarPatch = bytecodePatch(
             0,
             """
                 const/4 v0, 0x0
-                invoke-static { }, Lapp/revanced/integrations/youtube/patches/HideSeekbarPatch;->hideSeekbar()Z
+                invoke-static { }, Lapp/revanced/extension/youtube/patches/HideSeekbarPatch;->hideSeekbar()Z
                 move-result v0
                 if-eqz v0, :hide_seekbar
                 return-void

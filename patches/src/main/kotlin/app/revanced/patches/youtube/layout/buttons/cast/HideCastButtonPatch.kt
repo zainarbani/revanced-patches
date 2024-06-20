@@ -6,7 +6,7 @@ import app.revanced.patcher.patch.bytecodePatch
 import app.revanced.patches.all.misc.resources.addResources
 import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 
@@ -15,7 +15,7 @@ val hideCastButtonPatch = bytecodePatch(
     description = "Adds an option to hide the cast button in the video player.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         addResourcesPatch,
     )
@@ -35,7 +35,7 @@ val hideCastButtonPatch = bytecodePatch(
         buttonClass.mutableClass.methods.find { it.name == "setVisibility" }?.addInstructions(
             0,
             """
-                invoke-static {p1}, Lapp/revanced/integrations/youtube/patches/HideCastButtonPatch;->getCastButtonOverrideV2(I)I
+                invoke-static {p1}, Lapp/revanced/extension/youtube/patches/HideCastButtonPatch;->getCastButtonOverrideV2(I)I
                 move-result p1
             """,
         ) ?: throw PatchException("setVisibility method not found.")

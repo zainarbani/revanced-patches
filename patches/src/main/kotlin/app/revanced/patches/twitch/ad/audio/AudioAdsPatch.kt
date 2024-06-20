@@ -9,7 +9,7 @@ import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
 import app.revanced.patches.twitch.misc.settings.PreferenceScreen
 import app.revanced.patches.twitch.misc.settings.settingsPatch
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 
 @Suppress("unused")
 val audioAdsPatch = bytecodePatch(
@@ -17,7 +17,7 @@ val audioAdsPatch = bytecodePatch(
     description = "Blocks audio ads in streams and VODs.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         addResourcesPatch,
     )
@@ -37,7 +37,7 @@ val audioAdsPatch = bytecodePatch(
         audioAdsPresenterPlayMatch.mutableMethod.addInstructionsWithLabels(
             0,
             """
-                    invoke-static { }, Lapp/revanced/integrations/twitch/patches/AudioAdsPatch;->shouldBlockAudioAds()Z
+                    invoke-static { }, Lapp/revanced/extension/twitch/patches/AudioAdsPatch;->shouldBlockAudioAds()Z
                     move-result v0
                     if-eqz v0, :show_audio_ads
                     return-void

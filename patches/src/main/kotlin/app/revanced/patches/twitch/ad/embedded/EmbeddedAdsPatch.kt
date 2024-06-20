@@ -7,7 +7,7 @@ import app.revanced.patches.shared.misc.settings.preference.ListPreference
 import app.revanced.patches.twitch.ad.video.videoAdsPatch
 import app.revanced.patches.twitch.misc.settings.PreferenceScreen
 import app.revanced.patches.twitch.misc.settings.settingsPatch
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 
 @Suppress("unused")
 val embeddedAdsPatch = bytecodePatch(
@@ -16,7 +16,7 @@ val embeddedAdsPatch = bytecodePatch(
 ) {
     dependsOn(
         videoAdsPatch,
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
     )
 
@@ -35,7 +35,7 @@ val embeddedAdsPatch = bytecodePatch(
         createUsherClientMatch.mutableMethod.addInstructions(
             3,
             """
-                invoke-static  {}, Lapp/revanced/integrations/twitch/patches/EmbeddedAdsPatch;->createRequestInterceptor()Lapp/revanced/integrations/twitch/api/RequestInterceptor;
+                invoke-static  {}, Lapp/revanced/extension/twitch/patches/EmbeddedAdsPatch;->createRequestInterceptor()Lapp/revanced/extension/twitch/api/RequestInterceptor;
                 move-result-object v2
                 invoke-virtual {v0, v2}, Lokhttp3/OkHttpClient${"$"}Builder;->addInterceptor(Lokhttp3/Interceptor;)Lokhttp3/OkHttpClient${"$"}Builder;
             """,

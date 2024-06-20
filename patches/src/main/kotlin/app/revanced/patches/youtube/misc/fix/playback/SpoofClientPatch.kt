@@ -25,8 +25,8 @@ import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
 
-private const val INTEGRATIONS_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/patches/spoof/SpoofClientPatch;"
+private const val EXTENSION_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/patches/spoof/SpoofClientPatch;"
 private const val CLIENT_INFO_CLASS_DESCRIPTOR =
     "Lcom/google/protos/youtube/api/innertube/InnertubeContext\$ClientInfo;"
 
@@ -103,7 +103,7 @@ val spoofClientPatch = bytecodePatch(
             addInstructions(
                 moveUriStringIndex + 1,
                 """
-                    invoke-static { v$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->blockInitPlaybackRequest(Ljava/lang/String;)Ljava/lang/String;
+                    invoke-static { v$targetRegister }, $EXTENSION_CLASS_DESCRIPTOR->blockInitPlaybackRequest(Ljava/lang/String;)Ljava/lang/String;
                     move-result-object v$targetRegister
                 """,
             )
@@ -121,7 +121,7 @@ val spoofClientPatch = bytecodePatch(
             addInstructions(
                 invokeToStringIndex,
                 """
-                    invoke-static { v$uriRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->blockGetWatchRequest(Landroid/net/Uri;)Landroid/net/Uri;
+                    invoke-static { v$uriRegister }, $EXTENSION_CLASS_DESCRIPTOR->blockGetWatchRequest(Landroid/net/Uri;)Landroid/net/Uri;
                     move-result-object v$uriRegister
                 """,
             )
@@ -198,7 +198,7 @@ val spoofClientPatch = bytecodePatch(
             ).toMutable().apply {
                 addInstructions(
                     """
-                        invoke-static { }, $INTEGRATIONS_CLASS_DESCRIPTOR->isClientSpoofingEnabled()Z
+                        invoke-static { }, $EXTENSION_CLASS_DESCRIPTOR->isClientSpoofingEnabled()Z
                         move-result v0
                         if-eqz v0, :disabled
                         
@@ -206,19 +206,19 @@ val spoofClientPatch = bytecodePatch(
                         
                         # Set client type to the spoofed value.
                         iget v1, v0, $clientInfoClientTypeField
-                        invoke-static { v1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getClientTypeId(I)I
+                        invoke-static { v1 }, $EXTENSION_CLASS_DESCRIPTOR->getClientTypeId(I)I
                         move-result v1
                         iput v1, v0, $clientInfoClientTypeField
                         
                         # Set client model to the spoofed value.
                         iget-object v1, v0, $clientInfoClientModelField
-                        invoke-static { v1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getClientModel(Ljava/lang/String;)Ljava/lang/String;
+                        invoke-static { v1 }, $EXTENSION_CLASS_DESCRIPTOR->getClientModel(Ljava/lang/String;)Ljava/lang/String;
                         move-result-object v1
                         iput-object v1, v0, $clientInfoClientModelField
 
                         # Set client version to the spoofed value.
                         iget-object v1, v0, $clientInfoClientVersionField
-                        invoke-static { v1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getClientVersion(Ljava/lang/String;)Ljava/lang/String;
+                        invoke-static { v1 }, $EXTENSION_CLASS_DESCRIPTOR->getClientVersion(Ljava/lang/String;)Ljava/lang/String;
                         move-result-object v1
                         iput-object v1, v0, $clientInfoClientVersionField
                         
@@ -252,7 +252,7 @@ val spoofClientPatch = bytecodePatch(
                 addInstructions(
                     isAllowedIndex,
                     """
-                        invoke-static { v$isAllowed }, $INTEGRATIONS_CLASS_DESCRIPTOR->enablePlayerGesture(Z)Z
+                        invoke-static { v$isAllowed }, $EXTENSION_CLASS_DESCRIPTOR->enablePlayerGesture(Z)Z
                         move-result v$isAllowed
                     """,
                 )
@@ -274,7 +274,7 @@ val spoofClientPatch = bytecodePatch(
             addInstructions(
                 shouldCreateMenuIndex,
                 """
-                    invoke-static { v$shouldCreateMenuRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->forceCreatePlaybackSpeedMenu(Z)Z
+                    invoke-static { v$shouldCreateMenuRegister }, $EXTENSION_CLASS_DESCRIPTOR->forceCreatePlaybackSpeedMenu(Z)Z
                     move-result v$shouldCreateMenuRegister
                 """,
             )

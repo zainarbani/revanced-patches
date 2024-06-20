@@ -7,7 +7,7 @@ import app.revanced.patcher.patch.bytecodePatch
 import app.revanced.patches.all.misc.resources.addResources
 import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import app.revanced.util.getReference
@@ -17,8 +17,8 @@ import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
-private const val INTEGRATIONS_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/patches/DisableResumingStartupShortsPlayerPatch;"
+private const val EXTENSION_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/patches/DisableResumingStartupShortsPlayerPatch;"
 
 @Suppress("unused")
 val disableResumingShortsOnStartupPatch = bytecodePatch(
@@ -26,7 +26,7 @@ val disableResumingShortsOnStartupPatch = bytecodePatch(
     description = "Adds an option to disable the Shorts player from resuming on app startup when Shorts were last being watched.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         addResourcesPatch,
     )
@@ -81,7 +81,7 @@ val disableResumingShortsOnStartupPatch = bytecodePatch(
             // Replace original instruction to preserve control flow label.
             replaceInstruction(
                 listenableInstructionIndex,
-                "invoke-static { }, $INTEGRATIONS_CLASS_DESCRIPTOR->disableResumingStartupShortsPlayer()Z",
+                "invoke-static { }, $EXTENSION_CLASS_DESCRIPTOR->disableResumingStartupShortsPlayer()Z",
             )
             addInstructionsWithLabels(
                 listenableInstructionIndex + 1,

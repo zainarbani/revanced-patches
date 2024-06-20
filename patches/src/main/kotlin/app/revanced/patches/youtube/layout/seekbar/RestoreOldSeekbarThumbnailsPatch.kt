@@ -6,11 +6,11 @@ import app.revanced.patcher.patch.bytecodePatch
 import app.revanced.patches.all.misc.resources.addResources
 import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 
-private const val INTEGRATIONS_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/patches/RestoreOldSeekbarThumbnailsPatch;"
+private const val EXTENSION_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/patches/RestoreOldSeekbarThumbnailsPatch;"
 
 @Suppress("unused")
 val restoreOldSeekbarThumbnailsPatch = bytecodePatch(
@@ -18,7 +18,7 @@ val restoreOldSeekbarThumbnailsPatch = bytecodePatch(
     description = "Adds an option to restore the old seekbar thumbnails that appear above the seekbar while seeking instead of fullscreen thumbnails.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         addResourcesPatch,
     )
 
@@ -64,7 +64,7 @@ val restoreOldSeekbarThumbnailsPatch = bytecodePatch(
 
             addInstruction(
                 moveResultIndex,
-                "invoke-static { }, $INTEGRATIONS_CLASS_DESCRIPTOR->useFullscreenSeekbarThumbnails()Z",
+                "invoke-static { }, $EXTENSION_CLASS_DESCRIPTOR->useFullscreenSeekbarThumbnails()Z",
             )
         }
     }

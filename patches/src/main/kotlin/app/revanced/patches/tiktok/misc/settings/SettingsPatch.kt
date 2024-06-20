@@ -5,21 +5,21 @@ import app.revanced.patcher.extensions.InstructionExtensions.addInstructionsWith
 import app.revanced.patcher.extensions.InstructionExtensions.getInstruction
 import app.revanced.patcher.patch.bytecodePatch
 import app.revanced.patcher.util.smali.ExternalLabel
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.formats.Instruction22c
 import com.android.tools.smali.dexlib2.iface.instruction.formats.Instruction35c
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
-internal const val INTEGRATIONS_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/tiktok/settings/AdPersonalizationActivityHook;"
+internal const val EXTENSION_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/tiktok/settings/AdPersonalizationActivityHook;"
 
 @Suppress("unused")
 val settingsPatch = bytecodePatch(
     name = "Settings",
     description = "Adds ReVanced settings to TikTok.",
 ) {
-    dependsOn(integrationsPatch)
+    dependsOn(sharedExtensionPatch)
 
     compatibleWith(
         "com.ss.android.ugc.trill"("32.5.3"),
@@ -33,12 +33,12 @@ val settingsPatch = bytecodePatch(
 
     execute {
         val initializeSettingsMethodDescriptor =
-            "$INTEGRATIONS_CLASS_DESCRIPTOR->initialize(" +
+            "$EXTENSION_CLASS_DESCRIPTOR->initialize(" +
                 "Lcom/bytedance/ies/ugc/aweme/commercialize/compliance/personalization/AdPersonalizationActivity;" +
                 ")Z"
 
         val createSettingsEntryMethodDescriptor =
-            "$INTEGRATIONS_CLASS_DESCRIPTOR->createSettingsEntry(" +
+            "$EXTENSION_CLASS_DESCRIPTOR->createSettingsEntry(" +
                 "Ljava/lang/String;" +
                 "Ljava/lang/String;" +
                 ")Ljava/lang/Object;"

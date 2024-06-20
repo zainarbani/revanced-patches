@@ -5,7 +5,7 @@ import app.revanced.patcher.patch.bytecodePatch
 import app.revanced.patches.all.misc.resources.addResources
 import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.twitch.misc.integrations.integrationsPatch
+import app.revanced.patches.twitch.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.twitch.misc.settings.PreferenceScreen
 import app.revanced.patches.twitch.misc.settings.settingsPatch
 
@@ -16,7 +16,7 @@ val debugModePatch = bytecodePatch(
     use = false,
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         addResourcesPatch,
     )
@@ -42,7 +42,7 @@ val debugModePatch = bytecodePatch(
             it.mutableMethod.addInstructions(
                 0,
                 """
-                    invoke-static {}, Lapp/revanced/integrations/twitch/patches/DebugModePatch;->isDebugModeEnabled()Z
+                    invoke-static {}, Lapp/revanced/extension/twitch/patches/DebugModePatch;->isDebugModeEnabled()Z
                     move-result v0
                     return v0
                 """,

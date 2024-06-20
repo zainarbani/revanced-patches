@@ -13,7 +13,7 @@ import app.revanced.patches.shared.misc.settings.preference.InputType
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
 import app.revanced.patches.shared.misc.settings.preference.TextPreference
 import app.revanced.patches.youtube.layout.seekbar.seekbarColorPatch
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import app.revanced.util.forEachChildElement
@@ -21,8 +21,8 @@ import app.revanced.util.indexOfFirstWideLiteralInstructionValueOrThrow
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import org.w3c.dom.Element
 
-private const val INTEGRATIONS_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/patches/theme/ThemePatch;"
+private const val EXTENSION_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/patches/theme/ThemePatch;"
 
 internal const val GRADIENT_LOADING_SCREEN_AB_CONSTANT = 45412406L
 
@@ -167,7 +167,7 @@ val themePatch = bytecodePatch(
                 }
             }
         },
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         addResourcesPatch,
     )
@@ -214,7 +214,7 @@ val themePatch = bytecodePatch(
             addInstructions(
                 isEnabledIndex,
                 """
-                    invoke-static { }, $INTEGRATIONS_CLASS_DESCRIPTOR->gradientLoadingScreenEnabled()Z
+                    invoke-static { }, $EXTENSION_CLASS_DESCRIPTOR->gradientLoadingScreenEnabled()Z
                     move-result v$isEnabledRegister
                 """,
             )
@@ -234,6 +234,6 @@ val themePatch = bytecodePatch(
             }
         }
 
-        lithoColorOverrideHook(INTEGRATIONS_CLASS_DESCRIPTOR, "getValue")
+        lithoColorOverrideHook(EXTENSION_CLASS_DESCRIPTOR, "getValue")
     }
 }

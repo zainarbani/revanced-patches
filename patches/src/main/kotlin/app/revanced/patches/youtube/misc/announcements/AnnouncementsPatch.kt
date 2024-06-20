@@ -9,8 +9,8 @@ import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import app.revanced.patches.youtube.shared.mainActivityOnCreateFingerprint
 
-private const val INTEGRATIONS_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/patches/announcements/AnnouncementsPatch;"
+private const val EXTENSION_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/patches/announcements/AnnouncementsPatch;"
 
 @Suppress("unused")
 val announcementsPatch = bytecodePatch(
@@ -37,7 +37,7 @@ val announcementsPatch = bytecodePatch(
             // Insert index must be greater than the insert index used by GmsCoreSupport,
             // as both patch the same method and GmsCore check should be first.
             1,
-            "invoke-static/range { p0 .. p0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->showAnnouncement(Landroid/app/Activity;)V",
+            "invoke-static/range { p0 .. p0 }, $EXTENSION_CLASS_DESCRIPTOR->showAnnouncement(Landroid/app/Activity;)V",
         )
     }
 }

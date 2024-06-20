@@ -37,7 +37,7 @@ internal val themeHelperDarkColorFingerprint = fingerprint {
     parameters()
     custom { method, _ ->
         method.name == "darkThemeResourceName" &&
-            method.definingClass == "Lapp/revanced/integrations/youtube/ThemeHelper;"
+            method.definingClass == "Lapp/revanced/extension/youtube/ThemeHelper;"
     }
 }
 
@@ -47,7 +47,7 @@ internal val themeHelperLightColorFingerprint = fingerprint {
     parameters()
     custom { method, _ ->
         method.name == "lightThemeResourceName" &&
-            method.definingClass == "Lapp/revanced/integrations/youtube/ThemeHelper;"
+            method.definingClass == "Lapp/revanced/extension/youtube/ThemeHelper;"
     }
 }
 

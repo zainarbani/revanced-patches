@@ -5,12 +5,12 @@ import app.revanced.patcher.patch.bytecodePatch
 import app.revanced.patches.all.misc.resources.addResources
 import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 
-private const val INTEGRATIONS_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/patches/spoof/SpoofDeviceDimensionsPatch;"
+private const val EXTENSION_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/patches/spoof/SpoofDeviceDimensionsPatch;"
 
 @Suppress("unused")
 val spoofDeviceDimensionsPatch = bytecodePatch(
@@ -18,7 +18,7 @@ val spoofDeviceDimensionsPatch = bytecodePatch(
     description = "Adds an option to spoof the device dimensions which can unlock higher video qualities.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         addResourcesPatch,
     )
@@ -71,7 +71,7 @@ val spoofDeviceDimensionsPatch = bytecodePatch(
                     4 to "MaxHeightOrWidth", // p4 = max width
                 ).map { (parameter, method) ->
                     """
-                        invoke-static { p$parameter }, $INTEGRATIONS_CLASS_DESCRIPTOR->get$method(I)I
+                        invoke-static { p$parameter }, $EXTENSION_CLASS_DESCRIPTOR->get$method(I)I
                         move-result p$parameter
                     """
                 }.joinToString("\n") { it },

@@ -6,7 +6,7 @@ import app.revanced.patches.all.misc.resources.addResources
 import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
 import app.revanced.patches.youtube.layout.autocaptions.subtitleButtonControllerFingerprint
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import com.android.tools.smali.dexlib2.Opcode
@@ -17,7 +17,7 @@ val hideCaptionsButtonPatch = bytecodePatch(
     description = "Adds an option to hide the captions button in the video player.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         addResourcesPatch,
     )
@@ -70,7 +70,7 @@ val hideCaptionsButtonPatch = bytecodePatch(
         subtitleButtonControllerMethod.addInstruction(
             insertIndex,
             """
-                invoke-static {v0}, Lapp/revanced/integrations/youtube/patches/HideCaptionsButtonPatch;->hideCaptionsButton(Landroid/widget/ImageView;)V
+                invoke-static {v0}, Lapp/revanced/extension/youtube/patches/HideCaptionsButtonPatch;->hideCaptionsButton(Landroid/widget/ImageView;)V
             """,
         )
     }

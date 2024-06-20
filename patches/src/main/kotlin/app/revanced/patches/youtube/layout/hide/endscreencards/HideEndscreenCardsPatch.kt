@@ -10,7 +10,7 @@ import app.revanced.patches.shared.misc.mapping.get
 import app.revanced.patches.shared.misc.mapping.resourceMappingPatch
 import app.revanced.patches.shared.misc.mapping.resourceMappings
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import com.android.tools.smali.dexlib2.iface.instruction.formats.Instruction21c
@@ -50,7 +50,7 @@ val hideEndscreenCardsPatch = bytecodePatch(
     description = "Adds an option to hide suggested video cards at the end of videos.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         hideEndscreenCardsResourcePatch,
     )
 
@@ -100,7 +100,7 @@ val hideEndscreenCardsPatch = bytecodePatch(
                 addInstruction(
                     insertIndex,
                     "invoke-static { v$viewRegister }, " +
-                        "Lapp/revanced/integrations/youtube/patches/HideEndscreenCardsPatch;->" +
+                        "Lapp/revanced/extension/youtube/patches/HideEndscreenCardsPatch;->" +
                         "hideEndscreen(Landroid/view/View;)V",
                 )
             }

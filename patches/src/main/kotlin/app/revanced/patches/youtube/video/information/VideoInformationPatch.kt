@@ -6,7 +6,7 @@ import app.revanced.patcher.extensions.InstructionExtensions.getInstruction
 import app.revanced.patcher.patch.bytecodePatch
 import app.revanced.patcher.util.proxy.mutableTypes.MutableMethod
 import app.revanced.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.video.playerresponse.Hook
 import app.revanced.patches.youtube.video.playerresponse.addPlayerResponseMethodHook
 import app.revanced.patches.youtube.video.playerresponse.playerResponseMethodHookPatch
@@ -25,7 +25,7 @@ import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
 import com.android.tools.smali.dexlib2.util.MethodUtil
 
-private const val INTEGRATIONS_CLASS_DESCRIPTOR = "Lapp/revanced/integrations/youtube/patches/VideoInformation;"
+private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/revanced/extension/youtube/patches/VideoInformation;"
 
 private lateinit var playerInitMethod: MutableMethod
 private var playerInitInsertIndex = 4
@@ -49,7 +49,7 @@ val videoInformationPatch = bytecodePatch(
     description = "Hooks YouTube to get information about the current playing video.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         videoIdPatch,
         playerResponseMethodHookPatch,
     )
@@ -62,8 +62,8 @@ val videoInformationPatch = bytecodePatch(
     execute { context ->
         playerInitMethod = playerInitMatch.mutableClass.methods.first { MethodUtil.isConstructor(it) }
 
-        // hook the player controller for use through integrations
-        playerControllerOnCreateHook(INTEGRATIONS_CLASS_DESCRIPTOR, "initialize")
+        // hook the player controller for use through the extension
+        playerControllerOnCreateHook(EXTENSION_CLASS_DESCRIPTOR, "initialize")
 
         // seek method
         val seekMatchMethod = seekFingerprint.apply {
@@ -96,7 +96,7 @@ val videoInformationPatch = bytecodePatch(
                 """,
         )
 
-        // add the seekTo method to the class for the integrations to call
+        // add the seekTo method to the class for the extension to call
         playerInitMatch.mutableClass.methods.add(seekHelperMethod)
 
         with(createVideoPlayerSeekbarMatch) {
@@ -110,7 +110,7 @@ val videoInformationPatch = bytecodePatch(
                 addInstruction(
                     videoLengthMethodMatch.patternMatch!!.endIndex,
                     "invoke-static {v$videoLengthRegister, v$dummyRegisterForLong}, " +
-                        "$INTEGRATIONS_CLASS_DESCRIPTOR->setVideoLength(J)V",
+                        "$EXTENSION_CLASS_DESCRIPTOR->setVideoLength(J)V",
                 )
             }
         }
@@ -118,17 +118,17 @@ val videoInformationPatch = bytecodePatch(
         /*
          * Inject call for video ids
          */
-        val videoIdMethodDescriptor = "$INTEGRATIONS_CLASS_DESCRIPTOR->setVideoId(Ljava/lang/String;)V"
+        val videoIdMethodDescriptor = "$EXTENSION_CLASS_DESCRIPTOR->setVideoId(Ljava/lang/String;)V"
         hookVideoId(videoIdMethodDescriptor)
         hookBackgroundPlayVideoId(videoIdMethodDescriptor)
         hookPlayerResponseVideoId(
-            "$INTEGRATIONS_CLASS_DESCRIPTOR->setPlayerResponseVideoId(Ljava/lang/String;Z)V",
+            "$EXTENSION_CLASS_DESCRIPTOR->setPlayerResponseVideoId(Ljava/lang/String;Z)V",
         )
         // Call before any other video id hooks,
         // so they can use VideoInformation and check if the video id is for a Short.
         addPlayerResponseMethodHook(
             Hook.ProtoBufferParameterBeforeVideoId(
-                "$INTEGRATIONS_CLASS_DESCRIPTOR->" +
+                "$EXTENSION_CLASS_DESCRIPTOR->" +
                     "newPlayerResponseSignature(Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;",
             ),
         )
@@ -143,7 +143,7 @@ val videoInformationPatch = bytecodePatch(
         /*
          * Hook the methods which set the time
          */
-        videoTimeHook(INTEGRATIONS_CLASS_DESCRIPTOR, "setVideoTime")
+        videoTimeHook(EXTENSION_CLASS_DESCRIPTOR, "setVideoTime")
 
         /*
          * Hook the user playback speed selection
@@ -165,7 +165,7 @@ val videoInformationPatch = bytecodePatch(
             speedSelectionInsertIndex = speedSelectionValueInstructionIndex + 1
         }
 
-        userSelectedPlaybackSpeedHook(INTEGRATIONS_CLASS_DESCRIPTOR, "userSelectedPlaybackSpeed")
+        userSelectedPlaybackSpeedHook(EXTENSION_CLASS_DESCRIPTOR, "userSelectedPlaybackSpeed")
     }
 }
 

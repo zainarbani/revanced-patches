@@ -26,7 +26,7 @@
                 <item>@string/revanced_miniplayer_type_entry_6</item>
             </string-array>
             <string-array name="revanced_miniplayer_type_19_15_entry_values">
-                <!-- Enum names from Integrations. -->
+                <!-- Enum names from the extension. -->
                 <item>ORIGINAL</item>
                 <item>PHONE</item>
                 <item>TABLET</item>
@@ -80,7 +80,7 @@
                 <item>@string/revanced_alt_thumbnail_options_entry_4</item>
             </string-array>
             <string-array name="revanced_alt_thumbnail_options_entry_values">
-                <!-- Enum names from Integrations -->
+                <!-- Enum names from the extension -->
                 <item>ORIGINAL</item>
                 <item>DEARROW</item>
                 <item>DEARROW_STILL_IMAGES</item>

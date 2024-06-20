@@ -14,7 +14,7 @@ import app.revanced.patches.shared.misc.mapping.get
 import app.revanced.patches.shared.misc.mapping.resourceMappingPatch
 import app.revanced.patches.shared.misc.mapping.resourceMappings
 import app.revanced.patches.shared.misc.settings.preference.IntentPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.playercontrols.injectVisibilityCheckCall
 import app.revanced.patches.youtube.misc.playercontrols.playerControlsPatch
 import app.revanced.patches.youtube.misc.playercontrols.showPlayerControlsMatch
@@ -126,14 +126,14 @@ private val sponsorBlockResourcePatch = resourcePatch {
     }
 }
 
-private const val INTEGRATIONS_SEGMENT_PLAYBACK_CONTROLLER_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/sponsorblock/SegmentPlaybackController;"
-private const val INTEGRATIONS_CREATE_SEGMENT_BUTTON_CONTROLLER_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/sponsorblock/ui/CreateSegmentButtonController;"
-private const val INTEGRATIONS_VOTING_BUTTON_CONTROLLER_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/sponsorblock/ui/VotingButtonController;"
-private const val INTEGRATIONS_SPONSORBLOCK_VIEW_CONTROLLER_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/sponsorblock/ui/SponsorBlockViewController;"
+private const val EXTENSION_SEGMENT_PLAYBACK_CONTROLLER_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/sponsorblock/SegmentPlaybackController;"
+private const val EXTENSION_CREATE_SEGMENT_BUTTON_CONTROLLER_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/sponsorblock/ui/CreateSegmentButtonController;"
+private const val EXTENSION_VOTING_BUTTON_CONTROLLER_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/sponsorblock/ui/VotingButtonController;"
+private const val EXTENSION_SPONSORBLOCK_VIEW_CONTROLLER_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/sponsorblock/ui/SponsorBlockViewController;"
 
 @Suppress("unused")
 val sponsorBlockPatch = bytecodePatch(
@@ -141,7 +141,7 @@ val sponsorBlockPatch = bytecodePatch(
     description = "Adds options to enable and configure SponsorBlock, which can skip undesired video segments such as sponsored content.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         videoIdPatch,
         // Required to skip segments on time.
         videoInformationPatch,
@@ -184,7 +184,7 @@ val sponsorBlockPatch = bytecodePatch(
          * Hook the video time methods
          */
         videoTimeHook(
-            INTEGRATIONS_SEGMENT_PLAYBACK_CONTROLLER_CLASS_DESCRIPTOR,
+            EXTENSION_SEGMENT_PLAYBACK_CONTROLLER_CLASS_DESCRIPTOR,
             "setVideoTime",
         )
 
@@ -192,7 +192,7 @@ val sponsorBlockPatch = bytecodePatch(
          * Set current video id.
          */
         hookBackgroundPlayVideoId(
-            "$INTEGRATIONS_SEGMENT_PLAYBACK_CONTROLLER_CLASS_DESCRIPTOR->" +
+            "$EXTENSION_SEGMENT_PLAYBACK_CONTROLLER_CLASS_DESCRIPTOR->" +
                 "setCurrentVideoId(Ljava/lang/String;)V",
         )
 
@@ -214,7 +214,7 @@ val sponsorBlockPatch = bytecodePatch(
         seekbarMethod.addInstruction(
             moveRectangleToRegisterIndex + 1,
             "invoke-static/range {p0 .. p0}, " +
-                "$INTEGRATIONS_SEGMENT_PLAYBACK_CONTROLLER_CLASS_DESCRIPTOR->setSponsorBarRect(Ljava/lang/Object;)V",
+                "$EXTENSION_SEGMENT_PLAYBACK_CONTROLLER_CLASS_DESCRIPTOR->setSponsorBarRect(Ljava/lang/Object;)V",
         )
 
         for ((index, instruction) in seekbarMethodInstructions.withIndex()) {
@@ -229,7 +229,7 @@ val sponsorBlockPatch = bytecodePatch(
             seekbarMethod.addInstruction(
                 insertIndex,
                 "invoke-static {v${invokeInstruction.registerC}}, " +
-                    "$INTEGRATIONS_SEGMENT_PLAYBACK_CONTROLLER_CLASS_DESCRIPTOR->setSponsorBarThickness(I)V",
+                    "$EXTENSION_SEGMENT_PLAYBACK_CONTROLLER_CLASS_DESCRIPTOR->setSponsorBarThickness(I)V",
             )
 
             break
@@ -249,7 +249,7 @@ val sponsorBlockPatch = bytecodePatch(
             seekbarMethod.addInstruction(
                 i,
                 "invoke-static {v$canvasInstance, v$centerY}, " +
-                    "$INTEGRATIONS_SEGMENT_PLAYBACK_CONTROLLER_CLASS_DESCRIPTOR->" +
+                    "$EXTENSION_SEGMENT_PLAYBACK_CONTROLLER_CLASS_DESCRIPTOR->" +
                     "drawSponsorTimeBars(Landroid/graphics/Canvas;F)V",
             )
 
@@ -280,8 +280,8 @@ val sponsorBlockPatch = bytecodePatch(
                         method.addInstructions(
                             moveResultInstructionIndex + 1, // insert right after moving the view to the register and use that register
                             """
-                                invoke-static {v$inflatedViewRegister}, $INTEGRATIONS_CREATE_SEGMENT_BUTTON_CONTROLLER_CLASS_DESCRIPTOR->initialize(Landroid/view/View;)V
-                                invoke-static {v$inflatedViewRegister}, $INTEGRATIONS_VOTING_BUTTON_CONTROLLER_CLASS_DESCRIPTOR->initialize(Landroid/view/View;)V
+                                invoke-static {v$inflatedViewRegister}, $EXTENSION_CREATE_SEGMENT_BUTTON_CONTROLLER_CLASS_DESCRIPTOR->initialize(Landroid/view/View;)V
+                                invoke-static {v$inflatedViewRegister}, $EXTENSION_VOTING_BUTTON_CONTROLLER_CLASS_DESCRIPTOR->initialize(Landroid/view/View;)V
                             """,
                         )
                     }
@@ -293,8 +293,8 @@ val sponsorBlockPatch = bytecodePatch(
                         invertVisibilityMethod.addInstructions(
                             0,
                             """
-                                invoke-static {p1}, $INTEGRATIONS_CREATE_SEGMENT_BUTTON_CONTROLLER_CLASS_DESCRIPTOR->changeVisibilityNegatedImmediate(Z)V
-                                invoke-static {p1}, $INTEGRATIONS_VOTING_BUTTON_CONTROLLER_CLASS_DESCRIPTOR->changeVisibilityNegatedImmediate(Z)V
+                                invoke-static {p1}, $EXTENSION_CREATE_SEGMENT_BUTTON_CONTROLLER_CLASS_DESCRIPTOR->changeVisibilityNegatedImmediate(Z)V
+                                invoke-static {p1}, $EXTENSION_VOTING_BUTTON_CONTROLLER_CLASS_DESCRIPTOR->changeVisibilityNegatedImmediate(Z)V
                             """.trimIndent(),
                         )
                     }
@@ -303,8 +303,8 @@ val sponsorBlockPatch = bytecodePatch(
         }
 
         // change visibility of the buttons
-        injectVisibilityCheckCall("$INTEGRATIONS_CREATE_SEGMENT_BUTTON_CONTROLLER_CLASS_DESCRIPTOR->changeVisibility(Z)V")
-        injectVisibilityCheckCall("$INTEGRATIONS_VOTING_BUTTON_CONTROLLER_CLASS_DESCRIPTOR->changeVisibility(Z)V")
+        injectVisibilityCheckCall("$EXTENSION_CREATE_SEGMENT_BUTTON_CONTROLLER_CLASS_DESCRIPTOR->changeVisibility(Z)V")
+        injectVisibilityCheckCall("$EXTENSION_VOTING_BUTTON_CONTROLLER_CLASS_DESCRIPTOR->changeVisibility(Z)V")
 
         // append the new time to the player layout
         val appendTimePatternScanStartIndex = appendTimeMatch.patternMatch!!.startIndex
@@ -314,13 +314,13 @@ val sponsorBlockPatch = bytecodePatch(
         appendTimeMatch.mutableMethod.addInstructions(
             appendTimePatternScanStartIndex + 2,
             """
-                invoke-static {v$targetRegister}, $INTEGRATIONS_SEGMENT_PLAYBACK_CONTROLLER_CLASS_DESCRIPTOR->appendTimeWithoutSegments(Ljava/lang/String;)Ljava/lang/String;
+                invoke-static {v$targetRegister}, $EXTENSION_SEGMENT_PLAYBACK_CONTROLLER_CLASS_DESCRIPTOR->appendTimeWithoutSegments(Ljava/lang/String;)Ljava/lang/String;
                 move-result-object v$targetRegister
             """,
         )
 
         // initialize the player controller
-        playerControllerOnCreateHook(INTEGRATIONS_SEGMENT_PLAYBACK_CONTROLLER_CLASS_DESCRIPTOR, "initialize")
+        playerControllerOnCreateHook(EXTENSION_SEGMENT_PLAYBACK_CONTROLLER_CLASS_DESCRIPTOR, "initialize")
 
         // initialize the sponsorblock view
         controlsOverlayFingerprint.apply {
@@ -331,7 +331,7 @@ val sponsorBlockPatch = bytecodePatch(
                 val frameLayoutRegister = (getInstruction(startIndex + 2) as OneRegisterInstruction).registerA
                 addInstruction(
                     startIndex + 3,
-                    "invoke-static {v$frameLayoutRegister}, $INTEGRATIONS_SPONSORBLOCK_VIEW_CONTROLLER_CLASS_DESCRIPTOR->initialize(Landroid/view/ViewGroup;)V",
+                    "invoke-static {v$frameLayoutRegister}, $EXTENSION_SPONSORBLOCK_VIEW_CONTROLLER_CLASS_DESCRIPTOR->initialize(Landroid/view/ViewGroup;)V",
                 )
             }
         }
@@ -377,7 +377,7 @@ val sponsorBlockPatch = bytecodePatch(
             it.match(context, autoRepeatParentMatch.classDef)
         }.matchOrThrow().mutableMethod.addInstruction(
             0,
-            "invoke-static {}, $INTEGRATIONS_SPONSORBLOCK_VIEW_CONTROLLER_CLASS_DESCRIPTOR->endOfVideoReached()V",
+            "invoke-static {}, $EXTENSION_SPONSORBLOCK_VIEW_CONTROLLER_CLASS_DESCRIPTOR->endOfVideoReached()V",
         )
 
         // TODO: isSBChannelWhitelisting implementation

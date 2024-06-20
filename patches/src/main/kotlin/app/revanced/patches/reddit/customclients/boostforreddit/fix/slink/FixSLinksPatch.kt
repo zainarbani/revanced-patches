@@ -6,14 +6,14 @@ import app.revanced.patcher.extensions.InstructionExtensions.getInstruction
 import app.revanced.patcher.util.smali.ExternalLabel
 import app.revanced.patches.reddit.customclients.RESOLVE_S_LINK_METHOD
 import app.revanced.patches.reddit.customclients.SET_ACCESS_TOKEN_METHOD
-import app.revanced.patches.reddit.customclients.boostforreddit.misc.integrations.integrationsPatch
+import app.revanced.patches.reddit.customclients.boostforreddit.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.reddit.customclients.fixSLinksPatch
 
-const val INTEGRATIONS_CLASS_DESCRIPTOR = "Lapp/revanced/integrations/boostforreddit/FixSLinksPatch;"
+const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/revanced/extension/boostforreddit/FixSLinksPatch;"
 
 @Suppress("unused")
 val fixSlinksPatch = fixSLinksPatch(
-    integrationsPatch = integrationsPatch,
+    extensionPatch = sharedExtensionPatch,
 ) {
     compatibleWith("com.rubenmayayo.reddit")
 
@@ -30,7 +30,7 @@ val fixSlinksPatch = fixSLinksPatch(
             addInstructionsWithLabels(
                 0,
                 """
-                    invoke-static { $urlRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->$RESOLVE_S_LINK_METHOD
+                    invoke-static { $urlRegister }, $EXTENSION_CLASS_DESCRIPTOR->$RESOLVE_S_LINK_METHOD
                     move-result $tempRegister
                     if-eqz $tempRegister, :continue
                     return $tempRegister
@@ -45,7 +45,7 @@ val fixSlinksPatch = fixSLinksPatch(
 
         setAccessTokenMatch.mutableMethod.addInstruction(
             3,
-            "invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->$SET_ACCESS_TOKEN_METHOD",
+            "invoke-static { v0 }, $EXTENSION_CLASS_DESCRIPTOR->$SET_ACCESS_TOKEN_METHOD",
         )
 
         // endregion

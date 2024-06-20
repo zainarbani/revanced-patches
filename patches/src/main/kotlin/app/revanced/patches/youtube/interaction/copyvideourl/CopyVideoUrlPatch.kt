@@ -75,10 +75,10 @@ val copyVideoUrlPatch = bytecodePatch(
     )
 
     execute {
-        val integrationsPlayerPackage = "Lapp/revanced/integrations/youtube/videoplayer"
+        val extensionPlayerPackage = "Lapp/revanced/extension/youtube/videoplayer"
         val buttonsDescriptors = listOf(
-            "$integrationsPlayerPackage/CopyVideoUrlButton;",
-            "$integrationsPlayerPackage/CopyVideoUrlTimestampButton;",
+            "$extensionPlayerPackage/CopyVideoUrlButton;",
+            "$extensionPlayerPackage/CopyVideoUrlTimestampButton;",
         )
 
         buttonsDescriptors.forEach { descriptor ->

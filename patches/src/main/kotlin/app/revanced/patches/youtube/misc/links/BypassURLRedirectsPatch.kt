@@ -6,7 +6,7 @@ import app.revanced.patcher.patch.bytecodePatch
 import app.revanced.patches.all.misc.resources.addResources
 import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -17,7 +17,7 @@ val bypassURLRedirectsPatch = bytecodePatch(
     description = "Adds an option to bypass URL redirects and open the original URL directly.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         addResourcesPatch,
     )
@@ -69,7 +69,7 @@ val bypassURLRedirectsPatch = bytecodePatch(
                 replaceInstruction(
                     insertIndex,
                     "invoke-static {v$uriStringRegister}," +
-                        "Lapp/revanced/integrations/youtube/patches/BypassURLRedirectsPatch;" +
+                        "Lapp/revanced/extension/youtube/patches/BypassURLRedirectsPatch;" +
                         "->" +
                         "parseRedirectUri(Ljava/lang/String;)Landroid/net/Uri;",
                 )

@@ -9,7 +9,7 @@ import app.revanced.patches.all.misc.resources.addResources
 import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.ListPreference
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import app.revanced.patches.youtube.video.information.playerControllerOnCreateHook
@@ -19,8 +19,8 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
-private const val INTEGRATIONS_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/patches/playback/quality/RememberVideoQualityPatch;"
+private const val EXTENSION_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/patches/playback/quality/RememberVideoQualityPatch;"
 
 @Suppress("unused")
 val rememberVideoQualityPatch = bytecodePatch(
@@ -28,7 +28,7 @@ val rememberVideoQualityPatch = bytecodePatch(
     description = "Adds an option to remember the last video quality selected.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         videoInformationPatch,
         settingsPatch,
         addResourcesPatch,
@@ -87,7 +87,7 @@ val rememberVideoQualityPatch = bytecodePatch(
          * It also hooks the method which is called when the video quality to set is determined.
          * Conveniently, at this point the video quality is overridden to the remembered playback speed.
          */
-        playerControllerOnCreateHook(INTEGRATIONS_CLASS_DESCRIPTOR, "newVideoStarted")
+        playerControllerOnCreateHook(EXTENSION_CLASS_DESCRIPTOR, "newVideoStarted")
 
         // Inject a call to set the remembered quality once a video loads.
         setQualityByIndexMethodClassFieldReferenceFingerprint.apply {
@@ -127,7 +127,7 @@ val rememberVideoQualityPatch = bytecodePatch(
                     # The second parameter is the index of the selected quality.
                     # The register v0 stores the object instance to invoke the setQualityByIndex method on.
                     # The register v1 stores the name of the setQualityByIndex method.
-                    invoke-static { p1, p2, v0, v1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->setVideoQuality([Ljava/lang/Object;ILjava/lang/Object;Ljava/lang/String;)I
+                    invoke-static { p1, p2, v0, v1 }, $EXTENSION_CLASS_DESCRIPTOR->setVideoQuality([Ljava/lang/Object;ILjava/lang/Object;Ljava/lang/String;)I
                     move-result p2
                 """,
             )
@@ -140,7 +140,7 @@ val rememberVideoQualityPatch = bytecodePatch(
             addInstruction(
                 0,
                 "invoke-static { p$listItemIndexParameter }, " +
-                    "$INTEGRATIONS_CLASS_DESCRIPTOR->userChangedQuality(I)V",
+                    "$EXTENSION_CLASS_DESCRIPTOR->userChangedQuality(I)V",
             )
         } ?: throw PatchException("Failed to find onItemClick method")
 
@@ -152,7 +152,7 @@ val rememberVideoQualityPatch = bytecodePatch(
             addInstruction(
                 index + 1,
                 "invoke-static { v$qualityRegister }, " +
-                    "$INTEGRATIONS_CLASS_DESCRIPTOR->userChangedQualityInNewFlyout(I)V",
+                    "$EXTENSION_CLASS_DESCRIPTOR->userChangedQualityInNewFlyout(I)V",
             )
         }
     }

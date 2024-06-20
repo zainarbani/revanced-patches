@@ -8,9 +8,9 @@ import app.revanced.patcher.util.smali.ExternalLabel
 import app.revanced.patches.all.misc.resources.addResources
 import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.ListPreference
+import app.revanced.patches.twitch.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.twitch.misc.settings.PreferenceScreen
 import app.revanced.patches.twitch.misc.settings.settingsPatch
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
 
 @Suppress("unused")
 val showDeletedMessagesPatch = bytecodePatch(
@@ -18,7 +18,7 @@ val showDeletedMessagesPatch = bytecodePatch(
     description = "Shows deleted chat messages behind a clickable spoiler.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         addResourcesPatch,
     )
@@ -26,7 +26,7 @@ val showDeletedMessagesPatch = bytecodePatch(
     compatibleWith("tv.twitch.android.app"("15.4.1", "16.1.0", "16.9.1"))
 
     fun createSpoilerConditionInstructions(register: String = "v0") = """
-        invoke-static {}, Lapp/revanced/integrations/twitch/patches/ShowDeletedMessagesPatch;->shouldUseSpoiler()Z
+        invoke-static {}, Lapp/revanced/extension/twitch/patches/ShowDeletedMessagesPatch;->shouldUseSpoiler()Z
         move-result $register
         if-eqz $register, :no_spoiler
     """
@@ -66,7 +66,7 @@ val showDeletedMessagesPatch = bytecodePatch(
             addInstructionsWithLabels(
                 0,
                 """
-                    invoke-static {p2}, Lapp/revanced/integrations/twitch/patches/ShowDeletedMessagesPatch;->reformatDeletedMessage(Landroid/text/Spanned;)Landroid/text/Spanned;
+                    invoke-static {p2}, Lapp/revanced/extension/twitch/patches/ShowDeletedMessagesPatch;->reformatDeletedMessage(Landroid/text/Spanned;)Landroid/text/Spanned;
                     move-result-object v0
                     if-eqz v0, :no_reformat
                     return-object v0

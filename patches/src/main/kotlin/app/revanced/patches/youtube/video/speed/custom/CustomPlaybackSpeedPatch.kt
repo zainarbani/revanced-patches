@@ -17,7 +17,7 @@ import app.revanced.patches.shared.misc.mapping.resourceMappingPatch
 import app.revanced.patches.shared.misc.mapping.resourceMappings
 import app.revanced.patches.shared.misc.settings.preference.InputType
 import app.revanced.patches.shared.misc.settings.preference.TextPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.litho.filter.addLithoFilter
 import app.revanced.patches.youtube.misc.litho.filter.lithoFilterPatch
 import app.revanced.patches.youtube.misc.recyclerviewtree.hook.addRecyclerViewTreeHook
@@ -48,16 +48,16 @@ private val customPlaybackSpeedResourcePatch = resourcePatch {
 }
 
 private const val FILTER_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/patches/components/PlaybackSpeedMenuFilterPatch;"
+    "Lapp/revanced/extension/youtube/patches/components/PlaybackSpeedMenuFilterPatch;"
 
-private const val INTEGRATIONS_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/patches/playback/speed/CustomPlaybackSpeedPatch;"
+private const val EXTENSION_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/patches/playback/speed/CustomPlaybackSpeedPatch;"
 
 internal val customPlaybackSpeedPatch = bytecodePatch(
     description = "Adds custom playback speed options.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         lithoFilterPatch,
         settingsPatch,
         recyclerViewTreeHookPatch,
@@ -68,7 +68,7 @@ internal val customPlaybackSpeedPatch = bytecodePatch(
     val speedArrayGeneratorMatch by speedArrayGeneratorFingerprint()
     val speedLimiterMatch by speedLimiterFingerprint()
     val getOldPlaybackSpeedsMatch by getOldPlaybackSpeedsFingerprint()
-    val showOldPlaybackSpeedMenuIntegrationsMatch by showOldPlaybackSpeedMenuIntegrationsFingerprint()
+    val showOldPlaybackSpeedMenuExtensionMatch by showOldPlaybackSpeedMenuExtensionFingerprint()
 
     execute { context ->
         addResources("youtube", "video.speed.custom.customPlaybackSpeedPatch")
@@ -88,7 +88,7 @@ internal val customPlaybackSpeedPatch = bytecodePatch(
             val arrayLengthConstInstruction = instructions
                 .first { (it as? NarrowLiteralInstruction)?.narrowLiteral == 7 }
             val arrayLengthConstRegister = (arrayLengthConstInstruction as OneRegisterInstruction).registerA
-            val playbackSpeedsArrayType = "$INTEGRATIONS_CLASS_DESCRIPTOR->customPlaybackSpeeds:[F"
+            val playbackSpeedsArrayType = "$EXTENSION_CLASS_DESCRIPTOR->customPlaybackSpeeds:[F"
 
             addInstructions(
                 arrayLengthConstInstruction.location.index + 1,
@@ -136,7 +136,7 @@ internal val customPlaybackSpeedPatch = bytecodePatch(
         // region Force old video quality menu.
         // This is necessary, because there is no known way of adding custom playback speeds to the new menu.
 
-        addRecyclerViewTreeHook(INTEGRATIONS_CLASS_DESCRIPTOR)
+        addRecyclerViewTreeHook(EXTENSION_CLASS_DESCRIPTOR)
 
         // Required to check if the playback speed menu is currently shown.
         addLithoFilter(FILTER_CLASS_DESCRIPTOR)
@@ -166,7 +166,7 @@ internal val customPlaybackSpeedPatch = bytecodePatch(
         }.matchOrThrow().method
 
         // Insert the call to the "showOldPlaybackSpeedMenu" method on the field INSTANCE.
-        showOldPlaybackSpeedMenuIntegrationsMatch.mutableMethod.apply {
+        showOldPlaybackSpeedMenuExtensionMatch.mutableMethod.apply {
             addInstructionsWithLabels(
                 instructions.lastIndex,
                 """

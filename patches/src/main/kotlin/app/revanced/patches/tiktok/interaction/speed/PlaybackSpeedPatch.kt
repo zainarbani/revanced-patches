@@ -33,7 +33,7 @@ val playbackSpeedPatch = bytecodePatch(
                 addInstruction(
                     injectIndex,
                     "invoke-static { v$register }," +
-                        " Lapp/revanced/integrations/tiktok/speed/PlaybackSpeedPatch;->rememberPlaybackSpeed(F)V",
+                        " Lapp/revanced/extension/tiktok/speed/PlaybackSpeedPatch;->rememberPlaybackSpeed(F)V",
                 )
             }
 
@@ -52,7 +52,7 @@ val playbackSpeedPatch = bytecodePatch(
                 move-result-object v1
 
                 # Desired playback speed retrieved using getPlaybackSpeed method.
-                invoke-static {}, Lapp/revanced/integrations/tiktok/speed/PlaybackSpeedPatch;->getPlaybackSpeed()F
+                invoke-static {}, Lapp/revanced/extension/tiktok/speed/PlaybackSpeedPatch;->getPlaybackSpeed()F
                 move-result-object v2
                 invoke-static { v0, v1, v2 }, ${onVideoSwiped.method}
             """,

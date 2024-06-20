@@ -12,7 +12,7 @@ import app.revanced.patches.shared.misc.mapping.get
 import app.revanced.patches.shared.misc.mapping.resourceMappingPatch
 import app.revanced.patches.shared.misc.mapping.resourceMappings
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.litho.filter.addLithoFilter
 import app.revanced.patches.youtube.misc.litho.filter.lithoFilterPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
@@ -50,7 +50,7 @@ val hideInfoCardsPatch = bytecodePatch(
     description = "Adds an option to hide info cards that creators add in the video player.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         lithoFilterPatch,
         hideInfocardsResourcePatch,
     )
@@ -99,7 +99,7 @@ val hideInfoCardsPatch = bytecodePatch(
             addInstruction(
                 invokeInstructionIndex,
                 "invoke-static {v${getInstruction<FiveRegisterInstruction>(invokeInstructionIndex).registerC}}," +
-                    " Lapp/revanced/integrations/youtube/patches/HideInfoCardsPatch;->hideInfoCardsIncognito(Landroid/view/View;)V",
+                    " Lapp/revanced/extension/youtube/patches/HideInfoCardsPatch;->hideInfoCardsIncognito(Landroid/view/View;)V",
             )
         }
 
@@ -111,7 +111,7 @@ val hideInfoCardsPatch = bytecodePatch(
         hideInfoCardsCallMethod.addInstructionsWithLabels(
             invokeInterfaceIndex,
             """
-                    invoke-static {}, Lapp/revanced/integrations/youtube/patches/HideInfoCardsPatch;->hideInfoCardsMethodCall()Z
+                    invoke-static {}, Lapp/revanced/extension/youtube/patches/HideInfoCardsPatch;->hideInfoCardsMethodCall()Z
                     move-result v$toggleRegister
                     if-nez v$toggleRegister, :hide_info_cards
                 """,
@@ -122,7 +122,7 @@ val hideInfoCardsPatch = bytecodePatch(
         )
 
         // Info cards can also appear as Litho components.
-        val filterClassDescriptor = "Lapp/revanced/integrations/youtube/patches/components/HideInfoCardsFilterPatch;"
+        val filterClassDescriptor = "Lapp/revanced/extension/youtube/patches/components/HideInfoCardsFilterPatch;"
         addLithoFilter(filterClassDescriptor)
     }
 }

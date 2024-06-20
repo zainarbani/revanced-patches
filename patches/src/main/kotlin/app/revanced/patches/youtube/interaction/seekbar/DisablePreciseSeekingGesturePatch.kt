@@ -6,7 +6,7 @@ import app.revanced.patcher.patch.bytecodePatch
 import app.revanced.patches.all.misc.resources.addResources
 import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -17,7 +17,7 @@ val disablePreciseSeekingGesturePatch = bytecodePatch(
     description = "Adds an option to disable precise seeking when swiping up on the seekbar.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         addResourcesPatch,
     )
@@ -59,8 +59,8 @@ val disablePreciseSeekingGesturePatch = bytecodePatch(
         PreferenceScreen.SEEKBAR.addPreferences(
             SwitchPreference("revanced_disable_precise_seeking_gesture"),
         )
-        val integrationsMethodDescriptor =
-            "Lapp/revanced/integrations/youtube/patches/DisablePreciseSeekingGesturePatch;->" +
+        val extensionMethodDescriptor =
+            "Lapp/revanced/extension/youtube/patches/DisablePreciseSeekingGesturePatch;->" +
                 "disableGesture(Landroid/view/VelocityTracker;Landroid/view/MotionEvent;)V"
 
         val addMovementIndex = isSwipingUpMatch.patternMatch!!.startIndex - 1
@@ -72,7 +72,7 @@ val disablePreciseSeekingGesturePatch = bytecodePatch(
 
             replaceInstruction(
                 addMovementIndex,
-                "invoke-static {v$trackerRegister, v$eventRegister}, $integrationsMethodDescriptor",
+                "invoke-static {v$trackerRegister, v$eventRegister}, $extensionMethodDescriptor",
             )
         }
     }

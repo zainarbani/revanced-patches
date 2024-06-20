@@ -40,7 +40,7 @@ private val customPlayerOverlayOpacityResourcePatch = resourcePatch {
     }
 }
 
-private const val INTEGRATIONS_CLASS_DESCRIPTOR = "Lapp/revanced/integrations/youtube/patches/CustomPlayerOverlayOpacityPatch;"
+private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/revanced/extension/youtube/patches/CustomPlayerOverlayOpacityPatch;"
 
 @Suppress("unused")
 val customPlayerOverlayOpacityPatch = bytecodePatch(
@@ -64,7 +64,7 @@ val customPlayerOverlayOpacityPatch = bytecodePatch(
             addInstruction(
                 insertIndex,
                 "invoke-static { v$viewRegister }, " +
-                    "$INTEGRATIONS_CLASS_DESCRIPTOR->changeOpacity(Landroid/widget/ImageView;)V",
+                    "$EXTENSION_CLASS_DESCRIPTOR->changeOpacity(Landroid/widget/ImageView;)V",
             )
         }
     }

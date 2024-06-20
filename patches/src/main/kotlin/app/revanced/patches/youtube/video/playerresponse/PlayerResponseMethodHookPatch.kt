@@ -4,7 +4,7 @@ import app.revanced.patcher.extensions.InstructionExtensions.addInstruction
 import app.revanced.patcher.extensions.InstructionExtensions.addInstructions
 import app.revanced.patcher.patch.bytecodePatch
 import app.revanced.patcher.util.proxy.mutableTypes.MutableMethod
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 
 private val hooks = mutableSetOf<Hook>()
 
@@ -17,7 +17,7 @@ private const val PARAMETER_VIDEO_ID = 1
 private const val PARAMETER_PROTO_BUFFER = 3
 private const val PARAMETER_IS_SHORT_AND_OPENING_OR_PLAYING = 11
 
-// Registers used to pass the parameters to integrations.
+// Registers used to pass the parameters to the extension.
 private var playerResponseMethodCopyRegisters = false
 private lateinit var registerVideoId: String
 private lateinit var registerProtoBuffer: String
@@ -27,7 +27,7 @@ private lateinit var playerResponseMethod: MutableMethod
 private var numberOfInstructionsAdded = 0
 
 val playerResponseMethodHookPatch = bytecodePatch {
-    dependsOn(integrationsPatch)
+    dependsOn(sharedExtensionPatch)
 
     val playerParameterBuilderMatch by playerParameterBuilderFingerprint()
 
@@ -35,7 +35,7 @@ val playerResponseMethodHookPatch = bytecodePatch {
         playerResponseMethod = playerParameterBuilderMatch.mutableMethod
 
         // On some app targets the method has too many registers pushing the parameters past v15.
-        // If needed, move the parameters to 4-bit registers, so they can be passed to integrations.
+        // If needed, move the parameters to 4-bit registers, so they can be passed to the extension.
         playerResponseMethodCopyRegisters = playerResponseMethod.implementation!!.registerCount -
             playerResponseMethod.parameterTypes.size + PARAMETER_IS_SHORT_AND_OPENING_OR_PLAYING > 15
 

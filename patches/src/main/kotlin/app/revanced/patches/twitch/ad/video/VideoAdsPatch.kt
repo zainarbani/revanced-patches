@@ -10,7 +10,7 @@ import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
 import app.revanced.patches.twitch.ad.shared.util.ReturnMethod
 import app.revanced.patches.twitch.ad.shared.util.adPatch
-import app.revanced.patches.twitch.misc.integrations.integrationsPatch
+import app.revanced.patches.twitch.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.twitch.misc.settings.PreferenceScreen
 import app.revanced.patches.twitch.misc.settings.settingsPatch
 
@@ -18,11 +18,11 @@ val videoAdsPatch = bytecodePatch(
     name = "Block video ads",
     description = "Blocks video ads in streams and VODs.",
 ) {
-    val conditionCall = "Lapp/revanced/integrations/twitch/patches/VideoAdsPatch;->shouldBlockVideoAds()Z"
+    val conditionCall = "Lapp/revanced/extension/twitch/patches/VideoAdsPatch;->shouldBlockVideoAds()Z"
     val skipLabelName = "show_video_ads"
 
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         addResourcesPatch,
         adPatch(conditionCall, skipLabelName) { createConditionInstructions, blockMethods ->

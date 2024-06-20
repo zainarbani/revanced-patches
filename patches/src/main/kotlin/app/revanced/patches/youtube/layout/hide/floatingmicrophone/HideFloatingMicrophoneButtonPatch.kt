@@ -10,7 +10,7 @@ import app.revanced.patches.shared.misc.mapping.get
 import app.revanced.patches.shared.misc.mapping.resourceMappingPatch
 import app.revanced.patches.shared.misc.mapping.resourceMappings
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
@@ -36,8 +36,8 @@ private val hideFloatingMicrophoneButtonResourcePatch = resourcePatch {
     }
 }
 
-internal const val INTEGRATIONS_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/patches/HideFloatingMicrophoneButtonPatch;"
+internal const val EXTENSION_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/patches/HideFloatingMicrophoneButtonPatch;"
 
 @Suppress("unused")
 val hideFloatingMicrophoneButtonPatch = bytecodePatch(
@@ -45,7 +45,7 @@ val hideFloatingMicrophoneButtonPatch = bytecodePatch(
     description = "Adds an option to hide the floating microphone button when searching.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         hideFloatingMicrophoneButtonResourcePatch,
     )
 
@@ -89,7 +89,7 @@ val hideFloatingMicrophoneButtonPatch = bytecodePatch(
             addInstructions(
                 insertIndex,
                 """
-                    invoke-static {v$showButtonRegister}, $INTEGRATIONS_CLASS_DESCRIPTOR->hideFloatingMicrophoneButton(Z)Z
+                    invoke-static {v$showButtonRegister}, $EXTENSION_CLASS_DESCRIPTOR->hideFloatingMicrophoneButton(Z)Z
                     move-result v$showButtonRegister
                 """,
             )

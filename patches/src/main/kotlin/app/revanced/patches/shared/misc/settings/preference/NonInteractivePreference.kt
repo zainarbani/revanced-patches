@@ -6,7 +6,7 @@ import org.w3c.dom.Document
 /**
  * A non-interactive preference.
  *
- * Typically used to present static text, but also used for custom integration code that responds to taps.
+ * Typically used to present static text, but also used for custom extension code that responds to taps.
  *
  * @param key The preference key.
  * @param summaryKey The preference summary key.

@@ -17,25 +17,26 @@ import java.io.InvalidClassException
 internal lateinit var jsonHooks: JsonHookPatchHook
     private set
 
-private const val JSON_HOOK_CLASS_NAMESPACE = "app/revanced/integrations/twitter/patches/hook/json"
+private const val JSON_HOOK_CLASS_NAMESPACE = "app/revanced/extension/twitter/patches/hook/json"
 private const val JSON_HOOK_PATCH_CLASS_DESCRIPTOR = "L$JSON_HOOK_CLASS_NAMESPACE/JsonHookPatch;"
 private const val BASE_PATCH_CLASS_NAME = "BaseJsonHook"
 private const val JSON_HOOK_CLASS_DESCRIPTOR = "L$JSON_HOOK_CLASS_NAMESPACE/$BASE_PATCH_CLASS_NAME;"
 
 val jsonHookPatch = bytecodePatch(
     description = "Hooks the stream which reads JSON responses.",
-    requiresIntegrations = true,
 ) {
+    extendWith("extensions/twitter/misc/hook/json/json-hook-patch.rve")
+
     val loganSquareMatch by loganSquareFingerprint()
 
     execute { context ->
         jsonHookPatchFingerprint.apply {
-            // Make sure the integrations are present.
+            // Make sure the extension is present.
             val jsonHookPatch = context.classBy { classDef -> classDef.type == JSON_HOOK_PATCH_CLASS_DESCRIPTOR }
-                ?: throw PatchException("Could not find integrations.")
+                ?: throw PatchException("Could not find the extension.")
 
             if (!match(context, jsonHookPatch.immutableClass)) {
-                throw PatchException("Unexpected integrations.")
+                throw PatchException("Unexpected extension.")
             }
         }.let { jsonHooks = JsonHookPatchHook(it) }
 

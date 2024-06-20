@@ -26,7 +26,7 @@ open class PreferenceScreenPreference(
     // an extra bundle parameter can be added to the preferences XML declaration.
     // This would require bundling and referencing an additional XML file
     // or adding new attributes to the attrs.xml file.
-    // Since the key value is not currently used by integrations,
+    // Since the key value is not currently used by the extensions,
     // for now it's much simpler to modify the key to include the sort parameter.
 ) : BasePreference(if (sorting == Sorting.UNSORTED) key else (key + sorting.keySuffix), titleKey, summaryKey, tag) {
     override fun serialize(ownerDocument: Document, resourceCallback: (BaseResource) -> Unit) =

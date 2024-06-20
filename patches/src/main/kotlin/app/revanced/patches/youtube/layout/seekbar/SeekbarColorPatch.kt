@@ -11,7 +11,7 @@ import app.revanced.patches.shared.misc.mapping.resourceMappingPatch
 import app.revanced.patches.shared.misc.mapping.resourceMappings
 import app.revanced.patches.youtube.layout.theme.lithoColorHookPatch
 import app.revanced.patches.youtube.layout.theme.lithoColorOverrideHook
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import app.revanced.util.indexOfFirstWideLiteralInstructionValueOrThrow
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -56,20 +56,20 @@ private val seekbarColorResourcePatch = resourcePatch {
             val scaleNode = progressNode.getElementsByTagName("scale").item(0) as Element
             val shapeNode = scaleNode.getElementsByTagName("shape").item(0) as Element
             val replacementNode = document.createElement(
-                "app.revanced.integrations.youtube.patches.theme.ProgressBarDrawable",
+                "app.revanced.extension.youtube.patches.theme.ProgressBarDrawable",
             )
             scaleNode.replaceChild(replacementNode, shapeNode)
         }
     }
 }
 
-private const val INTEGRATIONS_CLASS_DESCRIPTOR = "Lapp/revanced/integrations/youtube/patches/theme/SeekbarColorPatch;"
+private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/revanced/extension/youtube/patches/theme/SeekbarColorPatch;"
 
 val seekbarColorPatch = bytecodePatch(
     description = "Hide or set a custom seekbar color",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         lithoColorHookPatch,
         seekbarColorResourcePatch,
     )
@@ -85,7 +85,7 @@ val seekbarColorPatch = bytecodePatch(
             addInstructions(
                 registerIndex + 1,
                 """
-                    invoke-static { v$colorRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->getVideoPlayerSeekbarColor(I)I
+                    invoke-static { v$colorRegister }, $EXTENSION_CLASS_DESCRIPTOR->getVideoPlayerSeekbarColor(I)I
                     move-result v$colorRegister
                 """,
             )
@@ -109,13 +109,13 @@ val seekbarColorPatch = bytecodePatch(
                 addInstructions(
                     0,
                     """
-                        invoke-static { v$colorRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->getVideoPlayerSeekbarClickedColor(I)I
+                        invoke-static { v$colorRegister }, $EXTENSION_CLASS_DESCRIPTOR->getVideoPlayerSeekbarClickedColor(I)I
                         move-result v$colorRegister
                     """,
                 )
             }
         }
 
-        lithoColorOverrideHook(INTEGRATIONS_CLASS_DESCRIPTOR, "getLithoColor")
+        lithoColorOverrideHook(EXTENSION_CLASS_DESCRIPTOR, "getLithoColor")
     }
 }

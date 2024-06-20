@@ -38,13 +38,13 @@ private val hideLayoutComponentsResourcePatch = resourcePatch {
     }
 }
 private const val LAYOUT_COMPONENTS_FILTER_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/patches/components/LayoutComponentsFilter;"
+    "Lapp/revanced/extension/youtube/patches/components/LayoutComponentsFilter;"
 private const val DESCRIPTION_COMPONENTS_FILTER_CLASS_NAME =
-    "Lapp/revanced/integrations/youtube/patches/components/DescriptionComponentsFilter;"
+    "Lapp/revanced/extension/youtube/patches/components/DescriptionComponentsFilter;"
 private const val CUSTOM_FILTER_CLASS_NAME =
-    "Lapp/revanced/integrations/youtube/patches/components/CustomFilter;"
+    "Lapp/revanced/extension/youtube/patches/components/CustomFilter;"
 private const val KEYWORD_FILTER_CLASS_NAME =
-    "Lapp/revanced/integrations/youtube/patches/components/KeywordContentFilter;"
+    "Lapp/revanced/extension/youtube/patches/components/KeywordContentFilter;"
 
 @Suppress("unused")
 val hideLayoutComponentsPatch = bytecodePatch(

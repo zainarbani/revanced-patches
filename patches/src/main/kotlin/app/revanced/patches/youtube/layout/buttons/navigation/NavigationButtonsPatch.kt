@@ -9,7 +9,7 @@ import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.PreferenceScreenPreference
 import app.revanced.patches.shared.misc.settings.preference.PreferenceScreenPreference.Sorting
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.navigation.hookNavigationButtonCreated
 import app.revanced.patches.youtube.misc.navigation.navigationBarHookPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
@@ -20,8 +20,8 @@ import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
-internal const val INTEGRATIONS_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/patches/NavigationButtonsPatch;"
+internal const val EXTENSION_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/patches/NavigationButtonsPatch;"
 
 @Suppress("unused")
 val navigationButtonsPatch = bytecodePatch(
@@ -29,7 +29,7 @@ val navigationButtonsPatch = bytecodePatch(
     description = "Adds options to hide and change navigation buttons (such as the Shorts button).",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         settingsPatch,
         addResourcesPatch,
         navigationBarHookPatch,
@@ -98,7 +98,7 @@ val navigationButtonsPatch = bytecodePatch(
             addInstructions(
                 conditionalCheckIndex,
                 """
-                    invoke-static { }, $INTEGRATIONS_CLASS_DESCRIPTOR->switchCreateWithNotificationButton()Z
+                    invoke-static { }, $EXTENSION_CLASS_DESCRIPTOR->switchCreateWithNotificationButton()Z
                     move-result v$conditionRegister
                 """,
             )
@@ -115,11 +115,11 @@ val navigationButtonsPatch = bytecodePatch(
             addInstruction(
                 setTextIndex,
                 "invoke-static { v$targetRegister }, " +
-                    "$INTEGRATIONS_CLASS_DESCRIPTOR->hideNavigationButtonLabels(Landroid/widget/TextView;)V",
+                    "$EXTENSION_CLASS_DESCRIPTOR->hideNavigationButtonLabels(Landroid/widget/TextView;)V",
             )
         }
 
         // Hook navigation button created, in order to hide them.
-        hookNavigationButtonCreated(INTEGRATIONS_CLASS_DESCRIPTOR)
+        hookNavigationButtonCreated(EXTENSION_CLASS_DESCRIPTOR)
     }
 }

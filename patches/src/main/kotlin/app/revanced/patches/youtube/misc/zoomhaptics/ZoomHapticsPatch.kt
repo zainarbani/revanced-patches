@@ -35,7 +35,7 @@ val zoomHapticsPatch = bytecodePatch(
             addInstructionsWithLabels(
                 0,
                 """
-                invoke-static { }, Lapp/revanced/integrations/youtube/patches/ZoomHapticsPatch;->shouldVibrate()Z
+                invoke-static { }, Lapp/revanced/extension/youtube/patches/ZoomHapticsPatch;->shouldVibrate()Z
                 move-result v0
                 if-nez v0, :vibrate
                 return-void

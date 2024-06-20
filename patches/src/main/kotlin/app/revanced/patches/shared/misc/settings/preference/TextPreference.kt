@@ -17,7 +17,7 @@ class TextPreference(
     key: String? = null,
     titleKey: String = "${key}_title",
     summaryKey: String? = "${key}_summary",
-    tag: String = "app.revanced.integrations.shared.settings.preference.ResettableEditTextPreference",
+    tag: String = "app.revanced.extension.shared.settings.preference.ResettableEditTextPreference",
     val inputType: InputType = InputType.TEXT
 ) : BasePreference(key, titleKey, summaryKey, tag) {
 

@@ -14,7 +14,6 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 @Suppress("unused")
 val hideAdsPatch = bytecodePatch(
     name = "Hide ads",
-    requiresIntegrations = true,
 ) {
     dependsOn(hideBannerPatch, hideCommentAdsPatch)
 
@@ -25,6 +24,8 @@ val hideAdsPatch = bytecodePatch(
     // This constraint is necessary due to dependency on hideBannerPatch.
     compatibleWith("com.reddit.frontpage"("2024.17.0"))
 
+    extendWith("extensions/reddit/ad/general/hide-ads.rve")
+
     val adPostMatch by adPostFingerprint()
     val newAdPostMatch by newAdPostFingerprint()
 
@@ -32,7 +33,7 @@ val hideAdsPatch = bytecodePatch(
         // region Filter promoted ads (does not work in popular or latest feed)
 
         val filterMethodDescriptor =
-            "Lapp/revanced/integrations/reddit/patches/FilterPromotedLinksPatch;" +
+            "Lapp/revanced/extension/reddit/patches/FilterPromotedLinksPatch;" +
                 "->filterChildren(Ljava/lang/Iterable;)Ljava/util/List;"
 
         adPostMatch.mutableMethod.apply {

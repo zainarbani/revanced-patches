@@ -36,7 +36,7 @@ private const val PACKAGE_NAME_REGEX_PATTERN = "^[a-z]\\w*(\\.[a-z]\\w*)+\$"
  * @param primeMethodFingerprint The fingerprint of the "prime" method that needs to be patched.
  * @param earlyReturnFingerprints The fingerprints of methods that need to be returned early.
  * @param mainActivityOnCreateFingerprint The fingerprint of the main activity onCreate method.
- * @param integrationsPatch The patch responsible for the integrations.
+ * @param extensionPatch The patch responsible for the extension.
  * @param gmsCoreSupportResourcePatchFactory The factory for the corresponding resource patch
  * that is used to patch the resources.
  * @param executeBlock The additional execution block of the patch.
@@ -48,7 +48,7 @@ fun gmsCoreSupportPatch(
     primeMethodFingerprint: Fingerprint,
     earlyReturnFingerprints: Set<Fingerprint>,
     mainActivityOnCreateFingerprint: Fingerprint,
-    integrationsPatch: Patch<*>,
+    extensionPatch: Patch<*>,
     gmsCoreSupportResourcePatchFactory: (gmsCoreVendorGroupIdOption: Option<String>) -> Patch<*>,
     executeBlock: Patch<BytecodePatchContext>.(BytecodePatchContext) -> Unit = {},
     block: BytecodePatchBuilder.() -> Unit = {},
@@ -56,7 +56,6 @@ fun gmsCoreSupportPatch(
     name = "GmsCore support",
     description = "Allows patched Google apps to run without root and under a different package name " +
         "by using GmsCore instead of Google Play Services.",
-    requiresIntegrations = true,
 ) {
     val gmsCoreVendorGroupIdOption = stringOption(
         key = "gmsCoreVendorGroupId",
@@ -73,7 +72,7 @@ fun gmsCoreSupportPatch(
     dependsOn(
         changePackageNamePatch,
         gmsCoreSupportResourcePatchFactory(gmsCoreVendorGroupIdOption),
-        integrationsPatch,
+        extensionPatch,
     )
 
     val gmsCoreVendorGroupId by gmsCoreVendorGroupIdOption
@@ -207,11 +206,11 @@ fun gmsCoreSupportPatch(
         // Verify GmsCore is installed and whitelisted for power optimizations and background usage.
         mainActivityOnCreateMatch.mutableMethod.addInstructions(
             0,
-            "invoke-static/range { p0 .. p0 }, Lapp/revanced/integrations/shared/GmsCoreSupport;->" +
+            "invoke-static/range { p0 .. p0 }, Lapp/revanced/extension/shared/GmsCoreSupport;->" +
                 "checkGmsCore(Landroid/app/Activity;)V",
         )
 
-        // Change the vendor of GmsCore in ReVanced Integrations.
+        // Change the vendor of GmsCore in the extension.
         gmsCoreSupportMatch.mutableClass.methods
             .single { it.name == GET_GMS_CORE_VENDOR_GROUP_ID_METHOD_NAME }
             .replaceInstruction(0, "const-string v0, \"$gmsCoreVendorGroupId\"")
@@ -411,7 +410,7 @@ fun gmsCoreSupportResourcePatch(
                     setAttribute("android:value", spoofedPackageSignature)
                 }
 
-                // GmsCore presence detection in ReVanced Integrations.
+                // GmsCore presence detection in extension.
                 applicationNode.adoptChild("meta-data") {
                     // TODO: The name of this metadata should be dynamic.
                     setAttribute("android:name", "app.revanced.MICROG_PACKAGE_NAME")

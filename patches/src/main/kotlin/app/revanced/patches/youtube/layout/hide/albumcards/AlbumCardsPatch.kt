@@ -10,7 +10,7 @@ import app.revanced.patches.shared.misc.mapping.get
 import app.revanced.patches.shared.misc.mapping.resourceMappingPatch
 import app.revanced.patches.shared.misc.mapping.resourceMappings
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -42,7 +42,7 @@ val albumCardsPatch = bytecodePatch(
     description = "Adds an option to hide album cards below artist descriptions.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         albumCardsResourcePatch,
     )
 
@@ -87,7 +87,7 @@ val albumCardsPatch = bytecodePatch(
             addInstruction(
                 insertIndex,
                 "invoke-static {v$albumCardViewRegister}, " +
-                    "Lapp/revanced/integrations/youtube/patches/HideAlbumCardsPatch;" +
+                    "Lapp/revanced/extension/youtube/patches/HideAlbumCardsPatch;" +
                     "->" +
                     "hideAlbumCard(Landroid/view/View;)V",
             )

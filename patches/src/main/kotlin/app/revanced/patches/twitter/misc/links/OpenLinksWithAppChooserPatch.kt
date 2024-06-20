@@ -16,7 +16,7 @@ val openLinksWithAppChooserPatch = bytecodePatch(
 
     execute {
         val methodReference =
-            "Lapp/revanced/integrations/twitter/patches/links/OpenLinksWithAppChooserPatch;->" +
+            "Lapp/revanced/extension/twitter/patches/links/OpenLinksWithAppChooserPatch;->" +
                 "openWithChooser(Landroid/content/Context;Landroid/content/Intent;)V"
 
         openLinkMatch.mutableMethod.addInstructions(

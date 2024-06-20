@@ -12,7 +12,7 @@ import app.revanced.patches.shared.misc.mapping.get
 import app.revanced.patches.shared.misc.mapping.resourceMappingPatch
 import app.revanced.patches.shared.misc.mapping.resourceMappings
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.litho.filter.addLithoFilter
 import app.revanced.patches.youtube.misc.litho.filter.lithoFilterPatch
 import app.revanced.patches.youtube.misc.recyclerviewtree.hook.addRecyclerViewTreeHook
@@ -54,10 +54,10 @@ private val restoreOldVideoQualityMenuResourcePatch = resourcePatch {
 }
 
 private const val FILTER_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/patches/components/VideoQualityMenuFilterPatch;"
+    "Lapp/revanced/extension/youtube/patches/components/VideoQualityMenuFilterPatch;"
 
-private const val INTEGRATIONS_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/patches/playback/quality/RestoreOldVideoQualityMenuPatch;"
+private const val EXTENSION_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/patches/playback/quality/RestoreOldVideoQualityMenuPatch;"
 
 @Suppress("unused")
 val restoreOldVideoQualityMenuPatch = bytecodePatch(
@@ -66,7 +66,7 @@ val restoreOldVideoQualityMenuPatch = bytecodePatch(
 
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         restoreOldVideoQualityMenuResourcePatch,
         lithoFilterPatch,
         recyclerViewTreeHookPatch,
@@ -116,7 +116,7 @@ val restoreOldVideoQualityMenuPatch = bytecodePatch(
             addInstruction(
                 checkCastIndex + 1,
                 "invoke-static { v$listViewRegister }, " +
-                    "$INTEGRATIONS_CLASS_DESCRIPTOR->" +
+                    "$EXTENSION_CLASS_DESCRIPTOR->" +
                     "showOldVideoQualityMenu(Landroid/widget/ListView;)V",
             )
         }
@@ -135,7 +135,7 @@ val restoreOldVideoQualityMenuPatch = bytecodePatch(
             addInstructions(
                 insertIndex,
                 """
-                    invoke-static { v$register }, $INTEGRATIONS_CLASS_DESCRIPTOR->forceAdvancedVideoQualityMenuCreation(Z)Z
+                    invoke-static { v$register }, $EXTENSION_CLASS_DESCRIPTOR->forceAdvancedVideoQualityMenuCreation(Z)Z
                     move-result v$register
                 """,
             )
@@ -145,7 +145,7 @@ val restoreOldVideoQualityMenuPatch = bytecodePatch(
 
         // region Patch for the new type of the video quality menu.
 
-        addRecyclerViewTreeHook(INTEGRATIONS_CLASS_DESCRIPTOR)
+        addRecyclerViewTreeHook(EXTENSION_CLASS_DESCRIPTOR)
 
         // Required to check if the video quality menu is currently shown in order to click on the "Advanced" item.
         addLithoFilter(FILTER_CLASS_DESCRIPTOR)

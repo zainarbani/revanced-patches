@@ -14,7 +14,7 @@ internal val showOldPlaybackSpeedMenuFingerprint = fingerprint {
     literal { speedUnavailableId }
 }
 
-internal val showOldPlaybackSpeedMenuIntegrationsFingerprint = fingerprint {
+internal val showOldPlaybackSpeedMenuExtensionFingerprint = fingerprint {
     custom { method, _ -> method.name == "showOldPlaybackSpeedMenu" }
 }
 

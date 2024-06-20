@@ -10,10 +10,10 @@ import app.revanced.patches.shared.misc.gms.gmsCoreSupportPatch
 import app.revanced.patches.shared.misc.settings.preference.IntentPreference
 import app.revanced.patches.shared.primeMethodFingerprint
 import app.revanced.patches.youtube.layout.buttons.cast.hideCastButtonPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.fix.playback.spoofClientPatch
 import app.revanced.patches.youtube.misc.gms.Constants.REVANCED_YOUTUBE_PACKAGE_NAME
 import app.revanced.patches.youtube.misc.gms.Constants.YOUTUBE_PACKAGE_NAME
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import app.revanced.patches.youtube.shared.mainActivityOnCreateFingerprint
@@ -31,7 +31,7 @@ val gmsCoreSupportPatch = gmsCoreSupportPatch(
         castContextFetchFingerprint,
     ),
     mainActivityOnCreateFingerprint = mainActivityOnCreateFingerprint,
-    integrationsPatch = integrationsPatch,
+    extensionPatch = sharedExtensionPatch,
     gmsCoreSupportResourcePatchFactory = ::gmsCoreSupportResourcePatch,
 ) {
     dependsOn(

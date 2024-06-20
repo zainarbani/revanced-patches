@@ -50,7 +50,7 @@ val commentsPatch = bytecodePatch(
     )
 
     val filterClassDescriptor =
-        "Lapp/revanced/integrations/youtube/patches/components/CommentsFilter;"
+        "Lapp/revanced/extension/youtube/patches/components/CommentsFilter;"
 
     execute {
         addResources("youtube", "layout.hide.comments.commentsPatch")

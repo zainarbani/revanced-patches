@@ -11,7 +11,7 @@ import app.revanced.patches.shared.misc.mapping.get
 import app.revanced.patches.shared.misc.mapping.resourceMappingPatch
 import app.revanced.patches.shared.misc.mapping.resourceMappings
 import app.revanced.patches.shared.misc.settings.preference.NonInteractivePreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.playertype.playerTypeHookPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
@@ -30,8 +30,8 @@ private val backgroundPlaybackResourcePatch = resourcePatch {
     }
 }
 
-private const val INTEGRATIONS_CLASS_DESCRIPTOR =
-    "Lapp/revanced/integrations/youtube/patches/BackgroundPlaybackPatch;"
+private const val EXTENSION_CLASS_DESCRIPTOR =
+    "Lapp/revanced/extension/youtube/patches/BackgroundPlaybackPatch;"
 
 @Suppress("unused")
 val backgroundPlaybackPatch = bytecodePatch(
@@ -40,7 +40,7 @@ val backgroundPlaybackPatch = bytecodePatch(
 ) {
     dependsOn(
         backgroundPlaybackResourcePatch,
-        integrationsPatch,
+        sharedExtensionPatch,
         playerTypeHookPatch,
         videoInformationPatch,
         settingsPatch,
@@ -85,7 +85,7 @@ val backgroundPlaybackPatch = bytecodePatch(
         backgroundPlaybackManagerMatch.mutableMethod.addInstructions(
             0,
             """
-                invoke-static {}, $INTEGRATIONS_CLASS_DESCRIPTOR->playbackIsNotShort()Z
+                invoke-static {}, $EXTENSION_CLASS_DESCRIPTOR->playbackIsNotShort()Z
                 move-result v0
                 return v0
             """,
@@ -102,7 +102,7 @@ val backgroundPlaybackPatch = bytecodePatch(
             settingsBooleanMethod.addInstructions(
                 0,
                 """
-                    invoke-static {}, $INTEGRATIONS_CLASS_DESCRIPTOR->overrideBackgroundPlaybackAvailable()Z
+                    invoke-static {}, $EXTENSION_CLASS_DESCRIPTOR->overrideBackgroundPlaybackAvailable()Z
                     move-result v0
                     return v0
                 """,

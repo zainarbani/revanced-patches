@@ -12,7 +12,7 @@ import app.revanced.patches.shared.misc.mapping.resourceMappingPatch
 import app.revanced.patches.shared.misc.mapping.resourceMappings
 import app.revanced.patches.shared.misc.settings.preference.PreferenceScreenPreference
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
-import app.revanced.patches.youtube.misc.integrations.integrationsPatch
+import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -52,7 +52,7 @@ private val hideFilterBarResourcePatch = resourcePatch {
     }
 }
 
-internal const val INTEGRATIONS_CLASS_DESCRIPTOR = "Lapp/revanced/integrations/youtube/patches/HideFilterBarPatch;"
+internal const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/revanced/extension/youtube/patches/HideFilterBarPatch;"
 
 @Suppress("unused")
 val hideFilterBarPatch = bytecodePatch(
@@ -60,7 +60,7 @@ val hideFilterBarPatch = bytecodePatch(
     description = "Adds options to hide the category bar at the top of video feeds.",
 ) {
     dependsOn(
-        integrationsPatch,
+        sharedExtensionPatch,
         hideFilterBarResourcePatch,
     )
 
@@ -112,19 +112,19 @@ val hideFilterBarPatch = bytecodePatch(
 
         filterBarHeightMatch.patch<TwoRegisterInstruction> { register ->
             """
-                invoke-static { v$register }, $INTEGRATIONS_CLASS_DESCRIPTOR->hideInFeed(I)I
+                invoke-static { v$register }, $EXTENSION_CLASS_DESCRIPTOR->hideInFeed(I)I
                 move-result v$register
             """
         }
 
         relatedChipCloudMatch.patch<OneRegisterInstruction>(1) { register ->
             "invoke-static { v$register }, " +
-                "$INTEGRATIONS_CLASS_DESCRIPTOR->hideInRelatedVideos(Landroid/view/View;)V"
+                "$EXTENSION_CLASS_DESCRIPTOR->hideInRelatedVideos(Landroid/view/View;)V"
         }
 
         searchFingerprintResultsChipBarMatch.patch<OneRegisterInstruction>(-1, -2) { register ->
             """
-                invoke-static { v$register }, $INTEGRATIONS_CLASS_DESCRIPTOR->hideInSearch(I)I
+                invoke-static { v$register }, $EXTENSION_CLASS_DESCRIPTOR->hideInSearch(I)I
                 move-result v$register
             """
         }
