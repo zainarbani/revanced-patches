@@ -281,8 +281,7 @@ object SpoofClientPatch : BytecodePatch(
                 addInstructions(
                     scanResult,
                     """
-                        iget-object p2, p0, Lcom/google/android/libraries/youtube/media/interfaces/MediaFetchPlayerConfig;->mediaCommonConfig:Lcom/google/protos/youtube/api/innertube/MediaCommonConfigOuterClass${'$'}MediaCommonConfig;
-                        invoke-static { p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintObj(Ljava/lang/Object;)V
+                        invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrintSet(Ljava/util/Set;)V
                     """
                 )
             }

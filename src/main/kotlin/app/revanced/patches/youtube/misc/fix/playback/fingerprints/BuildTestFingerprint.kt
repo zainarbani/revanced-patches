@@ -6,18 +6,13 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal object BuildTestFingerprint : MethodFingerprint(
-    accessFlags = AccessFlags.PUBLIC or AccessFlags.CONSTRUCTOR,
-    returnType = "V",
-    parameters = listOf(
-        "Lcom/google/protos/youtube/api/innertube/LivePlayerConfigOuterClass\$LivePlayerConfig;",
-        "Lcom/google/protos/youtube/api/innertube/MediaCommonConfigOuterClass\$MediaCommonConfig;",
-        "Lcom/google/protos/youtube/api/innertube/ManifestlessWindowedLiveConfigOuterClass\$ManifestlessWindowedLiveConfig;",
-        "I"
-    ),
-    opcodes = listOf(Opcode.RETURN_VOID),
+    accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL or AccessFlags.DECLARED_SYNCHRONIZED,
+    returnType = "Ljava/util/Set;",
+    parameters = emptyList(),
+    opcodes = listOf(Opcode.RETURN_OBJECT),
     customFingerprint = { methodDef, classDef ->
-        methodDef.name == "<init>" &&
-        classDef.type.endsWith("MediaFetchPlayerConfig;")
+        methodDef.name == "T" &&
+        classDef.type.endsWith("PlayerConfigModel;")
     }
 )
 
