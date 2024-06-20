@@ -8,11 +8,15 @@ import com.android.tools.smali.dexlib2.Opcode
 internal object BuildTestFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PUBLIC or AccessFlags.CONSTRUCTOR,
     returnType = "V",
-    parameters = listOf("L"),
+    parameters = listOf(
+        "Lcom/google/protos/youtube/api/innertube/LivePlayerConfigOuterClass\$LivePlayerConfig;",
+        "Lcom/google/protos/youtube/api/innertube/MediaCommonConfigOuterClass\$MediaCommonConfig;",
+        "Lcom/google/protos/youtube/api/innertube/ManifestlessWindowedLiveConfigOuterClass\$ManifestlessWindowedLiveConfig;"
+    ),
     opcodes = listOf(Opcode.RETURN_VOID),
     customFingerprint = { methodDef, classDef ->
         methodDef.name == "<init>" &&
-        classDef.type.endsWith("PlayerConfigModel;")
+        classDef.type.endsWith("MediaFetchPlayerConfig;")
     }
 )
 
