@@ -84,6 +84,7 @@ object SpoofClientPatch : BytecodePatch(
 
         // Player speed menu item.
         CreatePlaybackSpeedMenuItemFingerprint,
+        BuildTestFingerprint,
     ),
 ) {
     private const val INTEGRATIONS_CLASS_DESCRIPTOR =
