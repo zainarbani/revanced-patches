@@ -271,6 +271,22 @@ object SpoofClientPatch : BytecodePatch(
             }
         }
 
+        BuildTestFingerprint.resultOrThrow().let {
+            //val scanResult = it.scanResult.patternScanResult!!.endIndex
+
+            it.mutableMethod.apply {
+                //val targetRegister = getInstruction<OneRegisterInstruction>(scanResult)
+                //println("zain: $targetRegister")
+
+                addInstructions(
+                    13,
+                    """
+                        invoke-static { v2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
+                    """
+                )
+            }
+        }
+        
         // endregion
 
         // region Fix player gesture if spoofing to iOS.

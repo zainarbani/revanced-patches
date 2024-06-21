@@ -6,13 +6,18 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal object BuildTestFingerprint : MethodFingerprint(
-    accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL or AccessFlags.DECLARED_SYNCHRONIZED,
-    returnType = "Ljava/util/Set;",
-    parameters = emptyList(),
+    accessFlags = AccessFlags.PUBLIC or AccessFlags.CONSTRUCTOR,
+    returnType = "V",
+    parameters = listOf(
+        "L",
+        "Ljava/lang/String;",
+        "Z",
+        "L"
+    ),
     opcodes = listOf(Opcode.RETURN_OBJECT),
     customFingerprint = { methodDef, classDef ->
-        methodDef.name == "S" &&
-        classDef.type.endsWith("PlayerConfigModel;")
+        methodDef.name == "<init>" &&
+        classDef.type.endsWith("FormatStreamModel;")
     }
 )
 
