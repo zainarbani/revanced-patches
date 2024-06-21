@@ -14,7 +14,7 @@ internal object BuildTestFingerprint : MethodFingerprint(
         "Z",
         "L"
     ),
-    opcodes = listOf(Opcode.RETURN_OBJECT),
+    //opcodes = listOf(Opcode.RETURN_OBJECT),
     customFingerprint = { methodDef, classDef ->
         methodDef.name == "<init>" &&
         classDef.type.endsWith("FormatStreamModel;")
