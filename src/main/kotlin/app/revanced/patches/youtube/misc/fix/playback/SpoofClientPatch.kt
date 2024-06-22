@@ -109,10 +109,16 @@ object SpoofClientPatch : BytecodePatch(
         )
 
         BuildTestTwoFingerprint.resultOrThrow().let {
-            it.mutableMethod.instructions.forEachIndexed { index, instruction ->
-                if (instruction.opcode == Opcode.INVOKE_VIRTUAL &&
-                    instruction.getReference<MethodReference>()?.name == "getPackageName"
-                ) {
+            with(it.mutableMethod.implementation) {
+                this?.instructions?.forEachIndexed { index, instruction ->
+                    if (instruction.opcode != Opcode.INVOKE_VIRTUAL) {
+                        return@forEachIndexed
+                    }
+
+                    if (instruction.getReference<MethodReference>()?.name != "getPackageName")
+                        return@forEachIndexed
+                    }
+                    
                     it.mutableMethod.apply {
                         val targetRegister = getInstruction<OneRegisterInstruction>(index + 1).registerA
 
