@@ -25,6 +25,7 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.builder.MutableMethodImplementation
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
+import com.android.tools.smali.dexlib2.iface.instruction.formats.Instruction35c
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
@@ -114,7 +115,7 @@ object SpoofClientPatch : BytecodePatch(
                 this?.instructions?.forEachIndexed { index, instruction ->
                     if (instruction.opcode != Opcode.INVOKE_VIRTUAL) return@forEachIndexed
 
-                    val reference = instruction as MethodReference
+                    val reference = (instruction as Instruction35c).reference as MethodReference
                     if (reference.name != "getPackageName") return@forEachIndexed
 
                     it.mutableMethod.apply {
