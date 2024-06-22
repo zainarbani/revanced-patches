@@ -1,3 +1,10 @@
+# [4.11.0-dev.25](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.24...v4.11.0-dev.25) (2024-06-22)
+
+
+### Bug Fixes
+
+* **yt:** aaf7 ([ab2b017](https://github.com/zainarbani/revanced-patches/commit/ab2b017d03b51177a707b425c5c093cfe2f680b8))
+
 # [4.11.0-dev.24](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.23...v4.11.0-dev.24) (2024-06-22)
 
 
