@@ -276,7 +276,7 @@ object SpoofClientPatch : BytecodePatch(
             val scanResult = it.scanResult.patternScanResult!!.startIndex
 
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<OneRegisterInstruction>(scanResult + 2)
+                val targetRegister = getInstruction<OneRegisterInstruction>(scanResult + 1)
                 println("zain: $targetRegister")
 
                 addInstructions(
