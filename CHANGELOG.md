@@ -1,3 +1,11 @@
+# [4.11.0-dev.23](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.22...v4.11.0-dev.23) (2024-06-22)
+
+
+### Bug Fixes
+
+* **yt:** aaf4 ([a00e39e](https://github.com/zainarbani/revanced-patches/commit/a00e39ee736ca41837f43991f60d49dc63984b55))
+* **yt:** aaf5 ([0a22edc](https://github.com/zainarbani/revanced-patches/commit/0a22edc0d6f2d191d96c7dd8fc9ea99937bdc0a5))
+
 # [4.11.0-dev.22](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.21...v4.11.0-dev.22) (2024-06-22)
 
 
