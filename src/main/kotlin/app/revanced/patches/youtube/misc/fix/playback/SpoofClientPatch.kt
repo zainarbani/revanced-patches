@@ -273,16 +273,16 @@ object SpoofClientPatch : BytecodePatch(
         }
 
         BuildTestFingerprint.resultOrThrow().let {
-            //val scanResult = it.scanResult.patternScanResult!!.endIndex
+            val scanResult = it.scanResult.patternScanResult!!.startIndex
 
             it.mutableMethod.apply {
-                //val targetRegister = getInstruction<OneRegisterInstruction>(scanResult)
-                //println("zain: $targetRegister")
+                val targetRegister = getInstruction<OneRegisterInstruction>(scanResult + 2)
+                println("zain: $targetRegister")
 
                 addInstructions(
-                    13,
+                    scanResult + 2,
                     """
-                        invoke-static { v2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
+                        invoke-static { v8 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
                     """
                 )
             }
