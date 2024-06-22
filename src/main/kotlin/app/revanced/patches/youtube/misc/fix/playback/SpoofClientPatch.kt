@@ -280,7 +280,7 @@ object SpoofClientPatch : BytecodePatch(
                 val targetRegister = getInstruction<OneRegisterInstruction>(scanResult + 1).registerA
                 println("zain: $targetRegister")
 
-                addInstructions(
+                replaceInstruction(
                     scanResult + 1, "const-string v8, \"24d1c2c88308ac3bf9b2a2d291aec885f58053ec7117dcf0cf92ff29a095737e\""
                 )
             }
