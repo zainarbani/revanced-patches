@@ -115,7 +115,9 @@ object SpoofClientPatch : BytecodePatch(
                         return@forEachIndexed
                     }
 
-                    if (instruction.getReference<MethodReference>()?.name != "getPackageName") {
+                    val reference = instruction as MethodReference
+
+                    if (reference.name != "getPackageName") {
                         return@forEachIndexed
                     }
                     
