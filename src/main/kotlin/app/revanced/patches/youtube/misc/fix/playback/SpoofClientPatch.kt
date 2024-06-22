@@ -28,6 +28,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
+import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
 
@@ -111,16 +112,11 @@ object SpoofClientPatch : BytecodePatch(
         BuildTestTwoFingerprint.resultOrThrow().let {
             with(it.mutableMethod.implementation) {
                 this?.instructions?.forEachIndexed { index, instruction ->
-                    if (instruction.opcode != Opcode.INVOKE_VIRTUAL) {
-                        return@forEachIndexed
-                    }
+                    if (instruction.opcode != Opcode.INVOKE_VIRTUAL) return@forEachIndexed
 
                     val reference = instruction as MethodReference
+                    if (reference.name != "getPackageName") return@forEachIndexed
 
-                    if (reference.name != "getPackageName") {
-                        return@forEachIndexed
-                    }
-                    
                     it.mutableMethod.apply {
                         val targetRegister = getInstruction<OneRegisterInstruction>(index + 1).registerA
 
