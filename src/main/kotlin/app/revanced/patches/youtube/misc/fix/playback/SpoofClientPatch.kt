@@ -4,6 +4,7 @@ import app.revanced.patcher.data.BytecodeContext
 import app.revanced.patcher.extensions.InstructionExtensions.addInstruction
 import app.revanced.patcher.extensions.InstructionExtensions.addInstructions
 import app.revanced.patcher.extensions.InstructionExtensions.getInstruction
+import app.revanced.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.revanced.patcher.extensions.InstructionExtensions.getInstructions
 import app.revanced.patcher.extensions.or
 import app.revanced.patcher.patch.BytecodePatch
@@ -277,7 +278,7 @@ object SpoofClientPatch : BytecodePatch(
 
             it.mutableMethod.apply {
                 val targetRegister = getInstruction<OneRegisterInstruction>(scanResult + 1)
-                println("zain: $targetRegister")
+                println("zain: $targetRegister.registerA")
 
                 addInstructions(
                     scanResult + 2,
@@ -286,6 +287,18 @@ object SpoofClientPatch : BytecodePatch(
                     """
                 )
             }
+            
+            val initMethod = it.mutableClass
+                .methods.find { method ->
+                    method.name == "b"
+                }
+
+             initMethod?.apply {
+                replaceInstruction(
+                    35, "const-string v4, \"com.google.android.youtube\""
+                )
+            } ?: throw PatchException("Could not find the init method.")
+
         }
         
         // endregion
