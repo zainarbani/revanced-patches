@@ -277,14 +277,11 @@ object SpoofClientPatch : BytecodePatch(
             val scanResult = it.scanResult.patternScanResult!!.startIndex
 
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<OneRegisterInstruction>(scanResult + 1)
-                println("zain: $targetRegister.registerA")
+                val targetRegister = getInstruction<OneRegisterInstruction>(scanResult + 1).registerA
+                println("zain: $targetRegister")
 
                 addInstructions(
-                    scanResult + 2,
-                    """
-                        invoke-static { v8 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
-                    """
+                    scanResult + 1, "const-string v8, \"24d1c2c88308ac3bf9b2a2d291aec885f58053ec7117dcf0cf92ff29a095737e\""
                 )
             }
             
@@ -293,11 +290,11 @@ object SpoofClientPatch : BytecodePatch(
                     method.name == "b"
                 }
 
-             initMethod?.apply {
-                replaceInstruction(
-                    35, "const-string v4, \"com.google.android.youtube\""
-                )
-            } ?: throw PatchException("Could not find the init method.")
+            //initMethod?.apply {
+             //   replaceInstruction(
+          //          35, "const-string v4, \"com.google.android.youtube\""
+         //       )
+          //  } ?: throw PatchException("Could not find the init method.")
 
         }
         
