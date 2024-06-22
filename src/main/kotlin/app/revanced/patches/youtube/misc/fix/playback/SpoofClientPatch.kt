@@ -115,7 +115,7 @@ object SpoofClientPatch : BytecodePatch(
                         return@forEachIndexed
                     }
 
-                    if (instruction.getReference<MethodReference>()?.name != "getPackageName")
+                    if (instruction.getReference<MethodReference>()?.name != "getPackageName") {
                         return@forEachIndexed
                     }
                     
