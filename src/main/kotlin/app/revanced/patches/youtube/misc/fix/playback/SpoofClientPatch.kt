@@ -121,14 +121,17 @@ object SpoofClientPatch : BytecodePatch(
             
             val initMethod = it.mutableClass
                 .methods.find { method ->
-                    method.name == "b"
+                    method.name == "c"
                 }
 
-            //initMethod?.apply {
-             //   replaceInstruction(
-          //          35, "const-string v4, \"com.google.android.youtube\""
-         //       )
-          //  } ?: throw PatchException("Could not find the init method.")
+            initMethod?.apply {
+                addInstructions(
+                    15,
+                     """
+                         invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
+                     """
+                )
+            } ?: throw PatchException("Could not find the init method.")
 
         }
         
