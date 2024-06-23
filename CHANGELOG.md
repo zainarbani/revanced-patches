@@ -1,3 +1,312 @@
+# [4.11.0-dev.30](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.29...v4.11.0-dev.30) (2024-06-23)
+
+
+### Bug Fixes
+
+* **yt:** aae6 ([3ca26dd](https://github.com/zainarbani/revanced-patches/commit/3ca26dd9f5063a46128b6ba1d21054a08b5ad2a0))
+
+# [4.11.0-dev.29](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.28...v4.11.0-dev.29) (2024-06-23)
+
+
+### Bug Fixes
+
+* **yt:** aae5 ([52a377a](https://github.com/zainarbani/revanced-patches/commit/52a377a8c218cbfbdc99f0508bd00dad1bd387f0))
+
+# [4.11.0-dev.28](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.27...v4.11.0-dev.28) (2024-06-22)
+
+
+### Bug Fixes
+
+* **yt:** aae5 ([9799de2](https://github.com/zainarbani/revanced-patches/commit/9799de21509e887647da9e76d9bcf494c7d0c5e0))
+
+# [4.11.0-dev.27](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.26...v4.11.0-dev.27) (2024-06-22)
+
+
+### Bug Fixes
+
+* **yt:** aae ([bde51b1](https://github.com/zainarbani/revanced-patches/commit/bde51b1f6116faa3b1da2efbea5c6a995acc3183))
+* **yt:** aae1 ([ce5d097](https://github.com/zainarbani/revanced-patches/commit/ce5d097d007bee75aa962d32fbe5383c5d86aaa2))
+* **yt:** aae2 ([b3bd3db](https://github.com/zainarbani/revanced-patches/commit/b3bd3db71ea4d15b2b5016a64637495cde07574b))
+* **yt:** aae3 ([93f9520](https://github.com/zainarbani/revanced-patches/commit/93f95205929dd5e755e2dcaf284834f9906a15a9))
+* **yt:** aae4 ([a036bbe](https://github.com/zainarbani/revanced-patches/commit/a036bbeb3b4207ddd8a398060df371364d250baa))
+
+# [4.11.0-dev.26](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.25...v4.11.0-dev.26) (2024-06-22)
+
+
+### Bug Fixes
+
+* **yt:** aaf8 ([108ba9d](https://github.com/zainarbani/revanced-patches/commit/108ba9d0b6d0682bb3537e50d6c7b2fcae754284))
+* **yt:** aaf9 ([6ce2047](https://github.com/zainarbani/revanced-patches/commit/6ce20479a2759e0e95fa29d12ec96c65d7256389))
+
+# [4.11.0-dev.25](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.24...v4.11.0-dev.25) (2024-06-22)
+
+
+### Bug Fixes
+
+* **yt:** aaf7 ([ab2b017](https://github.com/zainarbani/revanced-patches/commit/ab2b017d03b51177a707b425c5c093cfe2f680b8))
+
+# [4.11.0-dev.24](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.23...v4.11.0-dev.24) (2024-06-22)
+
+
+### Bug Fixes
+
+* **yt:** aaf6 ([25e9c72](https://github.com/zainarbani/revanced-patches/commit/25e9c72b69351d6442955af247d1c4855c77728e))
+
+# [4.11.0-dev.23](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.22...v4.11.0-dev.23) (2024-06-22)
+
+
+### Bug Fixes
+
+* **yt:** aaf4 ([a00e39e](https://github.com/zainarbani/revanced-patches/commit/a00e39ee736ca41837f43991f60d49dc63984b55))
+* **yt:** aaf5 ([0a22edc](https://github.com/zainarbani/revanced-patches/commit/0a22edc0d6f2d191d96c7dd8fc9ea99937bdc0a5))
+
+# [4.11.0-dev.22](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.21...v4.11.0-dev.22) (2024-06-22)
+
+
+### Bug Fixes
+
+* **yt:** aaf3 ([59aca5a](https://github.com/zainarbani/revanced-patches/commit/59aca5a1d3eed9b602287eaf34ea9399ae3ef377))
+
+# [4.11.0-dev.21](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.20...v4.11.0-dev.21) (2024-06-22)
+
+
+### Bug Fixes
+
+* **yt:** aaf2 ([6ef56cb](https://github.com/zainarbani/revanced-patches/commit/6ef56cb1391ab397068f814bbedd478872b12ed4))
+
+# [4.11.0-dev.20](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.19...v4.11.0-dev.20) (2024-06-22)
+
+
+### Bug Fixes
+
+* **yt:** aaf1 ([d7bd208](https://github.com/zainarbani/revanced-patches/commit/d7bd2089b8cf9ab597633839c66bc58cf60e5527))
+
+# [4.11.0-dev.19](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.18...v4.11.0-dev.19) (2024-06-22)
+
+
+### Bug Fixes
+
+* **yt:** aaf ([f6cdd1f](https://github.com/zainarbani/revanced-patches/commit/f6cdd1fd2d610eb30e11df07c85a1416a5e8fd7e))
+
+# [4.11.0-dev.18](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.17...v4.11.0-dev.18) (2024-06-21)
+
+
+### Bug Fixes
+
+* **yt:** aad2 ([f7ce6d4](https://github.com/zainarbani/revanced-patches/commit/f7ce6d4f9ee7a2f8fffa36d58078f2089b746cd4))
+
+# [4.11.0-dev.17](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.16...v4.11.0-dev.17) (2024-06-21)
+
+
+### Bug Fixes
+
+* **yt:** aad1 ([f69f241](https://github.com/zainarbani/revanced-patches/commit/f69f2419d7cc5e29709e2023f9b72eb6a9d50c50))
+
+# [4.11.0-dev.16](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.15...v4.11.0-dev.16) (2024-06-21)
+
+
+### Bug Fixes
+
+* **yt:** aad ([d9229be](https://github.com/zainarbani/revanced-patches/commit/d9229be539c5ee6c813f96594d732aee9348d4a3))
+
+# [4.11.0-dev.15](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.14...v4.11.0-dev.15) (2024-06-20)
+
+
+### Bug Fixes
+
+* **yt:** aac8 ([23450df](https://github.com/zainarbani/revanced-patches/commit/23450df056b71b7df17ff542ea9de63e2721cf7e))
+
+# [4.11.0-dev.14](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.13...v4.11.0-dev.14) (2024-06-20)
+
+
+### Bug Fixes
+
+* **yt:** aac7 ([d6b5a4f](https://github.com/zainarbani/revanced-patches/commit/d6b5a4f3f93d5c905ec5214fdb4a0c8a612fecde))
+
+# [4.11.0-dev.13](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.12...v4.11.0-dev.13) (2024-06-20)
+
+
+### Bug Fixes
+
+* **yt:** aac6 ([1b6c0ce](https://github.com/zainarbani/revanced-patches/commit/1b6c0ce0e251be6acd6fcf28f6123d63140f496e))
+
+# [4.11.0-dev.12](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.11...v4.11.0-dev.12) (2024-06-20)
+
+
+### Bug Fixes
+
+* **yt:** aac ([ce59220](https://github.com/zainarbani/revanced-patches/commit/ce592201931fcdb306fbd4c3111bef70526510d2))
+* **yt:** aac2 ([ddead64](https://github.com/zainarbani/revanced-patches/commit/ddead64fe83bcd0c8fe53275d20a8cfd637277f0))
+* **yt:** aac3 ([02892ad](https://github.com/zainarbani/revanced-patches/commit/02892adab448499d910659f10db4e37d4385a728))
+* **yt:** aac4 ([3df0c5c](https://github.com/zainarbani/revanced-patches/commit/3df0c5c17fb9ae5fde683d9d97c67b477b424c01))
+* **yt:** aac5 ([9d0f8f9](https://github.com/zainarbani/revanced-patches/commit/9d0f8f9f6cfdcc56a14a6ae70a423c087f7ef493))
+
+# [4.11.0-dev.11](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.10...v4.11.0-dev.11) (2024-06-20)
+
+
+### Bug Fixes
+
+* **yt:** aab9 ([327a433](https://github.com/zainarbani/revanced-patches/commit/327a433544e459edba8ad501adfd316458110809))
+
+# [4.11.0-dev.10](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.9...v4.11.0-dev.10) (2024-06-20)
+
+
+### Bug Fixes
+
+* **yt:** aab8 ([0fc17d0](https://github.com/zainarbani/revanced-patches/commit/0fc17d0b5c81ffb861e5be2ffef8b463bf8658b8))
+
+# [4.11.0-dev.9](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.8...v4.11.0-dev.9) (2024-06-20)
+
+
+### Bug Fixes
+
+* **yt:** aab7 ([0ab496b](https://github.com/zainarbani/revanced-patches/commit/0ab496b447d205e439b76fec9c2a7faed754b207))
+
+# [4.11.0-dev.8](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.7...v4.11.0-dev.8) (2024-06-20)
+
+
+### Bug Fixes
+
+* **yt:** aab5 ([876463a](https://github.com/zainarbani/revanced-patches/commit/876463a476a5030756cfba34d116ec82e2375df2))
+* **yt:** aab6 ([a30923f](https://github.com/zainarbani/revanced-patches/commit/a30923f8e4130cc6bd1013ca871c848f54f73cfa))
+
+# [4.11.0-dev.7](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.6...v4.11.0-dev.7) (2024-06-20)
+
+
+### Bug Fixes
+
+* **yt:** aab3 ([ded9203](https://github.com/zainarbani/revanced-patches/commit/ded9203ee61c563b9e068e8166560ff9e25c3ac6))
+
+# [4.11.0-dev.6](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.5...v4.11.0-dev.6) (2024-06-20)
+
+
+### Bug Fixes
+
+* **yt:** aab2 ([479449d](https://github.com/zainarbani/revanced-patches/commit/479449d08578358752c0c81e58dfdd871ec81dbd))
+
+# [4.11.0-dev.5](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.4...v4.11.0-dev.5) (2024-06-19)
+
+
+### Bug Fixes
+
+* **yt:** aaa9 ([5c59153](https://github.com/zainarbani/revanced-patches/commit/5c591538dbd283caf218a98a3559e28c13b2e6da))
+* **yt:** aab ([8336f38](https://github.com/zainarbani/revanced-patches/commit/8336f38d1c89ded582a93de5947b020694d4fd11))
+
+# [4.11.0-dev.4](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.3...v4.11.0-dev.4) (2024-06-19)
+
+
+### Bug Fixes
+
+* **yt:** aaa8 ([5d3a796](https://github.com/zainarbani/revanced-patches/commit/5d3a7968a78d1a00a5f6a60db4662f744a94a483))
+
+# [4.11.0-dev.3](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.2...v4.11.0-dev.3) (2024-06-19)
+
+
+### Bug Fixes
+
+* **yt:** aaa5 ([429aea4](https://github.com/zainarbani/revanced-patches/commit/429aea462dab741482d3efa4a5722c153b68c8f0))
+* **yt:** aaa6 ([4033d97](https://github.com/zainarbani/revanced-patches/commit/4033d97e6f3d991e51bcc611aa9b8f1b72bcf8df))
+* **yt:** aaa7 ([7e54fa8](https://github.com/zainarbani/revanced-patches/commit/7e54fa8d70dd94631ece434b109ff76a15863dfe))
+
+# [4.11.0-dev.2](https://github.com/zainarbani/revanced-patches/compare/v4.11.0-dev.1...v4.11.0-dev.2) (2024-06-19)
+
+
+### Bug Fixes
+
+* **yt:** aaa4 ([709f6d7](https://github.com/zainarbani/revanced-patches/commit/709f6d7f6248588bd7b507b61dab45e437205946))
+
+# [4.11.0-dev.1](https://github.com/zainarbani/revanced-patches/compare/v4.10.0...v4.11.0-dev.1) (2024-06-18)
+
+
+### Bug Fixes
+
+* Correct invalid string name ([b84494f](https://github.com/zainarbani/revanced-patches/commit/b84494f4e26e040ada69ed7a516f331f2d47da87))
+* **YouTube - Client spoof:** Correctly play more livestreams using Android VR ([#3316](https://github.com/zainarbani/revanced-patches/issues/3316)) ([c05264a](https://github.com/zainarbani/revanced-patches/commit/c05264af3944cbfe8d9aa34fb0e0fddb05a1d42f))
+* **YouTube - Hide description components:** Replace `Hide game section` and `Hide music section` with `Hide attributes section` ([#3327](https://github.com/zainarbani/revanced-patches/issues/3327)) ([0198a43](https://github.com/zainarbani/revanced-patches/commit/0198a436f97b127a2a5dd283644254f9a0ae3e43))
+* **YouTube Music:** Rename `Minimized playback` to `Remove background playback restrictions` ([#3315](https://github.com/zainarbani/revanced-patches/issues/3315)) ([3c31e55](https://github.com/zainarbani/revanced-patches/commit/3c31e55b13d9495e857f068f8cd2b4320112d763))
+* **YouTube:** Rename `Minimized playback` to `Remove background playback restrictions` ([#3314](https://github.com/zainarbani/revanced-patches/issues/3314)) ([37d415b](https://github.com/zainarbani/revanced-patches/commit/37d415b53af4771d9c97a8b1c153be32bf3ac2e0))
+
+
+### Features
+
+* Add `Change version code` patch ([#3338](https://github.com/zainarbani/revanced-patches/issues/3338)) ([685ef39](https://github.com/zainarbani/revanced-patches/commit/685ef39119daf1033a83262982519531c481c40f))
+* **Boost For Reddit:** Add `Fix /s/ links` patch ([#3154](https://github.com/zainarbani/revanced-patches/issues/3154)) ([5fa9fd2](https://github.com/zainarbani/revanced-patches/commit/5fa9fd2dfef43838d7311a967a3e805256a5d116))
+* **Boost for Reddit:** Add `Fix audio missing in video downloads` patch ([#3287](https://github.com/zainarbani/revanced-patches/issues/3287)) ([a9258d4](https://github.com/zainarbani/revanced-patches/commit/a9258d48d3ddf8552ab56219677a3b31ee553666))
+* **YouTube - Comments:** Add `Hide 'Create a Short' button` option ([#3333](https://github.com/zainarbani/revanced-patches/issues/3333)) ([be9e244](https://github.com/zainarbani/revanced-patches/commit/be9e24420fda80903e44e2e2278ea4904ecac4e1))
+* **YouTube - Comments:** Add `Hide Thanks button` and `Hide 'Comments by members' header` options ([#3317](https://github.com/zainarbani/revanced-patches/issues/3317)) ([9c4c4f0](https://github.com/zainarbani/revanced-patches/commit/9c4c4f05a762d745404101bbc3925ab4eba2deb8))
+* **YouTube - Miniplayer:** Rename `Tablet mini player` and allow selecting the style of the in-app miniplayer ([#3302](https://github.com/zainarbani/revanced-patches/issues/3302)) ([5511736](https://github.com/zainarbani/revanced-patches/commit/5511736b0c5dd409db6a68db0f85e389bb95be47))
+
+# [4.10.0-dev.10](https://github.com/ReVanced/revanced-patches/compare/v4.10.0-dev.9...v4.10.0-dev.10) (2024-06-18)
+
+
+### Bug Fixes
+
+* Correct invalid string name ([b84494f](https://github.com/ReVanced/revanced-patches/commit/b84494f4e26e040ada69ed7a516f331f2d47da87))
+
+# [4.10.0-dev.9](https://github.com/ReVanced/revanced-patches/compare/v4.10.0-dev.8...v4.10.0-dev.9) (2024-06-17)
+
+
+### Bug Fixes
+
+* **YouTube - Hide description components:** Replace `Hide game section` and `Hide music section` with `Hide attributes section` ([#3327](https://github.com/ReVanced/revanced-patches/issues/3327)) ([0198a43](https://github.com/ReVanced/revanced-patches/commit/0198a436f97b127a2a5dd283644254f9a0ae3e43))
+
+# [4.10.0-dev.8](https://github.com/ReVanced/revanced-patches/compare/v4.10.0-dev.7...v4.10.0-dev.8) (2024-06-17)
+
+
+### Features
+
+* **YouTube - Comments:** Add `Hide 'Create a Short' button` option ([#3333](https://github.com/ReVanced/revanced-patches/issues/3333)) ([be9e244](https://github.com/ReVanced/revanced-patches/commit/be9e24420fda80903e44e2e2278ea4904ecac4e1))
+
+# [4.10.0-dev.7](https://github.com/ReVanced/revanced-patches/compare/v4.10.0-dev.6...v4.10.0-dev.7) (2024-06-15)
+
+
+### Features
+
+* Add `Change version code` patch ([#3338](https://github.com/ReVanced/revanced-patches/issues/3338)) ([685ef39](https://github.com/ReVanced/revanced-patches/commit/685ef39119daf1033a83262982519531c481c40f))
+
+# [4.10.0-dev.6](https://github.com/ReVanced/revanced-patches/compare/v4.10.0-dev.5...v4.10.0-dev.6) (2024-06-09)
+
+
+### Features
+
+* **YouTube - Comments:** Add `Hide Thanks button` and `Hide 'Comments by members' header` options ([#3317](https://github.com/ReVanced/revanced-patches/issues/3317)) ([9c4c4f0](https://github.com/ReVanced/revanced-patches/commit/9c4c4f05a762d745404101bbc3925ab4eba2deb8))
+
+# [4.10.0-dev.5](https://github.com/ReVanced/revanced-patches/compare/v4.10.0-dev.4...v4.10.0-dev.5) (2024-06-09)
+
+
+### Bug Fixes
+
+* **YouTube - Client spoof:** Correctly play more livestreams using Android VR ([#3316](https://github.com/ReVanced/revanced-patches/issues/3316)) ([c05264a](https://github.com/ReVanced/revanced-patches/commit/c05264af3944cbfe8d9aa34fb0e0fddb05a1d42f))
+
+# [4.10.0-dev.4](https://github.com/ReVanced/revanced-patches/compare/v4.10.0-dev.3...v4.10.0-dev.4) (2024-06-08)
+
+
+### Features
+
+* **Boost for Reddit:** Add `Fix audio missing in video downloads` patch ([#3287](https://github.com/ReVanced/revanced-patches/issues/3287)) ([a9258d4](https://github.com/ReVanced/revanced-patches/commit/a9258d48d3ddf8552ab56219677a3b31ee553666))
+
+# [4.10.0-dev.3](https://github.com/ReVanced/revanced-patches/compare/v4.10.0-dev.2...v4.10.0-dev.3) (2024-06-08)
+
+
+### Features
+
+* **Boost For Reddit:** Add `Fix /s/ links` patch ([#3154](https://github.com/ReVanced/revanced-patches/issues/3154)) ([5fa9fd2](https://github.com/ReVanced/revanced-patches/commit/5fa9fd2dfef43838d7311a967a3e805256a5d116))
+
+# [4.10.0-dev.2](https://github.com/ReVanced/revanced-patches/compare/v4.10.0-dev.1...v4.10.0-dev.2) (2024-06-08)
+
+
+### Bug Fixes
+
+* **YouTube Music:** Rename `Minimized playback` to `Remove background playback restrictions` ([#3315](https://github.com/ReVanced/revanced-patches/issues/3315)) ([3c31e55](https://github.com/ReVanced/revanced-patches/commit/3c31e55b13d9495e857f068f8cd2b4320112d763))
+* **YouTube:** Rename `Minimized playback` to `Remove background playback restrictions` ([#3314](https://github.com/ReVanced/revanced-patches/issues/3314)) ([37d415b](https://github.com/ReVanced/revanced-patches/commit/37d415b53af4771d9c97a8b1c153be32bf3ac2e0))
+
+# [4.10.0-dev.1](https://github.com/ReVanced/revanced-patches/compare/v4.9.0...v4.10.0-dev.1) (2024-06-07)
+
+
+### Features
+
+* **YouTube - Miniplayer:** Rename `Tablet mini player` and allow selecting the style of the in-app miniplayer ([#3302](https://github.com/ReVanced/revanced-patches/issues/3302)) ([5511736](https://github.com/ReVanced/revanced-patches/commit/5511736b0c5dd409db6a68db0f85e389bb95be47))
+
 # [4.9.0](https://github.com/ReVanced/revanced-patches/compare/v4.8.3...v4.9.0) (2024-06-02)
 
 
