@@ -89,6 +89,7 @@ object SpoofClientPatch : BytecodePatch(
         CreatePlaybackSpeedMenuItemFingerprint,
         BuildTestFingerprint,
         BuildTestTwoFingerprint,
+        BuildTestThreeFingerprint,
     ),
 ) {
     private const val INTEGRATIONS_CLASS_DESCRIPTOR =
@@ -129,6 +130,18 @@ object SpoofClientPatch : BytecodePatch(
             }
         }
 
+        BuildTestThreeFingerprint.resultOrThrow().let {
+            val testIndex = it.scanResult.stringsScanResult!!.matches.first().index - 1
+
+            it.mutableMethod.apply {
+                val targetRegister = getInstruction<OneRegisterInstruction>(testIndex).registerA
+
+                replaceInstruction(
+                    testIndex, "const-string p$targetRegister, \"com.google.android.youtube\""
+                )
+            }
+        }
+        
         BuildTestFingerprint.resultOrThrow().let {
             val scanResult = it.scanResult.patternScanResult!!.startIndex
 
