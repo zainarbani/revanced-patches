@@ -131,13 +131,11 @@ object SpoofClientPatch : BytecodePatch(
         }
 
         BuildTestThreeFingerprint.resultOrThrow().let {
-            val testIndex = it.scanResult.stringsScanResult!!.matches.first().index - 1
+            val testIndex = it.scanResult.stringsScanResult!!.matches.first().index
 
             it.mutableMethod.apply {
-                val targetRegister = getInstruction<OneRegisterInstruction>(testIndex).registerA
-
                 replaceInstruction(
-                    testIndex, "const-string p$targetRegister, \"com.google.android.youtube\""
+                    testIndex - 1, "const-string p1, \"com.google.android.youtube\""
                 )
             }
         }
