@@ -1,37 +1,14 @@
-plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
+extension {
+    name = "extensions/shared.rve"
 }
-
-ext["extensionResourceName"] = "extensions/shared.rve"
 
 android {
     namespace = "app.revanced.extension"
-    compileSdk = 33
-
-    defaultConfig {
-        applicationId = "app.revanced.extension"
-        minSdk = 23
-        multiDexEnabled = false
-    }
 
     buildTypes {
         release {
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
-            )
+            isMinifyEnabled = false
         }
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 }
 

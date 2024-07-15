@@ -1,102 +1,23 @@
-import org.gradle.kotlin.dsl.support.listFilesOrdered
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import java.nio.file.Path
-import kotlin.io.path.name
-import kotlin.io.path.pathString
-
-plugins {
-    alias(libs.plugins.kotlin)
-    alias(libs.plugins.binary.compatibility.validator)
-    `maven-publish`
-    signing
-}
-
 group = "app.revanced"
 
+patches {
+    about {
+        name = "ReVanced Patches"
+        description = "Patches for ReVanced"
+        source = "git@github.com:revanced/revanced-patches.git"
+        author = "ReVanced"
+        contact = "contact@revanced.app"
+        website = "https://revanced.app"
+        license = "GNU General Public License v3.0"
+    }
+}
+
 dependencies {
-    implementation(libs.revanced.patcher)
-    implementation(libs.smali)
-    // TODO: Required because build fails without it. Find a way to remove this dependency.
-    implementation(libs.guava)
-    // Used in JsonGenerator.
+    // Used by JsonGenerator.
     implementation(libs.gson)
 }
 
-kotlin {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_11)
-    }
-}
-
-java {
-    targetCompatibility = JavaVersion.VERSION_11
-}
-
 tasks {
-    withType(Jar::class) {
-        exclude("app/revanced/meta")
-
-        manifest {
-            attributes["Name"] = "ReVanced Patches"
-            attributes["Description"] = "Patches for ReVanced."
-            attributes["Version"] = version
-            attributes["Timestamp"] = System.currentTimeMillis().toString()
-            attributes["Source"] = "git@github.com:revanced/revanced-patches.git"
-            attributes["Author"] = "ReVanced"
-            attributes["Contact"] = "contact@revanced.app"
-            attributes["Origin"] = "https://revanced.app"
-            attributes["License"] = "GNU General Public License v3.0"
-        }
-
-        archiveExtension = "rvp"
-    }
-
-    processResources {
-        // Required, otherwise the task is up-to-date even when the resources change.
-        outputs.upToDateWhen { false }
-
-        file("../extensions").list()?.map { extension ->
-            project(":extensions:$extension")
-        }?.forEach { extensionProject ->
-            val extensionResourceName: String by extensionProject.ext
-            val extensionResourcePath = Path.of(extensionResourceName)
-
-            val extensionDexPath = extensionProject.layout.buildDirectory.get()
-                .dir("intermediates/dex/release/minifyReleaseWithR8")
-
-            from(extensionDexPath) {
-                include("classes.dex")
-                rename { extensionResourcePath.name }
-                into(extensionResourcePath.parent.pathString)
-            }
-        }
-    }
-
-    register("buildDexJar") {
-        description = "Build and add a DEX to the JAR file"
-        group = "build"
-
-        dependsOn(build)
-
-        doLast {
-            val d8 = File(System.getenv("ANDROID_HOME")).resolve("build-tools")
-                .listFilesOrdered().last().resolve("d8").absolutePath
-
-            val patchesJar = configurations.archives.get().allArtifacts.files.files.first().absolutePath
-            val workingDirectory = layout.buildDirectory.dir("libs").get().asFile
-
-            exec {
-                workingDir = workingDirectory
-                commandLine = listOf(d8, "--release", patchesJar)
-            }
-
-            exec {
-                workingDir = workingDirectory
-                commandLine = listOf("zip", "-u", patchesJar, "classes.dex")
-            }
-        }
-    }
-
     register<JavaExec>("generatePatchesFiles") {
         description = "Generate patches files"
 
@@ -106,10 +27,8 @@ tasks {
         mainClass.set("app.revanced.generator.MainKt")
     }
 
-    // Needed by gradle-semantic-release-plugin.
-    // Tracking: https://github.com/KengoTODA/gradle-semantic-release-plugin/issues/435
+    // Used by gradle-semantic-release-plugin.
     publish {
-        dependsOn("buildDexJar")
         dependsOn("generatePatchesFiles")
     }
 }
@@ -125,41 +44,4 @@ publishing {
             }
         }
     }
-
-    publications {
-        create<MavenPublication>("revanced-patches-publication") {
-            from(components["java"])
-
-            pom {
-                name = "ReVanced Patches"
-                description = "Patches for ReVanced."
-                url = "https://revanced.app"
-
-                licenses {
-                    license {
-                        name = "GNU General Public License v3.0"
-                        url = "https://www.gnu.org/licenses/gpl-3.0.en.html"
-                    }
-                }
-                developers {
-                    developer {
-                        id = "ReVanced"
-                        name = "ReVanced"
-                        email = "contact@revanced.app"
-                    }
-                }
-                scm {
-                    connection = "scm:git:git://github.com/revanced/revanced-patches.git"
-                    developerConnection = "scm:git:git@github.com:revanced/revanced-patches.git"
-                    url = "https://github.com/revanced/revanced-patches"
-                }
-            }
-        }
-    }
-}
-
-signing {
-    useGpgCmd()
-
-    sign(publishing.publications["revanced-patches-publication"])
 }
