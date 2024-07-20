@@ -8,7 +8,6 @@ import app.revanced.patches.tiktok.interaction.speed.fingerprints.getSpeedFinger
 import app.revanced.patches.tiktok.interaction.speed.fingerprints.onRenderFirstFrameFingerprint
 import app.revanced.patches.tiktok.interaction.speed.fingerprints.setSpeedFingerprint
 import app.revanced.util.getReference
-import app.revanced.util.indexOfFirstInstruction
 import app.revanced.util.indexOfFirstInstructionOrThrow
 import com.android.tools.smali.dexlib2.iface.instruction.formats.Instruction11x
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference

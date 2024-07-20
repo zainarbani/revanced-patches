@@ -49,6 +49,7 @@ val alternativeThumbnailsPatch = bytecodePatch(
         settingsPatch,
         addResourcesPatch,
         navigationBarHookPatch,
+        CronetImageUrlHook::class
     )
 
     compatibleWith(
@@ -79,10 +80,6 @@ val alternativeThumbnailsPatch = bytecodePatch(
             "19.16.39",
         ),
     )
-
-    val messageDigestImageUrlParentResult by messageDigestImageUrlParentFingerprint
-    val onResponseStartedResult by onResponseStartedFingerprint
-    val requestResult by requestFingerprint
 
     execute { context ->
         addResources("youtube", "layout.thumbnails.AlternativeThumbnailsPatch")
@@ -133,101 +130,8 @@ val alternativeThumbnailsPatch = bytecodePatch(
             ListPreference("revanced_alt_thumbnail_stills_time", summaryKey = null),
         )
 
-        fun MethodFingerprint.alsoResolve(result: MethodFingerprintResult) = also {
-            resolve(context, result.classDef)
-        }.resultOrThrow()
-
-        fun MethodFingerprint.resolveAndLetMutableMethod(
-            result: MethodFingerprintResult,
-            block: (MutableMethod) -> Unit,
-        ) = alsoResolve(result).also { block(it.mutableMethod) }
-
-        messageDigestImageUrlFingerprint.resolveAndLetMutableMethod(messageDigestImageUrlParentResult) {
-            loadImageUrlMethod = it
-            addImageUrlHook(INTEGRATIONS_CLASS_DESCRIPTOR, true)
-        }
-
-        onSucceededFingerprint.resolveAndLetMutableMethod(onResponseStartedResult) {
-            loadImageSuccessCallbackMethod = it
-            addImageUrlSuccessCallbackHook(INTEGRATIONS_CLASS_DESCRIPTOR)
-        }
-
-        onFailureFingerprint.resolveAndLetMutableMethod(onResponseStartedResult) {
-            loadImageErrorCallbackMethod = it
-            addImageUrlErrorCallbackHook(INTEGRATIONS_CLASS_DESCRIPTOR)
-        }
-
-        // The URL is required for the failure callback hook, but the URL field is obfuscated.
-        // Add a helper get method that returns the URL field.
-        // The url is the only string field that is set inside the constructor.
-        val urlFieldInstruction = requestResult.mutableMethod.instructions.first {
-            if (it.opcode != Opcode.IPUT_OBJECT) return@first false
-
-            val reference = (it as ReferenceInstruction).reference as FieldReference
-            reference.type == "Ljava/lang/String;"
-        } as ReferenceInstruction
-
-        val urlFieldName = (urlFieldInstruction.reference as FieldReference).name
-        val definingClass = CRONET_URL_REQUEST_CLASS_DESCRIPTOR
-        val addedMethodName = "getHookedUrl"
-        requestResult.mutableClass.methods.add(
-            ImmutableMethod(
-                definingClass,
-                addedMethodName,
-                emptyList(),
-                "Ljava/lang/String;",
-                AccessFlags.PUBLIC.value,
-                null,
-                null,
-                MutableMethodImplementation(2),
-            ).toMutable().apply {
-                addInstructions(
-                    """
-                        iget-object v0, p0, $definingClass->$urlFieldName:Ljava/lang/String;
-                        return-object v0
-                    """,
-                )
-            },
-        )
+        addImageUrlHook(INTEGRATIONS_CLASS_DESCRIPTOR)
+        addImageUrlSuccessCallbackHook(INTEGRATIONS_CLASS_DESCRIPTOR)
+        addImageUrlErrorCallbackHook(INTEGRATIONS_CLASS_DESCRIPTOR)
     }
-}
-
-/**
- * @param highPriority If the hook should be called before all other hooks.
- */
-@Suppress("SameParameterValue")
-private fun addImageUrlHook(targetMethodClass: String, highPriority: Boolean) {
-    loadImageUrlMethod.addInstructions(
-        if (highPriority) 0 else loadImageUrlIndex,
-        """
-                invoke-static { p1 }, $targetMethodClass->overrideImageURL(Ljava/lang/String;)Ljava/lang/String;
-                move-result-object p1
-                """,
-    )
-    loadImageUrlIndex += 2
-}
-
-/**
- * If a connection completed, which includes normal 200 responses but also includes
- * status 404 and other error like http responses.
- */
-@Suppress("SameParameterValue")
-private fun addImageUrlSuccessCallbackHook(targetMethodClass: String) {
-    loadImageSuccessCallbackMethod.addInstruction(
-        loadImageSuccessCallbackIndex++,
-        "invoke-static { p1, p2 }, $targetMethodClass->handleCronetSuccess(" +
-                "Lorg/chromium/net/UrlRequest;Lorg/chromium/net/UrlResponseInfo;)V",
-    )
-}
-
-/**
- * If a connection outright failed to complete any connection.
- */
-@Suppress("SameParameterValue")
-private fun addImageUrlErrorCallbackHook(targetMethodClass: String) {
-    loadImageErrorCallbackMethod.addInstruction(
-        loadImageErrorCallbackIndex++,
-        "invoke-static { p1, p2, p3 }, $targetMethodClass->handleCronetFailure(" +
-                "Lorg/chromium/net/UrlRequest;Lorg/chromium/net/UrlResponseInfo;Ljava/io/IOException;)V",
-    )
 }

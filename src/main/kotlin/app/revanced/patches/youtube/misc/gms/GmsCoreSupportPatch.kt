@@ -1,7 +1,6 @@
 package app.revanced.patches.youtube.misc.gms
 
-import app.revanced.patches.shared.fingerprints.*
-import app.revanced.patches.shared.fingerprints.castDynamiteModuleFingerprint
+import app.revanced.patches.shared.fingerprints.castContextFetchFingerprint
 import app.revanced.patches.shared.fingerprints.castDynamiteModuleV2Fingerprint
 import app.revanced.patches.shared.fingerprints.primeMethodFingerprint
 import app.revanced.patches.shared.misc.gms.gmsCoreSupportPatch
@@ -9,7 +8,6 @@ import app.revanced.patches.youtube.layout.buttons.cast.hideCastButtonPatch
 import app.revanced.patches.youtube.misc.fix.playback.spoofClientPatch
 import app.revanced.patches.youtube.misc.gms.Constants.REVANCED_YOUTUBE_PACKAGE_NAME
 import app.revanced.patches.youtube.misc.gms.Constants.YOUTUBE_PACKAGE_NAME
-import app.revanced.patches.youtube.misc.gms.fingerprints.*
 import app.revanced.patches.youtube.misc.integrations.integrationsPatch
 import app.revanced.patches.youtube.shared.fingerprints.mainActivityOnCreateFingerprint
 
@@ -19,9 +17,6 @@ val gmsCoreSupportPatch = gmsCoreSupportPatch(
     toPackageName = REVANCED_YOUTUBE_PACKAGE_NAME,
     primeMethodFingerprint = primeMethodFingerprint,
     earlyReturnFingerprints = setOf(
-        serviceCheckFingerprint,
-        googlePlayUtilityFingerprint,
-        castDynamiteModuleFingerprint,
         castDynamiteModuleV2Fingerprint,
         castContextFetchFingerprint,
     ),

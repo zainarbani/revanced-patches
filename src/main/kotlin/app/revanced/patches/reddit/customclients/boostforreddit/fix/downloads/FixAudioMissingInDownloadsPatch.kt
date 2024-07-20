@@ -21,7 +21,7 @@ val fixAudioMissingInDownloadsPatch = bytecodePatch(
             "/audio" to "/DASH_AUDIO_64.mp4",
         )
 
-        downloadAudioResult.scanResult.stringsScanResult!!.matches.take(2).forEach { match ->
+        downloadAudioResult.scanResult.stringsScanResult!!.matches.forEach { match ->
             downloadAudioResult.mutableMethod.apply {
                 val replacement = endpointReplacements[match.string]
                 val register = getInstruction<OneRegisterInstruction>(match.index).registerA

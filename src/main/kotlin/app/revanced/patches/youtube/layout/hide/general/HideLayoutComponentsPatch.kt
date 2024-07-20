@@ -75,6 +75,7 @@ val hideLayoutComponentsPatch = bytecodePatch(
             "19.15.36",
             "19.16.39",
         ),
+)
     )
 
     val parseElementFromBufferResult by parseElementFromBufferFingerprint
@@ -94,16 +95,14 @@ val hideLayoutComponentsPatch = bytecodePatch(
             PreferenceScreenPreference(
                 key = "revanced_hide_description_components_screen",
                 preferences = setOf(
-                    SwitchPreference("revanced_hide_chapters"),
+                    SwitchPreference("revanced_hide_attributes_section"),
+                    SwitchPreference("revanced_hide_chapters_section"),
                     SwitchPreference("revanced_hide_info_cards_section"),
-                    SwitchPreference("revanced_hide_game_section"),
-                    SwitchPreference("revanced_hide_music_section"),
                     SwitchPreference("revanced_hide_podcast_section"),
                     SwitchPreference("revanced_hide_transcript_section"),
                 ),
             ),
             SwitchPreference("revanced_hide_emergency_box"),
-            SwitchPreference("revanced_hide_expandable_chip"),
             SwitchPreference("revanced_hide_info_panels"),
             SwitchPreference("revanced_hide_join_membership_button"),
             SwitchPreference("revanced_disable_like_subscribe_glow"),
@@ -144,6 +143,7 @@ val hideLayoutComponentsPatch = bytecodePatch(
         )
 
         PreferenceScreen.GENERAL_LAYOUT.addPreferences(
+            SwitchPreference("revanced_hide_expandable_chip"),
             SwitchPreference("revanced_hide_gray_separator"),
             PreferenceScreenPreference(
                 key = "revanced_custom_filter_screen",
@@ -154,10 +154,6 @@ val hideLayoutComponentsPatch = bytecodePatch(
                     TextPreference("revanced_custom_filter_strings", inputType = InputType.TEXT_MULTI_LINE),
                 ),
             ),
-        )
-
-        PreferenceScreen.VIDEO.addPreferences(
-            SwitchPreference("revanced_hide_video_quality_menu_footer"),
         )
 
         addLithoFilter(LAYOUT_COMPONENTS_FILTER_CLASS_DESCRIPTOR)

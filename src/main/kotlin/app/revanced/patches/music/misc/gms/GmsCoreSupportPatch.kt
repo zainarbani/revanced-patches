@@ -5,7 +5,6 @@ import app.revanced.patches.music.misc.gms.Constants.REVANCED_MUSIC_PACKAGE_NAME
 import app.revanced.patches.music.misc.gms.fingerprints.*
 import app.revanced.patches.music.misc.integrations.integrationsPatch
 import app.revanced.patches.shared.fingerprints.castContextFetchFingerprint
-import app.revanced.patches.shared.fingerprints.castDynamiteModuleFingerprint
 import app.revanced.patches.shared.fingerprints.castDynamiteModuleV2Fingerprint
 import app.revanced.patches.shared.fingerprints.primeMethodFingerprint
 import app.revanced.patches.shared.misc.gms.gmsCoreSupportPatch
@@ -16,9 +15,6 @@ val gmsCoreSupportPatch = gmsCoreSupportPatch(
     toPackageName = REVANCED_MUSIC_PACKAGE_NAME,
     primeMethodFingerprint = primeMethodFingerprint,
     earlyReturnFingerprints = setOf(
-        serviceCheckFingerprint,
-        googlePlayUtilityFingerprint,
-        castDynamiteModuleFingerprint,
         castDynamiteModuleV2Fingerprint,
         castContextFetchFingerprint,
     ),

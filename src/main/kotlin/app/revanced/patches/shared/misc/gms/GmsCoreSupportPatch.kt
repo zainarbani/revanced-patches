@@ -1,16 +1,16 @@
 package app.revanced.patches.shared.misc.gms
 
 import app.revanced.patcher.extensions.InstructionExtensions.addInstructions
-import app.revanced.patcher.extensions.InstructionExtensions.instructions
 import app.revanced.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.revanced.patcher.fingerprint.MethodFingerprint
 import app.revanced.patcher.patch.*
 import app.revanced.patches.all.misc.packagename.changePackageNamePatch
 import app.revanced.patches.all.misc.packagename.setOrGetFallbackPackageName
+import app.revanced.patches.shared.fingerprints.castDynamiteModuleFingerprint
 import app.revanced.patches.shared.misc.gms.Constants.ACTIONS
 import app.revanced.patches.shared.misc.gms.Constants.AUTHORITIES
 import app.revanced.patches.shared.misc.gms.Constants.PERMISSIONS
-import app.revanced.patches.shared.misc.gms.fingerprints.GET_GMS_CORE_VENDOR_GROUP_ID_METHOD_NAME
+import app.revanced.patches.shared.misc.gms.fingerprints.*
 import app.revanced.patches.shared.misc.gms.fingerprints.gmsCoreSupportFingerprint
 import app.revanced.util.exception
 import app.revanced.util.getReference
@@ -22,6 +22,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.formats.Instruction21c
 import com.android.tools.smali.dexlib2.iface.reference.StringReference
 import com.android.tools.smali.dexlib2.immutable.reference.ImmutableStringReference
 import com.android.tools.smali.dexlib2.util.MethodUtil
+import org.stringtemplate.v4.compiler.Bytecode.instructions
 
 private const val PACKAGE_NAME_REGEX_PATTERN = "^[a-z]\\w*(\\.[a-z]\\w*)+\$"
 
@@ -79,6 +80,9 @@ fun gmsCoreSupportPatch(
     val gmsCoreSupportResult by gmsCoreSupportFingerprint
     val mainActivityOnCreateResult by mainActivityOnCreateFingerprint
     primeMethodFingerprint()
+    googlePlayUtilityFingerprint()
+    serviceCheckFingerprint()
+    castDynamiteModuleFingerprint()
     earlyReturnFingerprints.forEach { it() }
 
     execute { context ->
@@ -197,10 +201,13 @@ fun gmsCoreSupportPatch(
         }
 
         // Specific method that needs to be patched.
-        transformPrimeMethod(packageName)
+        primeMethodFingerprint?.let { transformPrimeMethod(packageName) }
 
         // Return these methods early to prevent the app from crashing.
-        earlyReturnFingerprints.toList().returnEarly()
+        (earlyReturnFingerprints + serviceCheckFingerprint + castDynamiteModuleFingerprint).returnEarly()
+        if (googlePlayUtilityFingerprint.result != null) {
+            googlePlayUtilityFingerprint.returnEarly()
+        }
 
         // Verify GmsCore is installed and whitelisted for power optimizations and background usage.
         mainActivityOnCreateResult.mutableMethod.addInstructions(
@@ -319,6 +326,7 @@ private object Constants {
         "com.google.android.gms.languageprofile.service.START",
         "com.google.android.gms.clearcut.service.START",
         "com.google.android.gms.icing.LIGHTWEIGHT_INDEX_SERVICE",
+        "com.google.android.gms.accountsettings.action.VIEW_SETTINGS",
 
         // potoken
         "com.google.android.gms.potokens.service.START",
