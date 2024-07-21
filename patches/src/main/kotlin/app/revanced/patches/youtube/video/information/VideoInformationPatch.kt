@@ -14,13 +14,19 @@ import app.revanced.patches.youtube.video.videoid.hookBackgroundPlayVideoId
 import app.revanced.patches.youtube.video.videoid.hookPlayerResponseVideoId
 import app.revanced.patches.youtube.video.videoid.hookVideoId
 import app.revanced.patches.youtube.video.videoid.videoIdPatch
+import app.revanced.util.getReference
+import app.revanced.util.indexOfFirstInstructionOrThrow
+import app.revanced.util.matchOrThrow
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.builder.BuilderInstruction
 import com.android.tools.smali.dexlib2.builder.MutableMethodImplementation
+import com.android.tools.smali.dexlib2.iface.Method
+import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
+import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
 import com.android.tools.smali.dexlib2.util.MethodUtil
@@ -30,12 +36,16 @@ private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/revanced/extension/youtube/
 private lateinit var playerInitMethod: MutableMethod
 private var playerInitInsertIndex = 4
 
+    private lateinit var mdxInitMethod: MutableMethod
+    private var mdxInitInsertIndex = -1
+    private var mdxInitInsertRegister = -1
+
 private lateinit var timeMethod: MutableMethod
 private var timeInitInsertIndex = 2
 
 private lateinit var speedSelectionInsertMethod: MutableMethod
-private var speedSelectionInsertIndex = 0
-private var speedSelectionValueRegister = 0
+    private var speedSelectionInsertIndex = -1
+    private var speedSelectionValueRegister = -1
 
 // Used by other patches.
 lateinit var setPlaybackSpeedContainerClassFieldReference: String
@@ -55,6 +65,7 @@ val videoInformationPatch = bytecodePatch(
     )
 
     val playerInitMatch by playerInitFingerprint()
+    val mdxPlayerDirectorSetVideoStageMatch by mdxPlayerDirectorSetVideoStageFingerprint()
     val createVideoPlayerSeekbarMatch by createVideoPlayerSeekbarFingerprint()
     val playerControllerSetTimeReferenceMatch by playerControllerSetTimeReferenceFingerprint()
     val onPlaybackSpeedItemClickMatch by onPlaybackSpeedItemClickFingerprint()
@@ -68,36 +79,37 @@ val videoInformationPatch = bytecodePatch(
         // seek method
         val seekMatchMethod = seekFingerprint.apply {
             match(context, playerInitMatch.classDef)
-        }.match!!.method
+        }.matchOrThrow().method
 
         // create helper method
-        val seekHelperMethod = ImmutableMethod(
-            seekMatchMethod.definingClass,
-            "seekTo",
-            listOf(ImmutableMethodParameter("J", null, "time")),
-            "Z",
-            AccessFlags.PUBLIC.value or AccessFlags.FINAL.value,
-            null,
-            null,
-            MutableMethodImplementation(4),
-        ).toMutable()
-
-        // get enum type for the seek helper method
-        val seekSourceEnumType = seekMatchMethod.parameterTypes[1].toString()
-
-        // insert helper method instructions
-        seekHelperMethod.addInstructions(
-            0,
-            """
-                    sget-object v0, $seekSourceEnumType->a:$seekSourceEnumType
-                    invoke-virtual {p0, p1, p2, v0}, ${seekMatchMethod.definingClass}->${seekMatchMethod.name}(J$seekSourceEnumType)Z
-                    move-result p1
-                    return p1
-                """,
-        )
+        val seekHelperMethod = generateSeekMethodHelper(seekMatchMethod)
 
         // add the seekTo method to the class for the extension to call
         playerInitMatch.mutableClass.methods.add(seekHelperMethod)
+
+        with(mdxPlayerDirectorSetVideoStageMatch) {
+            mdxInitMethod = mutableClass.methods.first { MethodUtil.isConstructor(it) }
+
+            // find the location of the first invoke-direct call and extract the register storing the 'this' object reference
+            val initThisIndex = mdxInitMethod.indexOfFirstInstructionOrThrow {
+                opcode == Opcode.INVOKE_DIRECT && getReference<MethodReference>()?.name == "<init>"
+            }
+            mdxInitInsertRegister = mdxInitMethod.getInstruction<FiveRegisterInstruction>(initThisIndex).registerC
+            mdxInitInsertIndex = initThisIndex + 1
+
+            // hook the MDX director for use through integrations
+            onCreateHookMdx(EXTENSION_CLASS_DESCRIPTOR, "initializeMdx")
+
+            // MDX seek method
+            val mdxSeekFingerprintResultMethod =
+                mdxSeekFingerprint.apply { match(context, classDef) }.matchOrThrow().method
+
+            // create helper method
+            val mdxSeekHelperMethod = generateSeekMethodHelper(mdxSeekFingerprintResultMethod)
+
+            // add the seekTo method to the class for the integrations to call
+            mutableClass.methods.add(mdxSeekHelperMethod)
+        }
 
         with(createVideoPlayerSeekbarMatch) {
             val videoLengthMethodMatch = videoLengthFingerprint.apply { match(context, classDef) }.match!!
@@ -169,6 +181,34 @@ val videoInformationPatch = bytecodePatch(
     }
 }
 
+private fun generateSeekMethodHelper(seekMethod: Method): MutableMethod {
+    // create helper method
+    val generatedMethod = ImmutableMethod(
+        seekMethod.definingClass,
+        "seekTo",
+        listOf(ImmutableMethodParameter("J", null, "time")),
+        "Z",
+        AccessFlags.PUBLIC.value or AccessFlags.FINAL.value,
+        null, null,
+        MutableMethodImplementation(4)
+    ).toMutable()
+
+    // get enum type for the seek helper method
+    val seekSourceEnumType = seekMethod.parameterTypes[1].toString()
+
+    // insert helper method instructions
+    generatedMethod.addInstructions(
+        0,
+        """
+                sget-object v0, $seekSourceEnumType->a:$seekSourceEnumType
+                invoke-virtual { p0, p1, p2, v0 }, $seekMethod
+                move-result p1
+                return p1
+            """
+    )
+    return generatedMethod
+}
+
 private fun MutableMethod.insert(insertIndex: Int, register: String, descriptor: String) =
     addInstruction(insertIndex, "invoke-static { $register }, $descriptor")
 
@@ -190,6 +230,19 @@ fun playerControllerOnCreateHook(targetMethodClass: String, targetMethodName: St
         "v0",
         "$targetMethodClass->$targetMethodName(Ljava/lang/Object;)V",
     )
+
+    /**
+     * Hook the MDX player director. Called when playing videos while casting to a big screen device.
+     *
+     * @param targetMethodClass The descriptor for the class to invoke when the player controller is created.
+     * @param targetMethodName The name of the static method to invoke when the player controller is created.
+     */
+    internal fun onCreateHookMdx(targetMethodClass: String, targetMethodName: String) =
+        mdxInitMethod.insert(
+            mdxInitInsertIndex++,
+            "v$mdxInitInsertRegister",
+            "$targetMethodClass->$targetMethodName(Ljava/lang/Object;)V"
+        )
 
 /**
  * Hook the video time.

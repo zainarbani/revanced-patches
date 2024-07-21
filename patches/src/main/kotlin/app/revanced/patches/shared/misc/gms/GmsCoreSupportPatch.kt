@@ -45,8 +45,8 @@ private const val PACKAGE_NAME_REGEX_PATTERN = "^[a-z]\\w*(\\.[a-z]\\w*)+\$"
 fun gmsCoreSupportPatch(
     fromPackageName: String,
     toPackageName: String,
-    primeMethodFingerprint: Fingerprint,
-    earlyReturnFingerprints: Set<Fingerprint>,
+    primeMethodFingerprint: Fingerprint? = null,
+    earlyReturnFingerprints: Set<Fingerprint> = setOf(),
     mainActivityOnCreateFingerprint: Fingerprint,
     extensionPatch: Patch<*>,
     gmsCoreSupportResourcePatchFactory: (gmsCoreVendorGroupIdOption: Option<String>) -> Patch<*>,
@@ -79,7 +79,10 @@ fun gmsCoreSupportPatch(
 
     val gmsCoreSupportMatch by gmsCoreSupportFingerprint()
     val mainActivityOnCreateMatch by mainActivityOnCreateFingerprint()
-    primeMethodFingerprint()
+    primeMethodFingerprint?.invoke()
+    googlePlayUtilityFingerprint()
+    serviceCheckFingerprint()
+    castDynamiteModuleFingerprint()
     earlyReturnFingerprints.forEach { it() }
 
     execute { context ->
@@ -165,7 +168,7 @@ fun gmsCoreSupportPatch(
         }
 
         fun transformPrimeMethod(packageName: String) {
-            primeMethodFingerprint.match?.mutableMethod?.apply {
+            primeMethodFingerprint!!.match?.mutableMethod?.apply {
                 var register = 2
 
                 val index = instructions.indexOfFirst {
@@ -198,10 +201,13 @@ fun gmsCoreSupportPatch(
         }
 
         // Specific method that needs to be patched.
-        transformPrimeMethod(packageName)
+        primeMethodFingerprint?.let { transformPrimeMethod(packageName) }
 
         // Return these methods early to prevent the app from crashing.
-        earlyReturnFingerprints.toList().returnEarly()
+        (earlyReturnFingerprints + serviceCheckFingerprint + castDynamiteModuleFingerprint).returnEarly()
+        if (googlePlayUtilityFingerprint.match != null) {
+            googlePlayUtilityFingerprint.returnEarly()
+        }
 
         // Verify GmsCore is installed and whitelisted for power optimizations and background usage.
         mainActivityOnCreateMatch.mutableMethod.addInstructions(
@@ -320,6 +326,7 @@ private object Constants {
         "com.google.android.gms.languageprofile.service.START",
         "com.google.android.gms.clearcut.service.START",
         "com.google.android.gms.icing.LIGHTWEIGHT_INDEX_SERVICE",
+        "com.google.android.gms.accountsettings.action.VIEW_SETTINGS",
 
         // potoken
         "com.google.android.gms.potokens.service.START",
@@ -425,27 +432,24 @@ fun gmsCoreSupportResourcePatch(
         fun patchManifest() {
             val packageName = setOrGetFallbackPackageName(toPackageName)
 
-            val manifest = context["AndroidManifest.xml"].readText()
-            context["AndroidManifest.xml"].writeText(
-                manifest.replace(
-                    "package=\"$fromPackageName",
-                    "package=\"$packageName",
-                ).replace(
-                    "android:authorities=\"$fromPackageName",
-                    "android:authorities=\"$packageName",
-                ).replace(
-                    "$fromPackageName.permission.C2D_MESSAGE",
-                    "$packageName.permission.C2D_MESSAGE",
-                ).replace(
-                    "$fromPackageName.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION",
-                    "$packageName.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION",
-                ).replace(
-                    "com.google.android.c2dm",
-                    "$gmsCoreVendorGroupId.android.c2dm",
-                ).replace(
-                    "</queries>",
-                    "<package android:name=\"$gmsCoreVendorGroupId.android.gms\"/></queries>",
-                ),
+            val transformations = mapOf(
+                "package=\"$fromPackageName" to "package=\"$packageName",
+                "android:authorities=\"$fromPackageName" to "android:authorities=\"$packageName",
+                "$fromPackageName.permission.C2D_MESSAGE" to "$packageName.permission.C2D_MESSAGE",
+                "$fromPackageName.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" to "$packageName.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION",
+                "com.google.android.c2dm" to "$packageName.android.c2dm",
+                "com.google.android.libraries.photos.api.mars" to "$packageName.android.apps.photos.api.mars",
+                "</queries>" to "<package android:name=\"$gmsCoreVendorGroupId.android.gms\"/></queries>",
+            )
+
+            val manifest = context["AndroidManifest.xml"]
+            manifest.writeText(
+                transformations.entries.fold(manifest.readText()) { acc, (from, to) ->
+                    acc.replace(
+                        from,
+                        to,
+                    )
+                },
             )
         }
 

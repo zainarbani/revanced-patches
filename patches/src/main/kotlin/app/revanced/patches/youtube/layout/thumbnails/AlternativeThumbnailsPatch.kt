@@ -1,13 +1,6 @@
 package app.revanced.patches.youtube.layout.thumbnails
 
-import app.revanced.patcher.Fingerprint
-import app.revanced.patcher.Match
-import app.revanced.patcher.extensions.InstructionExtensions.addInstruction
-import app.revanced.patcher.extensions.InstructionExtensions.addInstructions
-import app.revanced.patcher.extensions.InstructionExtensions.instructions
 import app.revanced.patcher.patch.bytecodePatch
-import app.revanced.patcher.util.proxy.mutableTypes.MutableMethod
-import app.revanced.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
 import app.revanced.patches.all.misc.resources.addResources
 import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.settings.preference.ListPreference
@@ -15,28 +8,16 @@ import app.revanced.patches.shared.misc.settings.preference.NonInteractivePrefer
 import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
 import app.revanced.patches.shared.misc.settings.preference.TextPreference
 import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
+import app.revanced.patches.youtube.misc.imageurlhook.addImageUrlErrorCallbackHook
+import app.revanced.patches.youtube.misc.imageurlhook.addImageUrlHook
+import app.revanced.patches.youtube.misc.imageurlhook.addImageUrlSuccessCallbackHook
+import app.revanced.patches.youtube.misc.imageurlhook.cronetImageUrlHookPatch
 import app.revanced.patches.youtube.misc.navigation.navigationBarHookPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
-import app.revanced.util.matchOrThrow
-import com.android.tools.smali.dexlib2.AccessFlags
-import com.android.tools.smali.dexlib2.Opcode
-import com.android.tools.smali.dexlib2.builder.MutableMethodImplementation
-import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
-import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
 
 private const val EXTENSION_CLASS_DESCRIPTOR =
     "Lapp/revanced/extension/youtube/patches/AlternativeThumbnailsPatch;"
-
-private lateinit var loadImageUrlMethod: MutableMethod
-private var loadImageUrlIndex = 0
-
-private lateinit var loadImageSuccessCallbackMethod: MutableMethod
-private var loadImageSuccessCallbackIndex = 0
-
-private lateinit var loadImageErrorCallbackMethod: MutableMethod
-private var loadImageErrorCallbackIndex = 0
 
 @Suppress("unused")
 val alternativeThumbnailsPatch = bytecodePatch(
@@ -48,6 +29,7 @@ val alternativeThumbnailsPatch = bytecodePatch(
         settingsPatch,
         addResourcesPatch,
         navigationBarHookPatch,
+        cronetImageUrlHookPatch,
     )
 
     compatibleWith(
@@ -79,11 +61,7 @@ val alternativeThumbnailsPatch = bytecodePatch(
         ),
     )
 
-    val messageDigestImageUrlParentMatch by messageDigestImageUrlParentFingerprint()
-    val onResponseStartedMatch by onResponseStartedFingerprint()
-    val requestMatch by requestFingerprint()
-
-    execute { context ->
+    execute {
         addResources("youtube", "layout.thumbnails.alternativeThumbnailsPatch")
 
         val entries = "revanced_alt_thumbnail_options_entries"
@@ -132,101 +110,8 @@ val alternativeThumbnailsPatch = bytecodePatch(
             ListPreference("revanced_alt_thumbnail_stills_time", summaryKey = null),
         )
 
-        fun Fingerprint.alsoResolve(fingerprintMatch: Match) = also {
-            match(context, fingerprintMatch.classDef)
-        }.matchOrThrow()
-
-        fun Fingerprint.resolveAndLetMutableMethod(
-            fingerprintMatch: Match,
-            block: (MutableMethod) -> Unit,
-        ) = alsoResolve(fingerprintMatch).also { block(it.mutableMethod) }
-
-        messageDigestImageUrlFingerprint.resolveAndLetMutableMethod(messageDigestImageUrlParentMatch) {
-            loadImageUrlMethod = it
-            addImageUrlHook(EXTENSION_CLASS_DESCRIPTOR, true)
-        }
-
-        onSucceededFingerprint.resolveAndLetMutableMethod(onResponseStartedMatch) {
-            loadImageSuccessCallbackMethod = it
-            addImageUrlSuccessCallbackHook(EXTENSION_CLASS_DESCRIPTOR)
-        }
-
-        onFailureFingerprint.resolveAndLetMutableMethod(onResponseStartedMatch) {
-            loadImageErrorCallbackMethod = it
-            addImageUrlErrorCallbackHook(EXTENSION_CLASS_DESCRIPTOR)
-        }
-
-        // The URL is required for the failure callback hook, but the URL field is obfuscated.
-        // Add a helper get method that returns the URL field.
-        // The url is the only string field that is set inside the constructor.
-        val urlFieldInstruction = requestMatch.mutableMethod.instructions.first {
-            if (it.opcode != Opcode.IPUT_OBJECT) return@first false
-
-            val reference = (it as ReferenceInstruction).reference as FieldReference
-            reference.type == "Ljava/lang/String;"
-        } as ReferenceInstruction
-
-        val urlFieldName = (urlFieldInstruction.reference as FieldReference).name
-        val definingClass = CRONET_URL_REQUEST_CLASS_DESCRIPTOR
-        val addedMethodName = "getHookedUrl"
-        requestMatch.mutableClass.methods.add(
-            ImmutableMethod(
-                definingClass,
-                addedMethodName,
-                emptyList(),
-                "Ljava/lang/String;",
-                AccessFlags.PUBLIC.value,
-                null,
-                null,
-                MutableMethodImplementation(2),
-            ).toMutable().apply {
-                addInstructions(
-                    """
-                        iget-object v0, p0, $definingClass->$urlFieldName:Ljava/lang/String;
-                        return-object v0
-                    """,
-                )
-            },
-        )
+        addImageUrlHook(EXTENSION_CLASS_DESCRIPTOR)
+        addImageUrlSuccessCallbackHook(EXTENSION_CLASS_DESCRIPTOR)
+        addImageUrlErrorCallbackHook(EXTENSION_CLASS_DESCRIPTOR)
     }
-}
-
-/**
- * @param highPriority If the hook should be called before all other hooks.
- */
-@Suppress("SameParameterValue")
-private fun addImageUrlHook(targetMethodClass: String, highPriority: Boolean) {
-    loadImageUrlMethod.addInstructions(
-        if (highPriority) 0 else loadImageUrlIndex,
-        """
-                invoke-static { p1 }, $targetMethodClass->overrideImageURL(Ljava/lang/String;)Ljava/lang/String;
-                move-result-object p1
-                """,
-    )
-    loadImageUrlIndex += 2
-}
-
-/**
- * If a connection completed, which includes normal 200 responses but also includes
- * status 404 and other error like http responses.
- */
-@Suppress("SameParameterValue")
-private fun addImageUrlSuccessCallbackHook(targetMethodClass: String) {
-    loadImageSuccessCallbackMethod.addInstruction(
-        loadImageSuccessCallbackIndex++,
-        "invoke-static { p1, p2 }, $targetMethodClass->handleCronetSuccess(" +
-            "Lorg/chromium/net/UrlRequest;Lorg/chromium/net/UrlResponseInfo;)V",
-    )
-}
-
-/**
- * If a connection outright failed to complete any connection.
- */
-@Suppress("SameParameterValue")
-private fun addImageUrlErrorCallbackHook(targetMethodClass: String) {
-    loadImageErrorCallbackMethod.addInstruction(
-        loadImageErrorCallbackIndex++,
-        "invoke-static { p1, p2, p3 }, $targetMethodClass->handleCronetFailure(" +
-            "Lorg/chromium/net/UrlRequest;Lorg/chromium/net/UrlResponseInfo;Ljava/io/IOException;)V",
-    )
 }

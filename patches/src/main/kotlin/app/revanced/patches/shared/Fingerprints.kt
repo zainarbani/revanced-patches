@@ -6,10 +6,6 @@ internal val castContextFetchFingerprint = fingerprint {
     strings("Error fetching CastContext.")
 }
 
-internal val castDynamiteModuleFingerprint = fingerprint {
-    strings("com.google.android.gms.cast.framework.internal.CastDynamiteModuleImpl")
-}
-
 internal val castDynamiteModuleV2Fingerprint = fingerprint {
     strings("Failed to load module via V2: ")
 }
