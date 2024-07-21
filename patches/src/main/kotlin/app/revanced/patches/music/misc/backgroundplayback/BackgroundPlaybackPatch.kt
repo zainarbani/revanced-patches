@@ -7,8 +7,7 @@ import app.revanced.patcher.patch.bytecodePatch
 @Suppress("unused")
 val backgroundPlaybackPatch = bytecodePatch(
     name = "Remove background playback restrictions",
-    description = "Removes restrictions on background playback.",
-
+    description = "Removes restrictions on background playback, including playing kids videos in the background.",
 ) {
     compatibleWith(
         "com.google.android.apps.youtube.music"(

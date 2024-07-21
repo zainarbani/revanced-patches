@@ -215,30 +215,43 @@ fun Method.findOpcodeIndicesReversed(opcode: Opcode): List<Int> {
 }
 
 /**
- * Return the resolved methods of [Fingerprint]s early.
+ * Return the matched method early.
  */
-fun List<Fingerprint>.returnEarly(bool: Boolean = false) {
+fun Fingerprint.returnEarly(bool: Boolean = false) {
     val const = if (bool) "0x1" else "0x0"
-    this.forEach { fingerprint ->
-        fingerprint.match?.let { match ->
-            val stringInstructions = when (match.method.returnType.first()) {
-                'L' ->
-                    """
-                        const/4 v0, $const
-                        return-object v0
-                        """
-                'V' -> "return-void"
-                'I', 'Z' ->
-                    """
-                        const/4 v0, $const
-                        return v0
-                        """
-                else -> throw Exception("This case should never happen.")
-            }
+    match?.let { match ->
+        val stringInstructions = when (match.method.returnType.first()) {
+            'L' ->
+                """
+                    const/4 v0, $const
+                    return-object v0
+                """
+            'V' -> "return-void"
+            'I', 'Z' ->
+                """
+                    const/4 v0, $const
+                    return v0
+                """
+            else -> throw Exception("This case should never happen.")
+        }
 
-            match.mutableMethod.addInstructions(0, stringInstructions)
-        } ?: throw fingerprint.exception
-    }
+        match.mutableMethod.addInstructions(0, stringInstructions)
+    } ?: throw exception
+}
+
+/**
+ * Return the matched methods early.
+ */
+fun Iterable<Fingerprint>.returnEarly(bool: Boolean = false) = forEach { fingerprint ->
+    fingerprint.returnEarly(bool)
+}
+
+/**
+ * Return the matched methods early.
+ */
+@Deprecated("Use the Iterable version")
+fun List<Fingerprint>.returnEarly(bool: Boolean = false) = forEach { fingerprint ->
+    fingerprint.returnEarly(bool)
 }
 
 /**

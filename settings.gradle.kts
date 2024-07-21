@@ -4,19 +4,17 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         google()
-        // TODO: Remove, this is only for plugin testing
-        mavenLocal()
-    }
-}
-
-// TODO: Remove, this is only for local patcher v20
-@Suppress("UnstableApiUsage")
-dependencyResolutionManagement.apply {
-    repositories.apply {
-        mavenLocal()
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/revanced/registry")
+            credentials {
+                username = providers.gradleProperty("gpr.user").getOrElse(System.getenv("GITHUB_ACTOR"))
+                password = providers.gradleProperty("gpr.key").getOrElse(System.getenv("GITHUB_TOKEN"))
+            }
+        }
     }
 }
 
 plugins {
-    id("app.revanced.patches.settings.plugin") version "1.0.0"
+    id("app.revanced.patches") version "1.0.0-dev.1"
 }

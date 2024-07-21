@@ -5,15 +5,11 @@ import app.revanced.patcher.extensions.InstructionExtensions.addInstructions
 import app.revanced.patcher.extensions.InstructionExtensions.instructions
 import app.revanced.patcher.patch.bytecodePatch
 import app.revanced.patcher.patch.resourcePatch
-import app.revanced.patches.all.misc.resources.addResources
-import app.revanced.patches.all.misc.resources.addResourcesPatch
 import app.revanced.patches.shared.misc.mapping.get
 import app.revanced.patches.shared.misc.mapping.resourceMappingPatch
 import app.revanced.patches.shared.misc.mapping.resourceMappings
-import app.revanced.patches.shared.misc.settings.preference.NonInteractivePreference
 import app.revanced.patches.youtube.misc.extensions.sharedExtensionPatch
 import app.revanced.patches.youtube.misc.playertype.playerTypeHookPatch
-import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 import app.revanced.patches.youtube.video.information.videoInformationPatch
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
@@ -44,7 +40,6 @@ val backgroundPlaybackPatch = bytecodePatch(
         playerTypeHookPatch,
         videoInformationPatch,
         settingsPatch,
-        addResourcesPatch,
     )
 
     compatibleWith(
@@ -76,12 +71,6 @@ val backgroundPlaybackPatch = bytecodePatch(
     val kidsBackgroundPlaybackPolicyControllerMatch by kidsBackgroundPlaybackPolicyControllerFingerprint()
 
     execute { context ->
-        addResources("youtube", "misc.backgroundplayback.backgroundPlaybackPatch")
-
-        PreferenceScreen.MISC.addPreferences(
-            NonInteractivePreference("revanced_background_playback"),
-        )
-
         backgroundPlaybackManagerMatch.mutableMethod.addInstructions(
             0,
             """

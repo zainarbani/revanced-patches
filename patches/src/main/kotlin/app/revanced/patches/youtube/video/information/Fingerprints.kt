@@ -1,10 +1,10 @@
 package app.revanced.patches.youtube.video.information
 
-import app.revanced.util.getReference
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
-import com.android.tools.smali.dexlib2.Opcode
-import com.android.tools.smali.dexlib2.AccessFlags
 import app.revanced.patcher.fingerprint
+import app.revanced.util.getReference
+import com.android.tools.smali.dexlib2.AccessFlags
+import com.android.tools.smali.dexlib2.Opcode
+import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 internal val createVideoPlayerSeekbarFingerprint = fingerprint {
     returns("V")
@@ -18,7 +18,7 @@ internal val onPlaybackSpeedItemClickFingerprint = fingerprint {
     custom { method, _ ->
         method.name == "onItemClick" && method.implementation?.instructions?.find {
             it.opcode == Opcode.IGET_OBJECT &&
-                it.getReference<FieldReference>()!!.type == "Lcom/google/android/libraries/youtube/innertube/model/player/PlayerResponseModel;"
+                    it.getReference<FieldReference>()!!.type == "Lcom/google/android/libraries/youtube/innertube/model/player/PlayerResponseModel;"
         } != null
     }
 }
@@ -51,4 +51,25 @@ internal val videoLengthFingerprint = fingerprint {
         Opcode.CONST_4,
         Opcode.INVOKE_VIRTUAL,
     )
+}
+
+internal val mdxSeekFingerprint = fingerprint {
+    accessFlags(AccessFlags.PUBLIC, AccessFlags.FINAL)
+    returns("Z")
+    parameters("J", "L")
+    opcodes(
+        Opcode.INVOKE_VIRTUAL,
+        Opcode.MOVE_RESULT,
+        Opcode.RETURN,
+    )
+    custom { methodDef, _ ->
+        // The instruction count is necessary here to avoid matching the relative version
+        // of the seek method we're after, which has the same function signature as the
+        // regular one, is in the same class, and even has the exact same 3 opcodes pattern.
+        methodDef.implementation!!.instructions.count() == 3
+    }
+}
+
+internal val mdxPlayerDirectorSetVideoStageFingerprint = fingerprint {
+    strings("MdxDirector setVideoStage ad should be null when videoStage is not an Ad state ")
 }
