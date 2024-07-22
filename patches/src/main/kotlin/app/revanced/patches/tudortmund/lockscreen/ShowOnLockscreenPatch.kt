@@ -5,6 +5,7 @@ import app.revanced.patcher.extensions.InstructionExtensions.addInstructions
 import app.revanced.patcher.extensions.InstructionExtensions.instructions
 import app.revanced.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.revanced.patcher.patch.bytecodePatch
+import app.revanced.patches.tudortmund.misc.extensions.sharedExtensionPatch
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.formats.Instruction22c
 import com.android.tools.smali.dexlib2.iface.instruction.formats.Instruction35c
@@ -19,9 +20,9 @@ val showOnLockscreenPatch = bytecodePatch(
     name = "Show on lockscreen",
     description = "Shows student id and student ticket on lockscreen.",
 ) {
-    compatibleWith("de.tudortmund.app")
+    dependsOn(sharedExtensionPatch)
 
-    extendWith("extensions/tudortmund/lockscreen/show-on-lockscreen.rve")
+    compatibleWith("de.tudortmund.app")
 
     val brightnessMatch by brightnessFingerprint()
 

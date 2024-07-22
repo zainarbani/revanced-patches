@@ -34,6 +34,8 @@ val removeScreenCaptureRestrictionPatch = bytecodePatch(
     description = "Removes the restriction of capturing audio from apps that normally wouldn't allow it.",
     use = false,
 ) {
+    extendWith("extensions/all/screencapture/remove-screen-capture-restriction.rve")
+
     dependsOn(
         removeCaptureRestrictionResourcePatch,
         transformInstructionsPatch(
@@ -56,8 +58,6 @@ val removeScreenCaptureRestrictionPatch = bytecodePatch(
             },
         ),
     )
-
-    extendWith("extensions/all/screencapture/remove-screen-capture-restriction.rve")
 }
 
 // Information about method calls we want to replace

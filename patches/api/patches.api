@@ -486,6 +486,10 @@ public final class app/revanced/patches/reddit/layout/premiumicon/UnlockPremiumI
 	public static final fun getUnlockPremiumIconPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
+public final class app/revanced/patches/reddit/misc/extensions/ExtensionPatchKt {
+	public static final fun getSharedExtensionPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
+}
+
 public final class app/revanced/patches/reddit/misc/tracking/url/SanitizeUrlQueryPatchKt {
 	public static final fun getSanitizeUrlQueryPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
@@ -819,6 +823,10 @@ public final class app/revanced/patches/tudortmund/lockscreen/ShowOnLockscreenPa
 	public static final fun getShowOnLockscreenPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
+public final class app/revanced/patches/tudortmund/misc/extensions/ExtensionPatchKt {
+	public static final fun getSharedExtensionPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
+}
+
 public final class app/revanced/patches/tumblr/ads/DisableDashboardAdsKt {
 	public static final fun getDisableDashboardAdsPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
@@ -849,6 +857,10 @@ public final class app/revanced/patches/tumblr/fixes/FixOldVersionsPatchKt {
 
 public final class app/revanced/patches/tumblr/live/DisableTumblrLivePatchKt {
 	public static final fun getDisableTumblrLivePatch ()Lapp/revanced/patcher/patch/BytecodePatch;
+}
+
+public final class app/revanced/patches/tumblr/misc/extensions/ExtensionPatchKt {
+	public static final fun getSharedExtensionPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
 public final class app/revanced/patches/tumblr/timelinefilter/FilterTimelineObjectsPatchKt {
@@ -916,6 +928,10 @@ public final class app/revanced/patches/twitter/layout/viewcount/HideViewCountPa
 
 public final class app/revanced/patches/twitter/misc/dynamiccolor/DynamicColorPatchKt {
 	public static final fun getDynamicColorPatch ()Lapp/revanced/patcher/patch/ResourcePatch;
+}
+
+public final class app/revanced/patches/twitter/misc/extensions/ExtensionPatchKt {
+	public static final fun getSharedExtensionPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
 public final class app/revanced/patches/twitter/misc/hook/HideAdsHookPatchKt {

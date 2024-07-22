@@ -6,6 +6,7 @@ import app.revanced.patcher.extensions.InstructionExtensions.removeInstructions
 import app.revanced.patcher.patch.BytecodePatchContext
 import app.revanced.patcher.patch.PatchException
 import app.revanced.patcher.patch.bytecodePatch
+import app.revanced.patches.reddit.misc.extensions.sharedExtensionPatch
 import java.io.Closeable
 import java.io.InvalidClassException
 
@@ -25,7 +26,7 @@ private const val JSON_HOOK_CLASS_DESCRIPTOR = "L$JSON_HOOK_CLASS_NAMESPACE/$BAS
 val jsonHookPatch = bytecodePatch(
     description = "Hooks the stream which reads JSON responses.",
 ) {
-    extendWith("extensions/twitter/misc/hook/json/json-hook-patch.rve")
+    dependsOn(sharedExtensionPatch)
 
     val loganSquareMatch by loganSquareFingerprint()
 

@@ -5,6 +5,7 @@ import app.revanced.patcher.extensions.InstructionExtensions.removeInstruction
 import app.revanced.patcher.patch.bytecodePatch
 import app.revanced.patches.reddit.ad.banner.hideBannerPatch
 import app.revanced.patches.reddit.ad.comments.hideCommentAdsPatch
+import app.revanced.patches.reddit.misc.extensions.sharedExtensionPatch
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.formats.Instruction22c
@@ -15,7 +16,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 val hideAdsPatch = bytecodePatch(
     name = "Hide ads",
 ) {
-    dependsOn(hideBannerPatch, hideCommentAdsPatch)
+    dependsOn(hideBannerPatch, hideCommentAdsPatch, sharedExtensionPatch)
 
     // Note that for now, this patch and anything using it will only work on
     // Reddit 2024.17.0 or older. Newer versions will crash during patching.
@@ -23,8 +24,6 @@ val hideAdsPatch = bytecodePatch(
     // and https://github.com/iBotPeaches/Apktool/issues/3534.
     // This constraint is necessary due to dependency on hideBannerPatch.
     compatibleWith("com.reddit.frontpage"("2024.17.0"))
-
-    extendWith("extensions/reddit/ad/general/hide-ads.rve")
 
     val adPostMatch by adPostFingerprint()
     val newAdPostMatch by newAdPostFingerprint()

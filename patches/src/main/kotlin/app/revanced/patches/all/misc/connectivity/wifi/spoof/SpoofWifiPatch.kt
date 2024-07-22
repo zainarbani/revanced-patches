@@ -15,6 +15,8 @@ val spoofWifiPatch = bytecodePatch(
     description = "Spoofs an existing Wi-Fi connection.",
     use = false,
 ) {
+    extendWith("extensions/all/connectivity/wifi/spoof/spoof-wifi.rve")
+
     dependsOn(
         transformInstructionsPatch(
             filterMap = { classDef, _, instruction, instructionIndex ->
@@ -36,8 +38,6 @@ val spoofWifiPatch = bytecodePatch(
             },
         ),
     )
-
-    extendWith("extensions/all/connectivity/wifi/spoof/spoof-wifi.rve")
 }
 
 // Information about method calls we want to replace

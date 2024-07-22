@@ -5,6 +5,7 @@ import app.revanced.patcher.extensions.InstructionExtensions.addInstructionsWith
 import app.revanced.patcher.extensions.InstructionExtensions.getInstruction
 import app.revanced.patcher.extensions.InstructionExtensions.removeInstructions
 import app.revanced.patcher.patch.bytecodePatch
+import app.revanced.patches.tumblr.misc.extensions.sharedExtensionPatch
 import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction35c
 
 /**
@@ -21,7 +22,7 @@ lateinit var addTimelineObjectTypeFilter: (typeName: String) -> Unit
 val filterTimelineObjectsPatch = bytecodePatch(
     description = "Filter timeline objects.",
 ) {
-    extendWith("extensions/tumblr/timelinefilter/filter-timeline-objects.rve")
+    dependsOn(sharedExtensionPatch)
 
     val timelineConstructorMatch by timelineConstructorFingerprint()
     val timelineFilterExtensionMatch by timelineFilterExtensionFingerprint()

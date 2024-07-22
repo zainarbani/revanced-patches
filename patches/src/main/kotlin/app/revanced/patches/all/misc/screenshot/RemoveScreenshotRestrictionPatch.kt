@@ -19,6 +19,8 @@ val removeScreenshotRestrictionPatch = bytecodePatch(
     description = "Removes the restriction of taking screenshots in apps that normally wouldn't allow it.",
     use = false,
 ) {
+    extendWith("extensions/all/screenshot/remove-screenshot-restriction.rve")
+
     dependsOn(
         // Remove the restriction of taking screenshots.
         transformInstructionsPatch(
@@ -70,8 +72,6 @@ val removeScreenshotRestrictionPatch = bytecodePatch(
             },
         ),
     )
-
-    extendWith("extensions/all/screenshot/remove-screenshot-restriction.rve")
 }
 
 // Information about method calls we want to replace
