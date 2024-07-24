@@ -1,3 +1,10 @@
+## [4.12.1-dev.1](https://github.com/zainarbani/revanced-patches/compare/v4.12.0...v4.12.1-dev.1) (2024-07-24)
+
+
+### Bug Fixes
+
+* **YouTube - Client Spoof:** Set user-agent for IOS client" ([f5a9107](https://github.com/zainarbani/revanced-patches/commit/f5a91077fadc245fab09a7c7576b422648649381))
+
 # [4.12.0-dev.6](https://github.com/ReVanced/revanced-patches/compare/v4.12.0-dev.5...v4.12.0-dev.6) (2024-07-20)
 
 
