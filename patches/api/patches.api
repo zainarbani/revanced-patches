@@ -6,39 +6,6 @@ public final class app/revanced/patches/all/misc/activity/exportall/ExportAllAct
 	public static final fun getExportAllActivitiesPatch ()Lapp/revanced/patcher/patch/ResourcePatch;
 }
 
-public abstract class app/revanced/patches/all/misc/build/BuildInfo {
-	public fun <init> ()V
-	public fun getBoard ()Ljava/lang/String;
-	public fun getBootloader ()Ljava/lang/String;
-	public fun getBrand ()Ljava/lang/String;
-	public fun getCpuAbi ()Ljava/lang/String;
-	public fun getCpuAbi2 ()Ljava/lang/String;
-	public fun getDevice ()Ljava/lang/String;
-	public fun getDisplay ()Ljava/lang/String;
-	public fun getFingerprint ()Ljava/lang/String;
-	public fun getHardware ()Ljava/lang/String;
-	public fun getHost ()Ljava/lang/String;
-	public fun getId ()Ljava/lang/String;
-	public fun getManufacturer ()Ljava/lang/String;
-	public fun getModel ()Ljava/lang/String;
-	public fun getOdmSku ()Ljava/lang/String;
-	public fun getProduct ()Ljava/lang/String;
-	public fun getRadio ()Ljava/lang/String;
-	public fun getSerial ()Ljava/lang/String;
-	public fun getSku ()Ljava/lang/String;
-	public fun getSocManufacturer ()Ljava/lang/String;
-	public fun getSocModel ()Ljava/lang/String;
-	public fun getTags ()Ljava/lang/String;
-	public fun getTime ()Ljava/lang/Long;
-	public fun getType ()Ljava/lang/String;
-	public fun getUser ()Ljava/lang/String;
-}
-
-public final class app/revanced/patches/all/misc/build/SpoofBuildInfoPatchKt {
-	public static final fun getSpoofBuildInfoPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
-	public static final fun spoofBuildInfoPatch (Lapp/revanced/patches/all/misc/build/BuildInfo;)Lapp/revanced/patcher/patch/BytecodePatch;
-}
-
 public final class app/revanced/patches/all/misc/connectivity/location/hide/HideMockLocationPatchKt {
 	public static final fun getHideMockLocationPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
