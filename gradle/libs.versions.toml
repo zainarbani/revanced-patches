@@ -1,5 +1,5 @@
 [versions]
-revanced-patcher = "20.0.0-dev.1"
+revanced-patcher = "20.0.0-dev.2"
 smali = "3.0.7"
 gson = "2.11.0"
 #noinspection GradleDependency
