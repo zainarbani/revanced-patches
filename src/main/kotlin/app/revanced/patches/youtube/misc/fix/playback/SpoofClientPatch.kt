@@ -390,7 +390,7 @@ object SpoofClientPatch : BytecodePatch(
                 addInstructions(
                     returnUrlIndex,
                     """
-                        invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testProto(Ljava/nio/ByteBuffer)V
+                        invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testProto(Ljava/nio/ByteBuffer;)V
                     """
                 )
             }
