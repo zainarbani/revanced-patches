@@ -1,3 +1,10 @@
+## [4.12.1-dev.4](https://github.com/zainarbani/revanced-patches/compare/v4.12.1-dev.3...v4.12.1-dev.4) (2024-07-28)
+
+
+### Bug Fixes
+
+* **yt:** test3 ([edadfec](https://github.com/zainarbani/revanced-patches/commit/edadfec2c9c1c9e8b6de8887be39911f9f48e30d))
+
 ## [4.12.1-dev.3](https://github.com/zainarbani/revanced-patches/compare/v4.12.1-dev.2...v4.12.1-dev.3) (2024-07-28)
 
 
