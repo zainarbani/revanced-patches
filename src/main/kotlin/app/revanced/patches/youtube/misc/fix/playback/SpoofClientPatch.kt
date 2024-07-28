@@ -391,8 +391,8 @@ object SpoofClientPatch : BytecodePatch(
                     returnUrlIndex,
                     """
                         invoke-virtual {p2}, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
-                        move-result-object v1
-                        invoke-static { v0, v1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testProto(Ljava/nio/ByteBuffer;Ljava/lang/String;)V
+                        move-result-object p2
+                        invoke-static { v0, p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testProto(Ljava/nio/ByteBuffer;Ljava/lang/String;)V
                     """
                 )
             }
