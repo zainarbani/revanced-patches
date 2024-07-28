@@ -1,3 +1,11 @@
+## [4.12.1-dev.2](https://github.com/zainarbani/revanced-patches/compare/v4.12.1-dev.1...v4.12.1-dev.2) (2024-07-28)
+
+
+### Bug Fixes
+
+* **SoundCloud - Enable offline sync:** Stop crashing by reversing order of patching instructions from last to first to retain indices ([0473d90](https://github.com/zainarbani/revanced-patches/commit/0473d909d2c9227a7a25d6494beb42f406e5530e))
+* **YouTube - SponsorBlock:** Correctly show minute timestamp when creating a new segment ([7f23e99](https://github.com/zainarbani/revanced-patches/commit/7f23e99693a030e1d18f50d2ab1ed190328902de))
+
 ## [4.12.1-dev.1](https://github.com/zainarbani/revanced-patches/compare/v4.12.0...v4.12.1-dev.1) (2024-07-24)
 
 
