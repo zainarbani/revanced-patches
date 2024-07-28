@@ -91,6 +91,7 @@ object SpoofClientPatch : BytecodePatch(
 
         // Watch history.
         GetTrackingUriFingerprint,
+        TestFingerprint,
     ),
 ) {
     private const val INTEGRATIONS_CLASS_DESCRIPTOR =
@@ -381,5 +382,19 @@ object SpoofClientPatch : BytecodePatch(
         }
 
         // endregion
+
+        TestFingerprint.resultOrThrow().let {
+            it.mutableMethod.apply {
+                val returnUrlIndex = it.scanResult.patternScanResult!!.endIndex
+
+                addInstructions(
+                    returnUrlIndex,
+                    """
+                        invoke-static { v0, p2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testProto(Ljava/nio/ByteBuffer;Ljava/lang/String;)V
+                    """
+                )
+            }
+        }
+        
     }
 }
