@@ -388,7 +388,7 @@ object SpoofClientPatch : BytecodePatch(
                 val returnUrlIndex = it.scanResult.patternScanResult!!.endIndex
 
                 addInstructions(
-                    returnUrlIndex,
+                    returnUrlIndex - 2,
                     """
                         invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testProto(Ljava/nio/ByteBuffer;)V
                     """
