@@ -8,7 +8,7 @@ import com.android.tools.smali.dexlib2.Opcode
 internal object TestFingerprint : MethodFingerprint(
     "V",
     customFingerprint = custom@{ methodDef, _ ->
-        return@custom methodDef.name == "onReadCompleted"
+        methodDef.name == "onReadCompleted"
         return@custom methodDef.implementation!!.instructions.count() == 11
     }
 )
