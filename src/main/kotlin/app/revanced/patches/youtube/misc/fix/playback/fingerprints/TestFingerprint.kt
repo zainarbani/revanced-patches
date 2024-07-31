@@ -6,14 +6,9 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal object TestFingerprint : MethodFingerprint(
-    accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL,
-    returnType = "V",
-    opcodes = listOf(
-        Opcode.INVOKE_INTERFACE,
-        Opcode.INVOKE_VIRTUAL,
-        Opcode.RETURN_VOID
-    ),
-    strings = listOf(
-        "Wrong wiretype for messages tag: "
-    )
+    "V",
+    customFingerprint = { methodDef, _ ->
+        methodDef.name == "onReadCompleted" &&
+        methodDef.implementation!!.instructions.count() == 11
+    }
 )

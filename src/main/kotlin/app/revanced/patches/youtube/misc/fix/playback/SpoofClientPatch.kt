@@ -385,13 +385,12 @@ object SpoofClientPatch : BytecodePatch(
 
         TestFingerprint.resultOrThrow().let {
             it.mutableMethod.apply {
-                val returnUrlIndex = it.scanResult.patternScanResult!!.endIndex
+                //val returnUrlIndex = it.scanResult.patternScanResult!!.endIndex
 
                 addInstructions(
-                   3,
+                   0,
                    """
-                        move-object/from16 v4, p2
-                        invoke-virtual { v4 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
+                        invoke-virtual { p2 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
                         move-result-object v0
                         invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
                     """
