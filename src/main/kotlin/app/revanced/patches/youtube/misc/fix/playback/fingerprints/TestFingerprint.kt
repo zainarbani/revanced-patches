@@ -7,8 +7,8 @@ import com.android.tools.smali.dexlib2.Opcode
 
 internal object TestFingerprint : MethodFingerprint(
     "V",
-    customFingerprint = { methodDef, _ ->
-        methodDef.name == "onReadCompleted" &&
-        methodDef.implementation!!.instructions.count() == 11
+    customFingerprint = custom{ methodDef, _ ->
+        if (methodDef.name != "onReadCompleted") return@custom false
+        if (methodDef.implementation!!.instructions.count() != 11) return@custom false
     }
 )
