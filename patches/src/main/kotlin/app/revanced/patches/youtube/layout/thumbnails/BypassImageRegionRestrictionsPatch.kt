@@ -10,7 +10,6 @@ import app.revanced.patches.youtube.misc.imageurlhook.cronetImageUrlHookPatch
 import app.revanced.patches.youtube.misc.settings.PreferenceScreen
 import app.revanced.patches.youtube.misc.settings.settingsPatch
 
-
 private const val EXTENSION_CLASS_DESCRIPTOR =
     "Lapp/revanced/extension/youtube/patches/BypassImageRegionRestrictionsPatch;"
 
@@ -18,13 +17,13 @@ private const val EXTENSION_CLASS_DESCRIPTOR =
 val bypassImageRegionRestrictionsPatch = bytecodePatch(
     name = "Bypass image region restrictions",
     description = "Adds an option to use a different host for user avatar and channel images," +
-            "and can fix missing images that are blocked in some countries.",
+        "and can fix missing images that are blocked in some countries.",
 ) {
     dependsOn(
         sharedExtensionPatch,
         settingsPatch,
         addResourcesPatch,
-        cronetImageUrlHookPatch
+        cronetImageUrlHookPatch,
     )
 
     compatibleWith(
@@ -59,8 +58,8 @@ val bypassImageRegionRestrictionsPatch = bytecodePatch(
     execute {
         addResources("youtube", "layout.thumbnails.bypassImageRegionRestrictionsPatch")
 
-        PreferenceScreen.GENERAL_LAYOUT.addPreferences(
-            SwitchPreference("revanced_bypass_image_region_restrictions")
+        PreferenceScreen.MISC.addPreferences(
+            SwitchPreference("revanced_bypass_image_region_restrictions"),
         )
 
         // A priority hook is not needed, as the image urls of interest are not modified
@@ -68,4 +67,3 @@ val bypassImageRegionRestrictionsPatch = bytecodePatch(
         addImageUrlHook(EXTENSION_CLASS_DESCRIPTOR)
     }
 }
-

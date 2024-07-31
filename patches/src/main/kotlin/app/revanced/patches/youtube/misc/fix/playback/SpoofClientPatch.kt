@@ -4,6 +4,7 @@ import app.revanced.patcher.extensions.InstructionExtensions.addInstruction
 import app.revanced.patcher.extensions.InstructionExtensions.addInstructions
 import app.revanced.patcher.extensions.InstructionExtensions.getInstruction
 import app.revanced.patcher.extensions.InstructionExtensions.instructions
+import app.revanced.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.revanced.patcher.patch.PatchException
 import app.revanced.patcher.patch.bytecodePatch
 import app.revanced.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
@@ -29,6 +30,10 @@ private const val EXTENSION_CLASS_DESCRIPTOR =
     "Lapp/revanced/extension/youtube/patches/spoof/SpoofClientPatch;"
 private const val CLIENT_INFO_CLASS_DESCRIPTOR =
     "Lcom/google/protos/youtube/api/innertube/InnertubeContext\$ClientInfo;"
+private const val REQUEST_CLASS_DESCRIPTOR =
+    "Lorg/chromium/net/ExperimentalUrlRequest;"
+private const val REQUEST_BUILDER_CLASS_DESCRIPTOR =
+    "Lorg/chromium/net/ExperimentalUrlRequest\$Builder;"
 
 val spoofClientPatch = bytecodePatch(
     name = "Spoof client",
@@ -74,10 +79,15 @@ val spoofClientPatch = bytecodePatch(
     val setPlayerRequestClientTypeMatch by setPlayerRequestClientTypeFingerprint()
     val createPlayerRequestBodyMatch by createPlayerRequestBodyFingerprint()
     val createPlayerRequestBodyWithModelMatch by createPlayerRequestBodyWithModelFingerprint()
+    val createPlayerRequestBodyWithVersionReleaseMatch by createPlayerRequestBodyWithVersionReleaseFingerprint()
     // Player gesture config.
     val playerGestureConfigSyntheticMatch by playerGestureConfigSyntheticFingerprint()
     // Player speed menu item.
     val createPlaybackSpeedMenuItemMatch by createPlaybackSpeedMenuItemFingerprint()
+    // Video qualities missing.
+    val buildRequestMatch by buildRequestFingerprint()
+    // Watch history.
+    val getTrackingUriMatch by getTrackingUriFingerprint()
 
     execute { context ->
         addResources("youtube", "misc.fix.playback.spoofClientPatch")
@@ -150,17 +160,31 @@ val spoofClientPatch = bytecodePatch(
             .getReference<FieldReference>()
             ?: throw PatchException("Could not find clientInfoClientVersionField")
 
-        val getClientModelIndex = indexOfBuildModelInstruction(createPlayerRequestBodyWithModelMatch.method)
+        val clientInfoClientModelField = createPlayerRequestBodyWithModelMatch.let {
+            val getClientModelIndex = indexOfBuildModelInstruction(it.method)
 
-        // The next IPUT_OBJECT instruction after getting the client model is setting the client model field.
-        val index = createPlayerRequestBodyWithModelMatch.mutableMethod
-            .indexOfFirstInstructionOrThrow(getClientModelIndex) {
+            // The next IPUT_OBJECT instruction after getting the client model is setting the client model field.
+            val index = it.mutableMethod.indexOfFirstInstructionOrThrow(getClientModelIndex) {
                 opcode == Opcode.IPUT_OBJECT
             }
 
-        val clientInfoClientModelField = createPlayerRequestBodyWithModelMatch.mutableMethod
-            .getInstruction(index)
-            .getReference<FieldReference>() ?: throw PatchException("Could not find clientInfoClientModelField")
+            it.mutableMethod
+                .getInstruction(index)
+                .getReference<FieldReference>() ?: throw PatchException("Could not find clientInfoClientModelField")
+        }
+
+        val clientInfoOsVersionField = createPlayerRequestBodyWithVersionReleaseMatch.let {
+            val getOsVersionIndex = indexOfBuildVersionReleaseInstruction(it.method)
+
+            // The next IPUT_OBJECT instruction after getting the client OS version
+            // is setting the client OS version field.
+            val index = it.mutableMethod.indexOfFirstInstructionOrThrow(getOsVersionIndex) {
+                opcode == Opcode.IPUT_OBJECT
+            }
+
+            it.mutableMethod.getInstruction(index).getReference<FieldReference>()
+                ?: throw PatchException("Could not find clientInfoOsVersionField")
+        }
 
         // endregion
 
@@ -222,6 +246,12 @@ val spoofClientPatch = bytecodePatch(
                         move-result-object v1
                         iput-object v1, v0, $clientInfoClientVersionField
                         
+                        # Set client os version to the spoofed value.
+                        iget-object v1, v0, $clientInfoOsVersionField
+                        invoke-static { v1 }, $EXTENSION_CLASS_DESCRIPTOR->getOsVersion(Ljava/lang/String;)Ljava/lang/String;
+                        move-result-object v1
+                        iput-object v1, v0, $clientInfoOsVersionField
+                       
                         :disabled
                         return-void
                     """,
@@ -268,7 +298,8 @@ val spoofClientPatch = bytecodePatch(
 
         createPlaybackSpeedMenuItemMatch.mutableMethod.apply {
             // Find the conditional check if the playback speed menu item is not created.
-            val shouldCreateMenuIndex = indexOfFirstInstructionOrThrow(patternMatch.endIndex) { opcode == Opcode.IF_EQZ }
+            val shouldCreateMenuIndex =
+                indexOfFirstInstructionOrThrow(patternMatch.endIndex) { opcode == Opcode.IF_EQZ }
             val shouldCreateMenuRegister = getInstruction<OneRegisterInstruction>(shouldCreateMenuIndex).registerA
 
             addInstructions(
@@ -280,6 +311,43 @@ val spoofClientPatch = bytecodePatch(
             )
         }
 
+        // endregion
+
+        // Fix watch history if spoofing to iOS.
+
+        getTrackingUriMatch.mutableMethod.apply {
+            val returnUrlIndex = getTrackingUriMatch.patternMatch!!.endIndex
+            val urlRegister = getInstruction<OneRegisterInstruction>(returnUrlIndex).registerA
+
+            addInstructions(
+                returnUrlIndex,
+                """
+                        invoke-static { v$urlRegister }, $EXTENSION_CLASS_DESCRIPTOR->overrideTrackingUrl(Landroid/net/Uri;)Landroid/net/Uri;
+                        move-result-object v$urlRegister
+                    """,
+            )
+        }
+
+        // endregion
+
+        // region Fix video qualities missing, if spoofing to iOS by overriding the user agent.
+
+        buildRequestMatch.mutableMethod.apply {
+            val buildRequestIndex = instructions.lastIndex - 2
+            val requestBuilderRegister = getInstruction<FiveRegisterInstruction>(buildRequestIndex).registerC
+
+            val newRequestBuilderIndex = buildRequestMatch.patternMatch!!.endIndex
+            val urlRegister = getInstruction<FiveRegisterInstruction>(newRequestBuilderIndex).registerD
+
+            // Replace "requestBuilder.build(): Request" with "overrideUserAgent(requestBuilder, url): Request".
+            replaceInstruction(
+                buildRequestIndex,
+                "invoke-static { v$requestBuilderRegister, v$urlRegister }, " +
+                    "$EXTENSION_CLASS_DESCRIPTOR->" +
+                    "overrideUserAgent(${REQUEST_BUILDER_CLASS_DESCRIPTOR}Ljava/lang/String;)" +
+                    REQUEST_CLASS_DESCRIPTOR,
+            )
+        }
         // endregion
     }
 }

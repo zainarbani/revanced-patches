@@ -144,3 +144,44 @@ internal val setPlayerRequestClientTypeFingerprint = fingerprint {
     strings("10.29")
     literal { 134217728 }
 }
+
+internal fun indexOfBuildVersionReleaseInstruction(methodDef: Method) =
+    methodDef.indexOfFirstInstruction {
+        val reference = getReference<FieldReference>()
+        reference?.definingClass == "Landroid/os/Build\$VERSION;" &&
+            reference.name == "RELEASE" &&
+            reference.type == "Ljava/lang/String;"
+    }
+
+internal val createPlayerRequestBodyWithVersionReleaseFingerprint = fingerprint {
+    returns("L")
+    accessFlags(AccessFlags.PUBLIC, AccessFlags.FINAL)
+    parameters()
+    custom { method, _ ->
+        method.containsWideLiteralInstructionValue(1073741824) && indexOfBuildVersionReleaseInstruction(method) >= 0
+    }
+}
+
+internal val getTrackingUriFingerprint = fingerprint {
+    returns("Landroid/net/Uri;")
+    accessFlags(AccessFlags.PUBLIC, AccessFlags.FINAL)
+    parameters()
+    opcodes(
+        Opcode.IGET_OBJECT,
+        Opcode.INVOKE_STATIC,
+        Opcode.MOVE_RESULT_OBJECT,
+        Opcode.RETURN_OBJECT,
+    )
+    custom { _, classDef ->
+        classDef.endsWith("TrackingUrlModel;")
+    }
+}
+
+internal val buildRequestFingerprint = fingerprint {
+    accessFlags(AccessFlags.PUBLIC, AccessFlags.STATIC)
+    returns("Lorg/chromium/net/UrlRequest;")
+    opcodes(
+        Opcode.INVOKE_DIRECT,
+        Opcode.INVOKE_VIRTUAL,
+    )
+}
