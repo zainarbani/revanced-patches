@@ -779,7 +779,7 @@ public final class app/revanced/patches/tiktok/feedfilter/FeedFilterPatchKt {
 	public static final fun getFeedFilterPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
 
-public final class app/revanced/patches/tiktok/interaction/cleardisplay/RememberClearModePatchKt {
+public final class app/revanced/patches/tiktok/interaction/cleardisplay/RememberClearDisplayPatchKt {
 	public static final fun getRememberClearDisplayPatch ()Lapp/revanced/patcher/patch/BytecodePatch;
 }
 

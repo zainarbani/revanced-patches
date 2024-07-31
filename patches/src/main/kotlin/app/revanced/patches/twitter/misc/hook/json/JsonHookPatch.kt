@@ -92,7 +92,7 @@ class JsonHook(context: BytecodePatchContext, internal val descriptor: String) {
                     throw InvalidClassException(classDef.type, "Not a hook class")
                 }
             }
-        } ?: throw ClassNotFoundException("Failed to find hook class")
+        } ?: throw ClassNotFoundException("Failed to find hook class $descriptor")
     }
 }
 

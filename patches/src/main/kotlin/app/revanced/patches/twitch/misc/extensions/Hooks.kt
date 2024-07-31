@@ -4,7 +4,6 @@ import app.revanced.patches.shared.misc.extensions.extensionsHook
 
 internal val initHook = extensionsHook {
     custom { method, classDef ->
-        classDef.endsWith("/TwitchApplication;") &&
-            method.name == "onCreate"
+        method.name == "onCreate" && classDef.endsWith("/TwitchApplication;")
     }
 }

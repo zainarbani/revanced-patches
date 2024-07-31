@@ -28,7 +28,7 @@ fun Fingerprint.matchOrThrow() = match ?: throw exception
  * @return The [PatchException].
  */
 val Fingerprint.exception
-    get() = PatchException("Failed to resolve ${this.javaClass.simpleName}")
+    get() = PatchException("Failed to resolve the fingerprint: $this")
 
 /**
  * Find the [MutableMethod] from a given [Method] in a [MutableClass].

@@ -4,7 +4,8 @@ import app.revanced.extension.twitter.patches.hook.json.BaseJsonHook
 import app.revanced.extension.twitter.patches.hook.twifucker.TwiFucker
 import org.json.JSONObject
 
-object AdsHook : BaseJsonHook() {
+@Suppress("unused")
+object HideAdsHook : BaseJsonHook() {
     /**
      * Strips JSONObject from promoted ads.
      *
