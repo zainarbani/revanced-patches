@@ -9,6 +9,6 @@ internal object TestFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL,
     returnType = "V",
     customFingerprint = { methodDef, _ ->
-        methodDef.name == "onReadCompleted") && methodDef.implementation!!.instructions.count() >= 10
+        methodDef.name == "onReadCompleted" && methodDef.implementation!!.instructions.count() >= 10
     }
 )
