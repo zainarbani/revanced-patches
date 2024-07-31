@@ -6,9 +6,9 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal object TestFingerprint : MethodFingerprint(
-    "V",
-    customFingerprint = custom@{ methodDef, _ ->
-        methodDef.name == "onReadCompleted"
-        return@custom methodDef.implementation!!.instructions.count() == 11
+    accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL,
+    returnType = "V",
+    customFingerprint = { methodDef, _ ->
+        imethodDef.name == "onReadCompleted") && methodDef.implementation!!.instructions.count() >= 10
     }
 )
