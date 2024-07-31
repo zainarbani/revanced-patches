@@ -1,3 +1,12 @@
+## [4.12.1-dev.13](https://github.com/zainarbani/revanced-patches/compare/v4.12.1-dev.12...v4.12.1-dev.13) (2024-07-31)
+
+
+### Bug Fixes
+
+* **yt:** t6 ([87f3c23](https://github.com/zainarbani/revanced-patches/commit/87f3c23954faa622e4ab8e29847ea160f9989744))
+* **yt:** t7 ([73ce1c0](https://github.com/zainarbani/revanced-patches/commit/73ce1c04a68ed1e6d0481fd31b552e6e796165b8))
+* **yt:** t8 ([28f373f](https://github.com/zainarbani/revanced-patches/commit/28f373fd118096e9cc367d017df5856a51dec205))
+
 ## [4.12.1-dev.12](https://github.com/zainarbani/revanced-patches/compare/v4.12.1-dev.11...v4.12.1-dev.12) (2024-07-31)
 
 
