@@ -92,6 +92,7 @@ object SpoofClientPatch : BytecodePatch(
         // Watch history.
         GetTrackingUriFingerprint,
         TestFingerprint,
+        TestFingerprint2,
     ),
 ) {
     private const val INTEGRATIONS_CLASS_DESCRIPTOR =
