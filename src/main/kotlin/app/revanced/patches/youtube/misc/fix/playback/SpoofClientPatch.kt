@@ -388,10 +388,11 @@ object SpoofClientPatch : BytecodePatch(
         TestFingerprint3.resultOrThrow().let {
             it.mutableMethod.apply {
                 val targetIndex = it.scanResult.patternScanResult!!.endIndex
+                val targetRegister = getInstruction<FiveRegisterInstruction>(targetIndex - 1).registerC
 
                 // Don't pass request callback to logger.
                 replaceInstruction(
-                   targetIndex - 1, "move-object v3, p6"
+                   targetIndex - 1, "move-object v$targetRegister, p6"
                    //"invoke-virtual {v1, v2, p6, v0}, " +
                    //        "Lorg/chromium/net/CronetEngine;->" +
                    //        "newUrlRequestBuilder(Ljava/lang/String;Lorg/chromium/net/UrlRequest\$Callback;Ljava/util/concurrent/Executor;)" +
@@ -422,30 +423,30 @@ object SpoofClientPatch : BytecodePatch(
         }
         
         TestFingerprint.resultOrThrow().let {
-            it.mutableMethod.apply {
+   //         it.mutableMethod.apply {
                 //val returnUrlIndex = it.scanResult.patternScanResult!!.endIndex
 
-                addInstructions(
-                   0,
-                   """
-                        #invoke-virtual {p3}, Ljava/nio/ByteBuffer;->hasRemaining()Z
-                        #move-result v0
-                        #if-eqz v0, :spoof
-                        #invoke-virtual {p1, p3}, Lorg/chromium/net/UrlRequest;->read(Ljava/nio/ByteBuffer;)V
-                        #return-void
-                        #:spoof
-                        invoke-virtual { p2 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
-                        move-result-object v0
-                        invoke-static { p3, v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testProto(Ljava/nio/ByteBuffer;Ljava/lang/String;)V
-                    """
+                //addInstructions(
+              //     0,
+            //       """
+           //             #invoke-virtual {p3}, Ljava/nio/ByteBuffer;->hasRemaining()Z
+    //                    #move-result v0
+      //                  #if-eqz v0, :spoof
+       //                 #invoke-virtual {p1, p3}, Lorg/chromium/net/UrlRequest;->read(Ljava/nio/ByteBuffer;)V
+    //                    #return-void
+     //                   #:spoof
+  //                      invoke-virtual { p2 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
+   //                     move-result-object v0
+   //                     invoke-static { p3, v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testProto(Ljava/nio/ByteBuffer;Ljava/lang/String;)V
+    //                """
                     //returnUrlIndex - 2,
                     //"""
                     //    invoke-virtual/range { p2 .. p2 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
                     //    move-result-object v1
                     //    invoke-static { v0, v1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testProto(Ljava/nio/ByteBuffer;Ljava/lang/String;)V
                     //"""
-                )
-            }
+     //           )
+ //           }
         }
         
     }
