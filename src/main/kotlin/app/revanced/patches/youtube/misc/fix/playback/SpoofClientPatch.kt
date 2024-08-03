@@ -412,12 +412,12 @@ object SpoofClientPatch : BytecodePatch(
                 addInstructions(
                    0,
                    """
-                        invoke-virtual {p3}, Ljava/nio/ByteBuffer;->hasRemaining()Z
-                        move-result v0
-                        if-eqz v0, :spoof
-                        invoke-virtual {p1, p3}, Lorg/chromium/net/UrlRequest;->read(Ljava/nio/ByteBuffer;)V
-                        return-void
-                        :spoof
+                        #invoke-virtual {p3}, Ljava/nio/ByteBuffer;->hasRemaining()Z
+                        #move-result v0
+                        #if-eqz v0, :spoof
+                        #invoke-virtual {p1, p3}, Lorg/chromium/net/UrlRequest;->read(Ljava/nio/ByteBuffer;)V
+                        #return-void
+                        #:spoof
                         invoke-virtual { p2 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
                         move-result-object v0
                         invoke-static { p3, v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testProto(Ljava/nio/ByteBuffer;Ljava/lang/String;)V
