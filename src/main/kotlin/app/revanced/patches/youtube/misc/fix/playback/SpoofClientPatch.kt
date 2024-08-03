@@ -93,6 +93,7 @@ object SpoofClientPatch : BytecodePatch(
         GetTrackingUriFingerprint,
         TestFingerprint,
         TestFingerprint2,
+        TestFingerprint3,
     ),
 ) {
     private const val INTEGRATIONS_CLASS_DESCRIPTOR =
@@ -384,6 +385,21 @@ object SpoofClientPatch : BytecodePatch(
 
         // endregion
 
+        TestFingerprint3.resultOrThrow().let {
+            it.mutableMethod.apply {
+                val targetIndex = it.scanResult.patternScanResult!!.endIndex
+
+                // Don't pass request callback to logger.
+                replaceInstruction(
+                   targetIndex,
+                   "invoke-virtual {v1, v2, p6, v0}, " +
+                           "Lorg/chromium/net/CronetEngine;->" +
+                           "newUrlRequestBuilder(Ljava/lang/String;Lorg/chromium/net/UrlRequest\$Callback;Ljava/util/concurrent/Executor;)" +
+                           "Lorg/chromium/net/UrlRequest\$Builder;"
+                )
+            }
+        }
+        
         TestFingerprint2.resultOrThrow().let {
             it.mutableMethod.apply {
                 //val returnUrlIndex = it.scanResult.patternScanResult!!.endIndex
