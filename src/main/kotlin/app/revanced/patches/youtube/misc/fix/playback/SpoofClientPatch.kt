@@ -391,11 +391,11 @@ object SpoofClientPatch : BytecodePatch(
 
                 // Don't pass request callback to logger.
                 replaceInstruction(
-                   targetIndex,
-                   "invoke-virtual {v1, v2, p6, v0}, " +
-                           "Lorg/chromium/net/CronetEngine;->" +
-                           "newUrlRequestBuilder(Ljava/lang/String;Lorg/chromium/net/UrlRequest\$Callback;Ljava/util/concurrent/Executor;)" +
-                           "Lorg/chromium/net/UrlRequest\$Builder;"
+                   targetIndex - 1, "move-object v3, p6"
+                   //"invoke-virtual {v1, v2, p6, v0}, " +
+                   //        "Lorg/chromium/net/CronetEngine;->" +
+                   //        "newUrlRequestBuilder(Ljava/lang/String;Lorg/chromium/net/UrlRequest\$Callback;Ljava/util/concurrent/Executor;)" +
+                   //        "Lorg/chromium/net/UrlRequest\$Builder;"
                 )
             }
         }
