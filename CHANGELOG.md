@@ -1,3 +1,10 @@
+## [4.12.1-dev.22](https://github.com/zainarbani/revanced-patches/compare/v4.12.1-dev.21...v4.12.1-dev.22) (2024-08-04)
+
+
+### Bug Fixes
+
+* **yt:** yy8 ([f10bc2d](https://github.com/zainarbani/revanced-patches/commit/f10bc2d907dbc9ca0f9ce8f664b715849465d6b1))
+
 ## [4.12.1-dev.21](https://github.com/zainarbani/revanced-patches/compare/v4.12.1-dev.20...v4.12.1-dev.21) (2024-08-04)
 
 
