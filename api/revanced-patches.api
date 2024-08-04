@@ -1840,12 +1840,6 @@ public final class app/revanced/patches/youtube/misc/fix/playback/SpoofClientPat
 	public synthetic fun execute (Lapp/revanced/patcher/data/Context;)V
 }
 
-public final class app/revanced/patches/youtube/misc/fix/playback/SpoofStreamPatch : app/revanced/patcher/patch/BytecodePatch {
-	public static final field INSTANCE Lapp/revanced/patches/youtube/misc/fix/playback/SpoofStreamPatch;
-	public fun execute (Lapp/revanced/patcher/data/BytecodeContext;)V
-	public synthetic fun execute (Lapp/revanced/patcher/data/Context;)V
-}
-
 public final class app/revanced/patches/youtube/misc/fix/playback/SpoofSignaturePatch : app/revanced/patcher/patch/BytecodePatch {
 	public static final field INSTANCE Lapp/revanced/patches/youtube/misc/fix/playback/SpoofSignaturePatch;
 	public fun execute (Lapp/revanced/patcher/data/BytecodeContext;)V
