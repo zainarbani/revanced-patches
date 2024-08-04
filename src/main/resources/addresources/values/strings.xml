@@ -1137,6 +1137,16 @@ This is because Crowdin requires temporarily flattening this file and removing t
             <string name="revanced_spoof_client_storyboard_timeout">Spoof client thumbnails not available (API timed out)</string>
             <string name="revanced_spoof_client_storyboard_io_exception">Spoof client thumbnails temporarily not available: %s</string>
         </patch>
+        <patch id="misc.fix.playback.SpoofStreamPatch">
+            <string name="revanced_spoof_stream_screen_title">Spoof stream</string>
+            <string name="revanced_spoof_stream_screen_summary">Spoof streaming data to prevent playback issues</string>
+            <string name="revanced_spoof_stream_title">Spoof stream</string>
+            <string name="revanced_spoof_stream_summary_on">Streaming data is spoofed</string>
+            <string name="revanced_spoof_stream_summary_off">Streaming data is not spoofed\n\nVideo playback may not work</string>
+            <string name="revanced_spoof_stream_user_dialog_message">Turning off this setting may cause video playback issues.</string>
+            <string name="revanced_spoof_stream_timeout">Spoof streaming data not available (API timed out)</string>
+            <string name="revanced_spoof_stream_io_exception">Spoof streaming data temporarily not available: %s</string>
+        </patch>
         <!-- This patch is no longer used, these strings are not in use, and these strings will be deleted in the future. -->
         <patch id="misc.fix.playback.SpoofSignaturePatch">
             <string name="revanced_spoof_signature_verification_screen_title">Spoof app signature</string>
