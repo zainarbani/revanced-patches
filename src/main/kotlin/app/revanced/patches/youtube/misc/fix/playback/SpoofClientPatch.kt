@@ -393,11 +393,11 @@ object SpoofClientPatch : BytecodePatch(
                 println("targetRegister: $targetRegister, freeRegister: $freeRegister")
 
                 addInstructions(
-                   targetIndex,
+                   targetIndex + 1,
                    """
                         invoke-virtual { p1 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
-                        move-result-object v1
-                        invoke-static { v7, v1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testProto([BLjava/lang/String;)V
+                        move-result-object v$freeRegister
+                        invoke-static { v$targetRegister, v$freeRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testProto([BLjava/lang/String;)V
                     """
                 )
             }
