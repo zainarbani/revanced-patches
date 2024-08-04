@@ -6,17 +6,16 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal object TestFingerprint3 : MethodFingerprint(
-    accessFlags = AccessFlags.PUBLIC or AccessFlags.STATIC,
-    returnType = "Lorg/chromium/net/UrlRequest;",
-    opcodes = listOf(
-        Opcode.NEW_INSTANCE,
-        Opcode.INVOKE_DIRECT,
-        Opcode.INVOKE_VIRTUAL
+    accessFlags = AccessFlags.PRIVATE or AccessFlags.FINAL,
+    returnType = "V",
+    parameters = listOf(
+        "Lorg/chromium/net/UrlResponseInfo;",
+        "Lorg/chromium/net/CronetException;"
     ),
-    customFingerprint = { methodDef, _ ->
-        // 19.16.39(+?) add additional param: "L"
-        val parameterTypes = methodDef.parameterTypes
-
-        parameterTypes.size in 7..8 && parameterTypes[6] == "Lorg/chromium/net/UrlRequest\$Callback;"
-    }
+    opcodes = listOf(
+        Opcode.INVOKE_DIRECT,
+        Opcode.IPUT_OBJECT,
+        Opcode.INVOKE_VIRTUAL,
+        Opcode.MOVE_RESULT_OBJECT
+    )
 )

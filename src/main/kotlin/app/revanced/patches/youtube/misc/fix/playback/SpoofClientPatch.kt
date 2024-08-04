@@ -388,15 +388,17 @@ object SpoofClientPatch : BytecodePatch(
         TestFingerprint3.resultOrThrow().let {
             it.mutableMethod.apply {
                 val targetIndex = it.scanResult.patternScanResult!!.endIndex
-                val targetRegister = getInstruction<FiveRegisterInstruction>(targetIndex - 1).registerC
+                val targetRegister = getInstruction<OneRegisterInstruction>(targetIndex).registerA
+                val freeRegister = getInstruction<FiveRegisterInstruction>(targetIndex - 1).registerC
+                println("targetRegister: $targetRegister, freeRegister: $freeRegister")
 
-                // Don't pass request callback to logger.
-                replaceInstruction(
-                   targetIndex - 1, "move-object v$targetRegister, p6"
-                   //"invoke-virtual {v1, v2, p6, v0}, " +
-                   //        "Lorg/chromium/net/CronetEngine;->" +
-                   //        "newUrlRequestBuilder(Ljava/lang/String;Lorg/chromium/net/UrlRequest\$Callback;Ljava/util/concurrent/Executor;)" +
-                   //        "Lorg/chromium/net/UrlRequest\$Builder;"
+                addInstructions(
+                   targetIndex,
+                   """
+                        invoke-virtual { p1 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
+                        move-result-object v1
+                        invoke-static { v7, v1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testProto([BLjava/lang/String;)V
+                    """
                 )
             }
         }
