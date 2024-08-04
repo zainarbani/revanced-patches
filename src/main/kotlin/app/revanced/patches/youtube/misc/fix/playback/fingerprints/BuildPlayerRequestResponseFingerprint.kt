@@ -5,7 +5,7 @@ import app.revanced.patcher.fingerprint.MethodFingerprint
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
-internal object TestFingerprint3 : MethodFingerprint(
+internal object BuildPlayerRequestResponseFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PRIVATE or AccessFlags.FINAL,
     returnType = "V",
     parameters = listOf(

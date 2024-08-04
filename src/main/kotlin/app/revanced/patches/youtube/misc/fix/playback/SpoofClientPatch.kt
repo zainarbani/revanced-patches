@@ -86,14 +86,14 @@ object SpoofClientPatch : BytecodePatch(
         // Player speed menu item.
         CreatePlaybackSpeedMenuItemFingerprint,
 
+        // Player request response.
+        BuildPlayerRequestResponseFingerprint,
+        
         // Video qualities missing.
         BuildRequestFingerprint,
 
         // Watch history.
         GetTrackingUriFingerprint,
-        TestFingerprint,
-        TestFingerprint2,
-        TestFingerprint3,
     ),
 ) {
     private const val INTEGRATIONS_CLASS_DESCRIPTOR =
@@ -385,71 +385,26 @@ object SpoofClientPatch : BytecodePatch(
 
         // endregion
 
-        TestFingerprint3.resultOrThrow().let {
+        // region Change player config, if spoofing to iOS by injecting player request response.
+
+        BuildPlayerRequestResponseFingerprint.resultOrThrow().let {
             it.mutableMethod.apply {
-                val targetIndex = it.scanResult.patternScanResult!!.endIndex
-                val targetRegister = getInstruction<OneRegisterInstruction>(targetIndex).registerA
-                val freeRegister = getInstruction<FiveRegisterInstruction>(targetIndex - 1).registerC
-                println("targetRegister: $targetRegister, freeRegister: $freeRegister")
+                val moveIndex = it.scanResult.patternScanResult!!.endIndex
+                val moveRegister = getInstruction<OneRegisterInstruction>(moveIndex).registerA
+                val freeRegister = getInstruction<FiveRegisterInstruction>(moveIndex - 1).registerC
 
                 addInstructions(
-                   targetIndex + 1,
-                   """
+                    moveIndex + 1,
+                    """
                         invoke-virtual { p1 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
                         move-result-object v$freeRegister
-                        invoke-static { v$targetRegister, v$freeRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testProto([BLjava/lang/String;)V
+                        invoke-static { v$moveRegister, v$freeRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->getPlayerConfig([BLjava/lang/String;)[B
+                        move-result-object v$moveRegister
                     """
                 )
             }
         }
-        
-        TestFingerprint2.resultOrThrow().let {
-            it.mutableMethod.apply {
-                //val returnUrlIndex = it.scanResult.patternScanResult!!.endIndex
 
-                addInstructions(
-                   0,
-                   """
-                        invoke-virtual { p2 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
-                        move-result-object v0
-                        invoke-static { v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint(Ljava/lang/String;)V
-                    """
-                    //returnUrlIndex - 2,
-                    //"""
-                    //    invoke-virtual/range { p2 .. p2 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
-                    //    move-result-object v1
-                    //    invoke-static { v0, v1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testProto(Ljava/nio/ByteBuffer;Ljava/lang/String;)V
-                    //"""
-                )
-            }
-        }
-        
-        TestFingerprint.resultOrThrow().let {
-   //         it.mutableMethod.apply {
-                //val returnUrlIndex = it.scanResult.patternScanResult!!.endIndex
-
-                //addInstructions(
-              //     0,
-            //       """
-           //             #invoke-virtual {p3}, Ljava/nio/ByteBuffer;->hasRemaining()Z
-    //                    #move-result v0
-      //                  #if-eqz v0, :spoof
-       //                 #invoke-virtual {p1, p3}, Lorg/chromium/net/UrlRequest;->read(Ljava/nio/ByteBuffer;)V
-    //                    #return-void
-     //                   #:spoof
-  //                      invoke-virtual { p2 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
-   //                     move-result-object v0
-   //                     invoke-static { p3, v0 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testProto(Ljava/nio/ByteBuffer;Ljava/lang/String;)V
-    //                """
-                    //returnUrlIndex - 2,
-                    //"""
-                    //    invoke-virtual/range { p2 .. p2 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
-                    //    move-result-object v1
-                    //    invoke-static { v0, v1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testProto(Ljava/nio/ByteBuffer;Ljava/lang/String;)V
-                    //"""
-     //           )
- //           }
-        }
-        
+        // endregion
     }
 }
