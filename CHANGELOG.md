@@ -1,3 +1,23 @@
+# [4.13.0-dev.1](https://github.com/zainarbani/revanced-patches/compare/v4.12.0...v4.13.0-dev.1) (2024-08-06)
+
+
+### Bug Fixes
+
+* **SoundCloud - Enable offline sync:** Stop crashing by reversing order of patching instructions from last to first to retain indices ([63b6ced](https://github.com/zainarbani/revanced-patches/commit/63b6cede5fa5bcf377ced422da4e861996a41f0d))
+* **YouTube - Bypass image region restrictions:** Move setting to `Misc` menu ([094ae59](https://github.com/zainarbani/revanced-patches/commit/094ae59fc92663fff6c5d6f5cbece41822a326f9))
+* **YouTube - Client Spoof:** Restore missing high qualities by spoofing the iOS client user agent ([#3468](https://github.com/zainarbani/revanced-patches/issues/3468)) ([0e6ae5f](https://github.com/zainarbani/revanced-patches/commit/0e6ae5fee752a76604cf9b95f9a76c0cbe5f7dae))
+* **YouTube - SponsorBlock:** Correctly show minute timestamp when creating a new segment ([d74c366](https://github.com/zainarbani/revanced-patches/commit/d74c366dbf5f25c20fbfc5a0157c3c15dda82a16))
+* **YouTube - SponsorBlock:** Improve create segment manual seek accuracy ([#3491](https://github.com/zainarbani/revanced-patches/issues/3491)) ([1544981](https://github.com/zainarbani/revanced-patches/commit/15449819ff74b636fb2fa6aacd770142c51d2e5d))
+* **YouTube - Spoof client:** Fix tracking history on brand accounts ([#3480](https://github.com/zainarbani/revanced-patches/issues/3480)) ([69c1f16](https://github.com/zainarbani/revanced-patches/commit/69c1f16f7eb0d5759a44f7f7a09b1757ce8f61dd))
+* **YouTube - Spoof Stream:** Spoof stream to fix playback ([e714b2a](https://github.com/zainarbani/revanced-patches/commit/e714b2a1ac28597d90da5342c50f67318e71d8d4))
+
+
+### Features
+
+* **Boost for Reddit:** Add `Disable ads` patch ([#3474](https://github.com/zainarbani/revanced-patches/issues/3474)) ([b292c20](https://github.com/zainarbani/revanced-patches/commit/b292c200bf4ea5b4f71d96690ac011e7843552f0))
+* **SwissID:** Add `Remove Google Play Integrity Integrity check` patch ([#3478](https://github.com/zainarbani/revanced-patches/issues/3478)) ([60492ae](https://github.com/zainarbani/revanced-patches/commit/60492aea7863e07d8bf1af9380ae9295ca161f3c))
+* **YouTube - Description components:** Add `Hide 'Key concepts' section` option ([#3495](https://github.com/zainarbani/revanced-patches/issues/3495)) ([d75b645](https://github.com/zainarbani/revanced-patches/commit/d75b64595a7ac26faca4c0ae21923b22f6783975))
+
 # [4.12.0-dev.15](https://github.com/ReVanced/revanced-patches/compare/v4.12.0-dev.14...v4.12.0-dev.15) (2024-08-02)
 
 
