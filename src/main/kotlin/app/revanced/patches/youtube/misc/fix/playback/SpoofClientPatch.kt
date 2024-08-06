@@ -86,6 +86,9 @@ object SpoofClientPatch : BytecodePatch(
         // Player speed menu item.
         CreatePlaybackSpeedMenuItemFingerprint,
 
+        // Player request response.
+        BuildPlayerRequestResponseFingerprint,
+
         // Video qualities missing.
         BuildRequestFingerprint,
 
@@ -112,6 +115,7 @@ object SpoofClientPatch : BytecodePatch(
                 preferences = setOf(
                     SwitchPreference("revanced_spoof_client"),
                     SwitchPreference("revanced_spoof_client_use_ios"),
+                    SwitchPreference("revanced_spoof_stream"),
                 ),
             ),
         )
@@ -376,6 +380,28 @@ object SpoofClientPatch : BytecodePatch(
                             "$INTEGRATIONS_CLASS_DESCRIPTOR->" +
                             "overrideUserAgent(${REQUEST_BUILDER_CLASS_DESCRIPTOR}Ljava/lang/String;)" +
                             REQUEST_CLASS_DESCRIPTOR
+                )
+            }
+        }
+
+        // endregion
+
+        // region Change streaming data by injecting player request response.
+
+        BuildPlayerRequestResponseFingerprint.resultOrThrow().let {
+            it.mutableMethod.apply {
+                val moveIndex = it.scanResult.patternScanResult!!.endIndex
+                val moveRegister = getInstruction<OneRegisterInstruction>(moveIndex).registerA
+                val freeRegister = getInstruction<FiveRegisterInstruction>(moveIndex - 1).registerC
+
+                addInstructions(
+                    moveIndex + 1,
+                    """
+                        invoke-virtual { p1 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
+                        move-result-object v$freeRegister
+                        invoke-static { v$moveRegister, v$freeRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->setStreamingData([BLjava/lang/String;)[B
+                        move-result-object v$moveRegister
+                    """
                 )
             }
         }
