@@ -25,7 +25,7 @@ internal object TestFingerprint : MethodFingerprint(
         Opcode.MOVE_WIDE_FROM16,
         Opcode.INVOKE_DIRECT
     ),
-    customFingerprint = { methodDef, _ ->
-        methodDef.name == "<init>"
-    }
+    //customFingerprint = { methodDef, _ ->
+    //    methodDef.name == "<init>"
+    //}
 )
