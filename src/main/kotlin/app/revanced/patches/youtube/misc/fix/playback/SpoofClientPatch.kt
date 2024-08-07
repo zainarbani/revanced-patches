@@ -413,11 +413,10 @@ object SpoofClientPatch : BytecodePatch(
             it.mutableMethod.apply {
                 //val invokeIndex = it.scanResult.patternScanResult!!.endIndex
 
-                addInstructions(
+                addInstruction(
                     5,
                     """
                         invoke-static { p1, p3, p4 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testSpoof(Landroid/net/Uri;I[B)V
-                        #move-result-object p4
                     """
                 )
             }
