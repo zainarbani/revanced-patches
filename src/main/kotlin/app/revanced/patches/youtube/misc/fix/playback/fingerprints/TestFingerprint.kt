@@ -6,19 +6,19 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal object TestFingerprint : MethodFingerprint(
-//    accessFlags = AccessFlags.PUBLIC or AccessFlags.CONSTRUCTOR,
-//    returnType = "V",
+    accessFlags = AccessFlags.PUBLIC or AccessFlags.CONSTRUCTOR,
+    returnType = "V",
     parameters = listOf(
-        "Landroid/net/Uri;",
+        "L",
         "J",
         "I",
         "[B",
-        "Ljava/util/Map;",
+        "L",
         "J",
         "J",
-        "Ljava/lang/String;",
+        "L",
         "I",
-        "Ljava/lang/Object;"
+        "L"
     ),
     //opcodes = listOf(
     //    Opcode.MOVE_OBJECT_FROM16,
