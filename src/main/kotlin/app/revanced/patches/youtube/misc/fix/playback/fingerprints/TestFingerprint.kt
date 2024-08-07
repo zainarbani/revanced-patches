@@ -8,18 +8,6 @@ import com.android.tools.smali.dexlib2.Opcode
 internal object TestFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PUBLIC or AccessFlags.CONSTRUCTOR,
     returnType = "V",
-    parameters = listOf(
-        "Landroid/net/Uri;",
-        "J",
-        "I",
-        "[B",
-        "Ljava/util/Map;",
-        "J",
-        "J",
-        "Ljava/lang/String;",
-        "I",
-        "Ljava/lang/Object;"
-    ),
     //opcodes = listOf(
    //     Opcode.MOVE_OBJECT
    //     Opcode.MOVE_WIDE
@@ -27,7 +15,13 @@ internal object TestFingerprint : MethodFingerprint(
  //       Opcode.MOVE_WIDE_FROM16,
   //      Opcode.INVOKE_DIRECT
   //  ),
-    customFingerprint = { methodDef, _ ->
-        methodDef.name == "<init>"
+    customFingerprint = custom@{ methodDef, _ ->
+        if (methodDef.name != "<init>") return@custom false
+        
+        val parameterTypes = methodDef.parameterTypes
+        
+        if (parameterTypes.size != 10) return@custom false
+        if (parameterTypes[0] != "Landroid/net/Uri;") return@custom false
+        if (parameterTypes[1] != "J") return@custom false
     }
 )
