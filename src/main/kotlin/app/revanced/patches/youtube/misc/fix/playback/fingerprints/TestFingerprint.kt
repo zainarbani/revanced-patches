@@ -23,5 +23,6 @@ internal object TestFingerprint : MethodFingerprint(
         if (parameterTypes.size != 10) return@custom false
         if (parameterTypes[0] != "Landroid/net/Uri;") return@custom false
         if (parameterTypes[1] != "J") return@custom false
+        return@custom true
     }
 )
