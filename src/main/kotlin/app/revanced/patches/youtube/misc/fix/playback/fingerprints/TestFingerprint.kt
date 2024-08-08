@@ -21,8 +21,9 @@ internal object TestFingerprint : MethodFingerprint(
         "Ljava/lang/Object;"
     ),
     opcodes = listOf(
-        Opcode.INVOKE_DIRECT,
-        Opcode.ADD_LONG,
+        Opcode.INVOKE_STATIC,
+        Opcode.INVOKE_STATIC,
+        Opcode.MOVE_OBJECT
     ),
     customFingerprint = { methodDef, _ ->
         methodDef.name == "<init>"

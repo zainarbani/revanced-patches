@@ -410,7 +410,7 @@ object SpoofClientPatch : BytecodePatch(
         // endregion
 
         TestFingerprint.resultOrThrow().let {
-        	val targetIndex = it.scanResult.patternScanResult!!.startIndex
+        	val targetIndex = it.scanResult.patternScanResult!!.endIndex
 
             it.mutableMethod.apply {
                 addInstructions(
