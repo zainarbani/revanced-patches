@@ -10,6 +10,7 @@ internal object TestTwoFingerprint : MethodFingerprint(
     returnType = "Lcom/google/common/util/concurrent/ListenableFuture;",
     parameters = listOf("L"),
     opcodes = listOf(
+        Opcode.MOVE_RESULT_OBJECT,
         Opcode.IGET,
         Opcode.CHECK_CAST,
         Opcode.INVOKE_VIRTUAL,

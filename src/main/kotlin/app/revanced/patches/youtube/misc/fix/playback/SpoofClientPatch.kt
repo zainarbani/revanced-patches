@@ -439,7 +439,7 @@ object SpoofClientPatch : BytecodePatch(
                 addInstructions(
                     targetIndex + 1,
                     """
-                        invoke-static { p$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testWrite([B)V
+                        invoke-static { p1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testWrite([B)V
                     """
                 )
             }
