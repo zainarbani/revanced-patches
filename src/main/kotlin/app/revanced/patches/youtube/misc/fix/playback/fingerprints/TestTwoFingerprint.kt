@@ -8,6 +8,7 @@ import com.android.tools.smali.dexlib2.Opcode
 internal object TestTwoFingerprint : MethodFingerprint(
     accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL,
     returnType = "Lcom/google/common/util/concurrent/ListenableFuture;",
+    parameters = listOf("L"),
     opcodes = listOf(
         Opcode.MOVE_RESULT_OBJECT,
         Opcode.IGET,
@@ -15,8 +16,5 @@ internal object TestTwoFingerprint : MethodFingerprint(
         Opcode.INVOKE_VIRTUAL,
         Opcode.MOVE_RESULT_OBJECT
     ),
-    strings = listOf(
-        "response.parse",
-        "response.decrypted"
-    )
+    strings = listOf("response.parse")
 )
