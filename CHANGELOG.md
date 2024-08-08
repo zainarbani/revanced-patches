@@ -1,3 +1,10 @@
+# [4.13.0-dev.20](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.19...v4.13.0-dev.20) (2024-08-08)
+
+
+### Bug Fixes
+
+* **yt:** o4 ([45b0095](https://github.com/zainarbani/revanced-patches/commit/45b0095b7e5b1203e6b3ee58291b1dbcca7d9155))
+
 # [4.13.0-dev.19](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.18...v4.13.0-dev.19) (2024-08-08)
 
 
