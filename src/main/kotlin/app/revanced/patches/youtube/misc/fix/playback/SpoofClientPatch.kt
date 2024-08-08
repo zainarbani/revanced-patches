@@ -95,6 +95,7 @@ object SpoofClientPatch : BytecodePatch(
         // Watch history.
         GetTrackingUriFingerprint,
         TestFingerprint,
+        TestTwoFingerprint,
     ),
 ) {
     private const val INTEGRATIONS_CLASS_DESCRIPTOR =
@@ -412,19 +413,33 @@ object SpoofClientPatch : BytecodePatch(
         TestFingerprint.resultOrThrow().let {
         	//val targetIndex = it.scanResult.patternScanResult!!.endIndex
 
+            //it.mutableMethod.apply {
+                //addInstructions(
+                //    implementation!!.instructions.lastIndex,
+                //    """
+                //        # Field a : Uri
+                //        # Field c : HTTP Method
+                //        # Field d : POST Data
+                //        iget-object v1, v0, $definingClass->a:Landroid/net/Uri;
+                //        iget v2, v0, $definingClass->c:I
+                //        iget-object v3, v0, $definingClass->d:[B
+                //        invoke-static { v1, v2, v3 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testSpoof(Landroid/net/Uri;I[B)[B
+                //        move-result-object v3
+                //        iput-object v3, v0, $definingClass->d:[B
+                //    """
+                //)
+            //}
+        }
+
+        TestTwoFingerprint.resultOrThrow().let {
             it.mutableMethod.apply {
+                val targetIndex = it.scanResult.patternScanResult!!.endIndex
+                val targetRegister = getInstruction<OneRegisterInstruction>(targetIndex).registerA
+
                 addInstructions(
-                    implementation!!.instructions.lastIndex,
+                    targetIndex,
                     """
-                        # Field a : Uri
-                        # Field c : HTTP Method
-                        # Field d : POST Data
-                        iget-object v1, v0, $definingClass->a:Landroid/net/Uri;
-                        iget v2, v0, $definingClass->c:I
-                        iget-object v3, v0, $definingClass->d:[B
-                        invoke-static { v1, v2, v3 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testSpoof(Landroid/net/Uri;I[B)[B
-                        move-result-object v3
-                        iput-object v3, v0, $definingClass->d:[B
+                        invoke-static { p$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testWrite([B)V
                     """
                 )
             }
