@@ -411,21 +411,18 @@ object SpoofClientPatch : BytecodePatch(
 
         TestFingerprint.resultOrThrow().let {
         	//val targetIndex = it.scanResult.patternScanResult!!.endIndex
-            val targetIndex = it.mutableMethod
-                .getInstructions().indexOfFirst { instruction ->
-                    instruction.opcode == Opcode.IPUT_OBJECT &&
-                    instruction.getReference<FieldReference>()?.type == "Landroid/net/Uri;"
-                } ?: throw PatchException("Could not find the testIndex.")
-
 
             it.mutableMethod.apply {
                 addInstructions(
-                    targetIndex,
+                    implementation!!.instructions.lastIndex,
                     """
                         # p1 : Uri
                         # p3 : HTTP Method
                         # p4 : POST Data
-                        invoke-static { p1, p3, p4 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testSpoof(Landroid/net/Uri;I[B)V
+                        iget-object v1, v0, $definingClass;->a:Landroid/net/Uri;
+                        iget-object v2, v0, $definingClass;->c:I
+                        iget-object v3, v0, $definingClass;->d:[B
+                        invoke-static { v1, v2, v3 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testSpoof(Landroid/net/Uri;I[B)V
                     """
                 )
             }
