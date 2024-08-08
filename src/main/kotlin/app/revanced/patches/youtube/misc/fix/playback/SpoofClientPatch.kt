@@ -410,7 +410,13 @@ object SpoofClientPatch : BytecodePatch(
         // endregion
 
         TestFingerprint.resultOrThrow().let {
-        	val targetIndex = it.scanResult.patternScanResult!!.endIndex
+        	//val targetIndex = it.scanResult.patternScanResult!!.endIndex
+            val targetIndex = it.mutableMethod
+                .getInstructions().indexOfFirst { instruction ->
+                    instruction.opcode == Opcode.IPUT_OBJECT &&
+                    instruction.getReference<FieldReference>()?.type == "Landroid/net/Uri;"
+                } ?: throw PatchException("Could not find the testIndex.")
+
 
             it.mutableMethod.apply {
                 addInstructions(
