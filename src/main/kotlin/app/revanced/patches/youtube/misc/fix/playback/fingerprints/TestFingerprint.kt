@@ -20,7 +20,7 @@ internal object BuildTestTwoFingerprint : MethodFingerprint(
         "I",
         "Ljava/lang/Object;"
     ),
-    opcode = listOf(
+    opcodes = listOf(
         Opcode.INVOKE_DIRECT,
         Opcode.ADD_LONG,
     ),

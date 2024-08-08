@@ -416,6 +416,9 @@ object SpoofClientPatch : BytecodePatch(
                 addInstructions(
                     targetIndex,
                     """
+                        # p1 : Uri
+                        # p3 : HTTP Method
+                        # p4 : POST Data
                         invoke-static { p1, p3, p4 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testSpoof(Landroid/net/Uri;I[B)V
                     """
                 )
