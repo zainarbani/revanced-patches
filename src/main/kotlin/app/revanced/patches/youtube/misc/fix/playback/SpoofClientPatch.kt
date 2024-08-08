@@ -422,7 +422,9 @@ object SpoofClientPatch : BytecodePatch(
                         iget-object v1, v0, $definingClass->a:Landroid/net/Uri;
                         iget v2, v0, $definingClass->c:I
                         iget-object v3, v0, $definingClass->d:[B
-                        invoke-static { v1, v2, v3 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testSpoof(Landroid/net/Uri;I[B)V
+                        invoke-static { v1, v2, v3 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testSpoof(Landroid/net/Uri;I[B)[B
+                        move-result-object v3
+                        iput-object v3, v0, $definingClass->d:[B
                     """
                 )
             }
