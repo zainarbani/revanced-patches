@@ -434,12 +434,12 @@ object SpoofClientPatch : BytecodePatch(
         TestTwoFingerprint.resultOrThrow().let {
             it.mutableMethod.apply {
                 val targetIndex = it.scanResult.patternScanResult!!.endIndex
-                val targetRegister = getInstruction<OneRegisterInstruction>(targetIndex).registerA
+                //val targetRegister = getInstruction<OneRegisterInstruction>(targetIndex).registerA
 
                 addInstructions(
                     targetIndex + 1,
                     """
-                        invoke-static { p1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testWrite([B)V
+                        invoke-static { v2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testWrite(Landroid/os/Parcel;)V
                     """
                 )
             }
