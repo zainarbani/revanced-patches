@@ -11,5 +11,5 @@ internal object TestTwoFingerprint : MethodFingerprint(
         Opcode.INVOKE_STATIC,
         Opcode.MOVE_RESULT_OBJECT
     ),
-    strings = listOf("Error reading streaming data"")
+    strings = listOf("Error reading streaming data")
 )
