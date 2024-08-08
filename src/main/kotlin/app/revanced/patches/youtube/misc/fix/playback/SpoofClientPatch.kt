@@ -420,7 +420,7 @@ object SpoofClientPatch : BytecodePatch(
                         # Field c : HTTP Method
                         # Field d : POST Data
                         iget-object v1, v0, $definingClass->a:Landroid/net/Uri;
-                        iget-object v2, v0, $definingClass->c:I
+                        iget v2, v0, $definingClass->c:I
                         iget-object v3, v0, $definingClass->d:[B
                         invoke-static { v1, v2, v3 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testSpoof(Landroid/net/Uri;I[B)V
                     """
