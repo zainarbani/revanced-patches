@@ -410,20 +410,16 @@ object SpoofClientPatch : BytecodePatch(
         // endregion
 
         TestFingerprint.resultOrThrow().let {
-        	val initMethod = it.mutableClass
-                .methods.find { method ->
-                     method.name == "<init>" &&
-                     method.parameterTypes.size == 10
-                }
+        	val targetIndex = it.scanResult.patternScanResult!!.startIndex
 
-            initMethod?.apply {
-                addInstruction(
-                    0,
+            it.mutableMethod.apply {
+                addInstructions(
+                    targetIndex,
                     """
                         invoke-static { p1, p3, p4 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testSpoof(Landroid/net/Uri;I[B)V
                     """
                 )
-            } ?: throw PatchException("Failed to find init method")
+            }
         } 
     }
 }

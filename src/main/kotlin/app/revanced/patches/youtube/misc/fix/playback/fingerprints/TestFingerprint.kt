@@ -5,6 +5,26 @@ import app.revanced.patcher.fingerprint.MethodFingerprint
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
-internal object TestFingerprint : MethodFingerprint(
-    strings = listOf("media3.datasource")
+internal object BuildTestTwoFingerprint : MethodFingerprint(
+    accessFlags = AccessFlags.PUBLIC or AccessFlags.CONSTRUCTOR,
+    returnType = "V",
+    parameters = listOf(
+        "Landroid/net/Uri;",
+        "J",
+        "I",
+        "[B",
+        "Ljava/util/Map;",
+        "J",
+        "J",
+        "Ljava/lang/String;",
+        "I",
+        "Ljava/lang/Object;"
+    ),
+    opcode = listOf(
+        Opcode.INVOKE_DIRECT,
+        Opcode.ADD_LONG,
+    ),
+    customFingerprint = { methodDef, _ ->
+        methodDef.name == "<init>"
+    }
 )
