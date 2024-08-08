@@ -6,7 +6,11 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal object TestTwoFingerprint : MethodFingerprint(
+    accessFlags = AccessFlags.PUBLIC or AccessFlags.FINAL,
+    returnType = "Lcom/google/common/util/concurrent/ListenableFuture;",
     opcodes = listOf(
+        Opcode.MOVE_RESULT_OBJECT,
+        Opcode.IGET,
         Opcode.CHECK_CAST,
         Opcode.INVOKE_VIRTUAL,
         Opcode.MOVE_RESULT_OBJECT
