@@ -437,7 +437,7 @@ object SpoofClientPatch : BytecodePatch(
                 val targetRegister = getInstruction<OneRegisterInstruction>(targetIndex).registerA
 
                 addInstructions(
-                    targetIndex,
+                    targetIndex + 1,
                     """
                         invoke-static { p$targetRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->testWrite([B)V
                     """
