@@ -439,7 +439,7 @@ object SpoofClientPatch : BytecodePatch(
                 addInstructions(
                     targetIndex + 1,
                     """
-                        invoke-static { v2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testWrite(Landroid/os/Parcel;)V
+                        invoke-static { v2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testParcel(Landroid/os/Parcel;)V
                     """
                 )
             }
