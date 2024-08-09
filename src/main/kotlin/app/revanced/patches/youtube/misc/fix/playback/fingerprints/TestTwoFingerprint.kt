@@ -14,7 +14,7 @@ internal object TestTwoFingerprint : MethodFingerprint(
         Opcode.CHECK_CAST,
         Opcode.INVOKE_VIRTUAL
     ),
-    customFingerprint = { methodDef, _ ->
+    customFingerprint = { methodDef, classDef ->
         classDef.type.endsWith("/PlayerResponseModelImpl;") && methodDef.name == "<init>"
     }
 )
