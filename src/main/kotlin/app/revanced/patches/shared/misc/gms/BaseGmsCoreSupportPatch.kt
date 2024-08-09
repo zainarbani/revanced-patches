@@ -11,8 +11,11 @@ import app.revanced.patches.all.misc.packagename.ChangePackageNamePatch
 import app.revanced.patches.shared.misc.gms.BaseGmsCoreSupportPatch.Constants.ACTIONS
 import app.revanced.patches.shared.misc.gms.BaseGmsCoreSupportPatch.Constants.AUTHORITIES
 import app.revanced.patches.shared.misc.gms.BaseGmsCoreSupportPatch.Constants.PERMISSIONS
+import app.revanced.patches.shared.misc.gms.fingerprints.CastDynamiteModuleFingerprint
 import app.revanced.patches.shared.misc.gms.fingerprints.GmsCoreSupportFingerprint
 import app.revanced.patches.shared.misc.gms.fingerprints.GmsCoreSupportFingerprint.GET_GMS_CORE_VENDOR_GROUP_ID_METHOD_NAME
+import app.revanced.patches.shared.misc.gms.fingerprints.GooglePlayUtilityFingerprint
+import app.revanced.patches.shared.misc.gms.fingerprints.ServiceCheckFingerprint
 import app.revanced.util.exception
 import app.revanced.util.getReference
 import app.revanced.util.returnEarly
@@ -42,8 +45,8 @@ import com.android.tools.smali.dexlib2.util.MethodUtil
 abstract class BaseGmsCoreSupportPatch(
     private val fromPackageName: String,
     private val toPackageName: String,
-    private val primeMethodFingerprint: MethodFingerprint,
-    private val earlyReturnFingerprints: Set<MethodFingerprint>,
+    private val primeMethodFingerprint: MethodFingerprint?,
+    private val earlyReturnFingerprints: Set<MethodFingerprint> = setOf(),
     private val mainActivityOnCreateFingerprint: MethodFingerprint,
     private val integrationsPatchDependency: PatchClass,
     gmsCoreSupportResourcePatch: BaseGmsCoreSupportResourcePatch,
@@ -53,7 +56,7 @@ abstract class BaseGmsCoreSupportPatch(
 ) : BytecodePatch(
     name = "GmsCore support",
     description = "Allows patched Google apps to run without root and under a different package name " +
-        "by using GmsCore instead of Google Play Services.",
+            "by using GmsCore instead of Google Play Services.",
     dependencies = setOf(
         ChangePackageNamePatch::class,
         gmsCoreSupportResourcePatch::class,
@@ -62,6 +65,9 @@ abstract class BaseGmsCoreSupportPatch(
     compatiblePackages = compatiblePackages,
     fingerprints = setOf(
         GmsCoreSupportFingerprint,
+        GooglePlayUtilityFingerprint,
+        ServiceCheckFingerprint,
+        CastDynamiteModuleFingerprint,
         mainActivityOnCreateFingerprint,
     ) + fingerprints,
     requiresIntegrations = true,
@@ -91,16 +97,19 @@ abstract class BaseGmsCoreSupportPatch(
         }
 
         // Specific method that needs to be patched.
-        transformPrimeMethod(packageName)
+        primeMethodFingerprint?.let { transformPrimeMethod(packageName) }
 
         // Return these methods early to prevent the app from crashing.
-        earlyReturnFingerprints.toList().returnEarly()
+        (earlyReturnFingerprints + ServiceCheckFingerprint + CastDynamiteModuleFingerprint).returnEarly()
+        if (GooglePlayUtilityFingerprint.result != null) {
+            GooglePlayUtilityFingerprint.returnEarly()
+        }
 
         // Verify GmsCore is installed and whitelisted for power optimizations and background usage.
         mainActivityOnCreateFingerprint.result?.mutableMethod?.addInstructions(
             0,
             "invoke-static/range { p0 .. p0 }, Lapp/revanced/integrations/shared/GmsCoreSupport;->" +
-                "checkGmsCore(Landroid/app/Activity;)V",
+                    "checkGmsCore(Landroid/app/Activity;)V",
         ) ?: throw mainActivityOnCreateFingerprint.exception
 
         // Change the vendor of GmsCore in ReVanced Integrations.
@@ -192,7 +201,7 @@ abstract class BaseGmsCoreSupportPatch(
     }
 
     private fun transformPrimeMethod(packageName: String) {
-        primeMethodFingerprint.result?.mutableMethod?.apply {
+        primeMethodFingerprint!!.result?.mutableMethod?.apply {
             var register = 2
 
             val index = getInstructions().indexOfFirst {
@@ -305,6 +314,7 @@ abstract class BaseGmsCoreSupportPatch(
             "com.google.android.gms.languageprofile.service.START",
             "com.google.android.gms.clearcut.service.START",
             "com.google.android.gms.icing.LIGHTWEIGHT_INDEX_SERVICE",
+            "com.google.android.gms.accountsettings.action.VIEW_SETTINGS",
 
             // potoken
             "com.google.android.gms.potokens.service.START",

@@ -1,3 +1,306 @@
+# [4.13.0-dev.23](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.22...v4.13.0-dev.23) (2024-08-09)
+
+
+### Bug Fixes
+
+* **yt:** t ([785082b](https://github.com/zainarbani/revanced-patches/commit/785082bd73101c4a8987d2303520c5cc839e858e))
+* **yt:** t2 ([76e70b3](https://github.com/zainarbani/revanced-patches/commit/76e70b31864538ac2f6d9c1874a1bfd2fd98fda3))
+
+# [4.13.0-dev.22](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.21...v4.13.0-dev.22) (2024-08-08)
+
+
+### Bug Fixes
+
+* **yt:** o6 ([1706490](https://github.com/zainarbani/revanced-patches/commit/17064905ede747a4991cc629149632921a432af0))
+* **yt:** o7 ([eae4ab8](https://github.com/zainarbani/revanced-patches/commit/eae4ab823315db49e1e31ac0128df1863cbfca27))
+* **yt:** o8 ([ee795ea](https://github.com/zainarbani/revanced-patches/commit/ee795eaaca8d2a35fba2ac13df457fabea25f653))
+
+# [4.13.0-dev.21](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.20...v4.13.0-dev.21) (2024-08-08)
+
+
+### Bug Fixes
+
+* **yt:** o5 ([159bee7](https://github.com/zainarbani/revanced-patches/commit/159bee7240356a84451812bb14d3f7388e67a820))
+
+# [4.13.0-dev.20](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.19...v4.13.0-dev.20) (2024-08-08)
+
+
+### Bug Fixes
+
+* **yt:** o4 ([45b0095](https://github.com/zainarbani/revanced-patches/commit/45b0095b7e5b1203e6b3ee58291b1dbcca7d9155))
+
+# [4.13.0-dev.19](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.18...v4.13.0-dev.19) (2024-08-08)
+
+
+### Bug Fixes
+
+* **yt:** o2 ([2d6e55b](https://github.com/zainarbani/revanced-patches/commit/2d6e55bbe606cbd09ce33fa18545c70aeadbba86))
+* **yt:** o3 ([2a0f787](https://github.com/zainarbani/revanced-patches/commit/2a0f787c20fdea97a6c75e09444d2f543dc96bb4))
+
+# [4.13.0-dev.18](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.17...v4.13.0-dev.18) (2024-08-08)
+
+
+### Bug Fixes
+
+* **yt:** o1 ([3de65e5](https://github.com/zainarbani/revanced-patches/commit/3de65e5e906126a24f7251fb4a490b450738ecbd))
+
+# [4.13.0-dev.17](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.16...v4.13.0-dev.17) (2024-08-08)
+
+
+### Bug Fixes
+
+* **yt:** o ([560b88c](https://github.com/zainarbani/revanced-patches/commit/560b88c5b1c65fe1b83ff065dd4816b7fa7ec255))
+
+# [4.13.0-dev.16](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.15...v4.13.0-dev.16) (2024-08-08)
+
+
+### Bug Fixes
+
+* **yt:** qq9 ([a11bddd](https://github.com/zainarbani/revanced-patches/commit/a11bddd6a757a5670d55ec6411d0bc78ede7cb3d))
+
+# [4.13.0-dev.15](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.14...v4.13.0-dev.15) (2024-08-08)
+
+
+### Bug Fixes
+
+* **yt:** qq8 ([7f1c79a](https://github.com/zainarbani/revanced-patches/commit/7f1c79a36503e84349c1c2ca008073d48d9f67cc))
+
+# [4.13.0-dev.14](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.13...v4.13.0-dev.14) (2024-08-08)
+
+
+### Bug Fixes
+
+* **yt:** qq7 ([b6941c5](https://github.com/zainarbani/revanced-patches/commit/b6941c5f77a5757053b2d235dbb21e1c2c3f658e))
+
+# [4.13.0-dev.13](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.12...v4.13.0-dev.13) (2024-08-08)
+
+
+### Bug Fixes
+
+* **yt:** qq6 ([4dd9c5a](https://github.com/zainarbani/revanced-patches/commit/4dd9c5a9f285f9ee508fe7af0407066e4714c6fa))
+
+# [4.13.0-dev.12](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.11...v4.13.0-dev.12) (2024-08-08)
+
+
+### Bug Fixes
+
+* **yt:** qq5l ([f8af55e](https://github.com/zainarbani/revanced-patches/commit/f8af55e135cc8eb7bb4fdecac1cdd650769f7ca5))
+
+# [4.13.0-dev.11](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.10...v4.13.0-dev.11) (2024-08-08)
+
+
+### Bug Fixes
+
+* **yt:** qq5 ([b488afb](https://github.com/zainarbani/revanced-patches/commit/b488afb905af2e055245964e5d4800d8c6063faf))
+
+# [4.13.0-dev.10](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.9...v4.13.0-dev.10) (2024-08-08)
+
+
+### Bug Fixes
+
+* **yt:** qq2 ([ad2906c](https://github.com/zainarbani/revanced-patches/commit/ad2906c4210dbc52d9590064e22b357eb9833c9f))
+* **yt:** qq3 ([833af34](https://github.com/zainarbani/revanced-patches/commit/833af342f8c76d33af22af5fde10ba10c99f3f81))
+* **yt:** qq4 ([db4e496](https://github.com/zainarbani/revanced-patches/commit/db4e4966ed56a24aaafb681d836223111a2b0c57))
+
+# [4.13.0-dev.9](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.8...v4.13.0-dev.9) (2024-08-07)
+
+
+### Bug Fixes
+
+* **yt:** qq1 ([e2cdf5b](https://github.com/zainarbani/revanced-patches/commit/e2cdf5b4f3165fd316ec9eb3c407924a158c1cdf))
+
+# [4.13.0-dev.8](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.7...v4.13.0-dev.8) (2024-08-07)
+
+
+### Bug Fixes
+
+* **yt:** q ([2eed1e5](https://github.com/zainarbani/revanced-patches/commit/2eed1e5716dae7bd695bf2b5904d2adc4ef01fd3))
+* **yt:** qq ([0b93be3](https://github.com/zainarbani/revanced-patches/commit/0b93be3f56acb67bf1f74cdea20c8fd71c16e1df))
+* **yt:** test9 ([1e587cf](https://github.com/zainarbani/revanced-patches/commit/1e587cf5c8f31d25ae0e235857e359e33370bdcf))
+
+# [4.13.0-dev.7](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.6...v4.13.0-dev.7) (2024-08-07)
+
+
+### Bug Fixes
+
+* **yt:** test8 ([8fce75c](https://github.com/zainarbani/revanced-patches/commit/8fce75c685ab97e0d21c923939fb6a146d8860ef))
+
+# [4.13.0-dev.6](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.5...v4.13.0-dev.6) (2024-08-07)
+
+
+### Bug Fixes
+
+* **yt:** test7 ([d2fe20c](https://github.com/zainarbani/revanced-patches/commit/d2fe20cf23e0c579b048af182faff46d0819c5b7))
+
+# [4.13.0-dev.5](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.4...v4.13.0-dev.5) (2024-08-07)
+
+
+### Bug Fixes
+
+* **yt:** test5 ([1fd88f8](https://github.com/zainarbani/revanced-patches/commit/1fd88f81375f62027b00e48fee3688ffa39e4092))
+* **yt:** test6 ([8a22db3](https://github.com/zainarbani/revanced-patches/commit/8a22db33c617c99e43b4b6c0e30a884881038879))
+
+# [4.13.0-dev.4](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.3...v4.13.0-dev.4) (2024-08-07)
+
+
+### Bug Fixes
+
+* **yt:** test4 ([0d79ef4](https://github.com/zainarbani/revanced-patches/commit/0d79ef4870902739b855be702e770c2b047c8013))
+
+# [4.13.0-dev.3](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.2...v4.13.0-dev.3) (2024-08-07)
+
+
+### Bug Fixes
+
+* **yt:** test3 ([8ddc60d](https://github.com/zainarbani/revanced-patches/commit/8ddc60d5fa0a2e0e45a17a23309653e44d25c708))
+
+# [4.13.0-dev.2](https://github.com/zainarbani/revanced-patches/compare/v4.13.0-dev.1...v4.13.0-dev.2) (2024-08-07)
+
+
+### Bug Fixes
+
+* **yt:** test ([5319083](https://github.com/zainarbani/revanced-patches/commit/531908319aedf030f65d3cd5f016190a6d6d808e))
+
+# [4.13.0-dev.1](https://github.com/zainarbani/revanced-patches/compare/v4.12.0...v4.13.0-dev.1) (2024-08-06)
+
+
+### Bug Fixes
+
+* **SoundCloud - Enable offline sync:** Stop crashing by reversing order of patching instructions from last to first to retain indices ([63b6ced](https://github.com/zainarbani/revanced-patches/commit/63b6cede5fa5bcf377ced422da4e861996a41f0d))
+* **YouTube - Bypass image region restrictions:** Move setting to `Misc` menu ([094ae59](https://github.com/zainarbani/revanced-patches/commit/094ae59fc92663fff6c5d6f5cbece41822a326f9))
+* **YouTube - Client Spoof:** Restore missing high qualities by spoofing the iOS client user agent ([#3468](https://github.com/zainarbani/revanced-patches/issues/3468)) ([0e6ae5f](https://github.com/zainarbani/revanced-patches/commit/0e6ae5fee752a76604cf9b95f9a76c0cbe5f7dae))
+* **YouTube - SponsorBlock:** Correctly show minute timestamp when creating a new segment ([d74c366](https://github.com/zainarbani/revanced-patches/commit/d74c366dbf5f25c20fbfc5a0157c3c15dda82a16))
+* **YouTube - SponsorBlock:** Improve create segment manual seek accuracy ([#3491](https://github.com/zainarbani/revanced-patches/issues/3491)) ([1544981](https://github.com/zainarbani/revanced-patches/commit/15449819ff74b636fb2fa6aacd770142c51d2e5d))
+* **YouTube - Spoof client:** Fix tracking history on brand accounts ([#3480](https://github.com/zainarbani/revanced-patches/issues/3480)) ([69c1f16](https://github.com/zainarbani/revanced-patches/commit/69c1f16f7eb0d5759a44f7f7a09b1757ce8f61dd))
+* **YouTube - Spoof Stream:** Spoof stream to fix playback ([e714b2a](https://github.com/zainarbani/revanced-patches/commit/e714b2a1ac28597d90da5342c50f67318e71d8d4))
+
+
+### Features
+
+* **Boost for Reddit:** Add `Disable ads` patch ([#3474](https://github.com/zainarbani/revanced-patches/issues/3474)) ([b292c20](https://github.com/zainarbani/revanced-patches/commit/b292c200bf4ea5b4f71d96690ac011e7843552f0))
+* **SwissID:** Add `Remove Google Play Integrity Integrity check` patch ([#3478](https://github.com/zainarbani/revanced-patches/issues/3478)) ([60492ae](https://github.com/zainarbani/revanced-patches/commit/60492aea7863e07d8bf1af9380ae9295ca161f3c))
+* **YouTube - Description components:** Add `Hide 'Key concepts' section` option ([#3495](https://github.com/zainarbani/revanced-patches/issues/3495)) ([d75b645](https://github.com/zainarbani/revanced-patches/commit/d75b64595a7ac26faca4c0ae21923b22f6783975))
+
+# [4.12.0-dev.15](https://github.com/ReVanced/revanced-patches/compare/v4.12.0-dev.14...v4.12.0-dev.15) (2024-08-02)
+
+
+### Bug Fixes
+
+* **YouTube - SponsorBlock:** Improve create segment manual seek accuracy ([#3491](https://github.com/ReVanced/revanced-patches/issues/3491)) ([1544981](https://github.com/ReVanced/revanced-patches/commit/15449819ff74b636fb2fa6aacd770142c51d2e5d))
+
+# [4.12.0-dev.14](https://github.com/ReVanced/revanced-patches/compare/v4.12.0-dev.13...v4.12.0-dev.14) (2024-08-01)
+
+
+### Features
+
+* **YouTube - Description components:** Add `Hide 'Key concepts' section` option ([#3495](https://github.com/ReVanced/revanced-patches/issues/3495)) ([d75b645](https://github.com/ReVanced/revanced-patches/commit/d75b64595a7ac26faca4c0ae21923b22f6783975))
+
+# [4.12.0-dev.13](https://github.com/ReVanced/revanced-patches/compare/v4.12.0-dev.12...v4.12.0-dev.13) (2024-07-31)
+
+
+### Features
+
+* **Boost for Reddit:** Add `Disable ads` patch ([#3474](https://github.com/ReVanced/revanced-patches/issues/3474)) ([b292c20](https://github.com/ReVanced/revanced-patches/commit/b292c200bf4ea5b4f71d96690ac011e7843552f0))
+
+# [4.12.0-dev.12](https://github.com/ReVanced/revanced-patches/compare/v4.12.0-dev.11...v4.12.0-dev.12) (2024-07-28)
+
+
+### Features
+
+* **SwissID:** Add `Remove Google Play Integrity Integrity check` patch ([#3478](https://github.com/ReVanced/revanced-patches/issues/3478)) ([60492ae](https://github.com/ReVanced/revanced-patches/commit/60492aea7863e07d8bf1af9380ae9295ca161f3c))
+
+# [4.12.0-dev.11](https://github.com/ReVanced/revanced-patches/compare/v4.12.0-dev.10...v4.12.0-dev.11) (2024-07-28)
+
+
+### Bug Fixes
+
+* **YouTube - Bypass image region restrictions:** Move setting to `Misc` menu ([094ae59](https://github.com/ReVanced/revanced-patches/commit/094ae59fc92663fff6c5d6f5cbece41822a326f9))
+
+# [4.12.0-dev.10](https://github.com/ReVanced/revanced-patches/compare/v4.12.0-dev.9...v4.12.0-dev.10) (2024-07-28)
+
+
+### Bug Fixes
+
+* **YouTube - Client Spoof:** Restore missing high qualities by spoofing the iOS client user agent ([#3468](https://github.com/ReVanced/revanced-patches/issues/3468)) ([0e6ae5f](https://github.com/ReVanced/revanced-patches/commit/0e6ae5fee752a76604cf9b95f9a76c0cbe5f7dae))
+
+# [4.12.0-dev.9](https://github.com/ReVanced/revanced-patches/compare/v4.12.0-dev.8...v4.12.0-dev.9) (2024-07-28)
+
+
+### Bug Fixes
+
+* **YouTube - Spoof client:** Fix tracking history on brand accounts ([#3480](https://github.com/ReVanced/revanced-patches/issues/3480)) ([69c1f16](https://github.com/ReVanced/revanced-patches/commit/69c1f16f7eb0d5759a44f7f7a09b1757ce8f61dd))
+
+# [4.12.0-dev.8](https://github.com/ReVanced/revanced-patches/compare/v4.12.0-dev.7...v4.12.0-dev.8) (2024-07-26)
+
+
+### Bug Fixes
+
+* **YouTube - SponsorBlock:** Correctly show minute timestamp when creating a new segment ([d74c366](https://github.com/ReVanced/revanced-patches/commit/d74c366dbf5f25c20fbfc5a0157c3c15dda82a16))
+
+# [4.12.0-dev.7](https://github.com/ReVanced/revanced-patches/compare/v4.12.0-dev.6...v4.12.0-dev.7) (2024-07-24)
+
+
+### Bug Fixes
+
+* **SoundCloud - Enable offline sync:** Stop crashing by reversing order of patching instructions from last to first to retain indices ([63b6ced](https://github.com/ReVanced/revanced-patches/commit/63b6cede5fa5bcf377ced422da4e861996a41f0d))
+
+# [4.12.0-dev.6](https://github.com/ReVanced/revanced-patches/compare/v4.12.0-dev.5...v4.12.0-dev.6) (2024-07-20)
+
+
+### Features
+
+* Add `Spoof build info` patch ([e7829b4](https://github.com/ReVanced/revanced-patches/commit/e7829b41e782c9feda23b9d6acf48bae277d24d9))
+
+# [4.12.0-dev.5](https://github.com/ReVanced/revanced-patches/compare/v4.12.0-dev.4...v4.12.0-dev.5) (2024-07-20)
+
+
+### Features
+
+* Add `Hide mock location` patch ([#3417](https://github.com/ReVanced/revanced-patches/issues/3417)) ([5f81b40](https://github.com/ReVanced/revanced-patches/commit/5f81b40e7d5567fb5689d08ccc9caeaa267c3143))
+* **Google Photos:** Add `GmsCore support` patch ([#3414](https://github.com/ReVanced/revanced-patches/issues/3414)) ([24528e0](https://github.com/ReVanced/revanced-patches/commit/24528e0a6eec17ce0a3c52f8862585933615ad28))
+
+# [4.12.0-dev.4](https://github.com/ReVanced/revanced-patches/compare/v4.12.0-dev.3...v4.12.0-dev.4) (2024-07-20)
+
+
+### Features
+
+* **Google News:** Add `Enable CustomTabs` and `GmsCore support` patch ([#3111](https://github.com/ReVanced/revanced-patches/issues/3111)) ([ad59096](https://github.com/ReVanced/revanced-patches/commit/ad590962275f888b335252ad5bed0f34e959d3c7))
+
+# [4.12.0-dev.3](https://github.com/ReVanced/revanced-patches/compare/v4.12.0-dev.2...v4.12.0-dev.3) (2024-07-18)
+
+
+### Bug Fixes
+
+* **Instagram - Hide ads:**  Restore compatibility with latest version by fixing fingerprint ([#3455](https://github.com/ReVanced/revanced-patches/issues/3455)) ([4505fa4](https://github.com/ReVanced/revanced-patches/commit/4505fa4138bb55c8957790239c01b8dda63d6cdd))
+
+# [4.12.0-dev.2](https://github.com/ReVanced/revanced-patches/compare/v4.12.0-dev.1...v4.12.0-dev.2) (2024-07-15)
+
+
+### Features
+
+* **YouTube:** Add `Bypass image region restrictions` patch ([#3442](https://github.com/ReVanced/revanced-patches/issues/3442)) ([765fab2](https://github.com/ReVanced/revanced-patches/commit/765fab2af2769349446cc0f2109343ef3bd8c621))
+
+# [4.12.0-dev.1](https://github.com/ReVanced/revanced-patches/compare/v4.11.1-dev.1...v4.12.0-dev.1) (2024-07-13)
+
+
+### Features
+
+* **SoundCloud:** Add `Enable offline sync` patch ([#3407](https://github.com/ReVanced/revanced-patches/issues/3407)) ([4de86c6](https://github.com/ReVanced/revanced-patches/commit/4de86c6407376bcd3cc0513a2f0707410b8d7ccd))
+
+## [4.11.1-dev.1](https://github.com/ReVanced/revanced-patches/compare/v4.11.0...v4.11.1-dev.1) (2024-07-12)
+
+
+### Bug Fixes
+
+* **YouTube - Hide keyword content:** Do not hide flyout menu ([687c9f7](https://github.com/ReVanced/revanced-patches/commit/687c9f7eb03cca5f7b3486f07f2e3453ebc77faf))
+
+## [4.11.1-dev.1](https://github.com/ReVanced/revanced-patches/compare/v4.11.0...v4.11.1-dev.1) (2024-07-12)
+
+
+### Bug Fixes
+
+* **YouTube - Hide keyword content:** Do not hide flyout menu ([687c9f7](https://github.com/ReVanced/revanced-patches/commit/687c9f7eb03cca5f7b3486f07f2e3453ebc77faf))
+
 # [4.11.0](https://github.com/ReVanced/revanced-patches/compare/v4.10.0...v4.11.0) (2024-07-11)
 
 

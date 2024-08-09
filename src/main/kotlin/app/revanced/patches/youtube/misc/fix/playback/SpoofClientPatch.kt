@@ -5,6 +5,7 @@ import app.revanced.patcher.extensions.InstructionExtensions.addInstruction
 import app.revanced.patcher.extensions.InstructionExtensions.addInstructions
 import app.revanced.patcher.extensions.InstructionExtensions.getInstruction
 import app.revanced.patcher.extensions.InstructionExtensions.getInstructions
+import app.revanced.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.revanced.patcher.extensions.or
 import app.revanced.patcher.patch.BytecodePatch
 import app.revanced.patcher.patch.PatchException
@@ -26,6 +27,7 @@ import com.android.tools.smali.dexlib2.builder.MutableMethodImplementation
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
+import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
@@ -77,18 +79,34 @@ object SpoofClientPatch : BytecodePatch(
         SetPlayerRequestClientTypeFingerprint,
         CreatePlayerRequestBodyFingerprint,
         CreatePlayerRequestBodyWithModelFingerprint,
+        CreatePlayerRequestBodyWithVersionReleaseFingerprint,
 
         // Player gesture config.
         PlayerGestureConfigSyntheticFingerprint,
 
         // Player speed menu item.
         CreatePlaybackSpeedMenuItemFingerprint,
+
+        // Player request response.
+        BuildPlayerRequestResponseFingerprint,
+
+        // Video qualities missing.
+        BuildRequestFingerprint,
+
+        // Watch history.
+        GetTrackingUriFingerprint,
+        TestFingerprint,
+        TestTwoFingerprint,
     ),
 ) {
     private const val INTEGRATIONS_CLASS_DESCRIPTOR =
         "Lapp/revanced/integrations/youtube/patches/spoof/SpoofClientPatch;"
     private const val CLIENT_INFO_CLASS_DESCRIPTOR =
         "Lcom/google/protos/youtube/api/innertube/InnertubeContext\$ClientInfo;"
+    private const val REQUEST_CLASS_DESCRIPTOR =
+        "Lorg/chromium/net/ExperimentalUrlRequest;"
+    private const val REQUEST_BUILDER_CLASS_DESCRIPTOR =
+        "Lorg/chromium/net/ExperimentalUrlRequest\$Builder;"
 
     override fun execute(context: BytecodeContext) {
         AddResourcesPatch(this::class)
@@ -100,6 +118,7 @@ object SpoofClientPatch : BytecodePatch(
                 preferences = setOf(
                     SwitchPreference("revanced_spoof_client"),
                     SwitchPreference("revanced_spoof_client_use_ios"),
+                    SwitchPreference("revanced_spoof_stream"),
                 ),
             ),
         )
@@ -153,7 +172,7 @@ object SpoofClientPatch : BytecodePatch(
                     .getInstructions().find { instruction ->
                         // requestMessage.clientInfo = clientInfoBuilder.build();
                         instruction.opcode == Opcode.IPUT_OBJECT &&
-                            instruction.getReference<FieldReference>()?.type == CLIENT_INFO_CLASS_DESCRIPTOR
+                                instruction.getReference<FieldReference>()?.type == CLIENT_INFO_CLASS_DESCRIPTOR
                     }?.getReference<FieldReference>() ?: throw PatchException("Could not find clientInfoField")
 
                 // Client info object's client type field.
@@ -164,13 +183,15 @@ object SpoofClientPatch : BytecodePatch(
                 // Client info object's client version field.
                 val clientInfoClientVersionField = result.mutableMethod
                     .getInstruction(result.scanResult.stringsScanResult!!.matches.first().index + 1)
-                    .getReference<FieldReference>() ?: throw PatchException("Could not find clientInfoClientVersionField")
+                    .getReference<FieldReference>()
+                    ?: throw PatchException("Could not find clientInfoClientVersionField")
 
                 Triple(clientInfoField, clientInfoClientTypeField, clientInfoClientVersionField)
             }
 
         val clientInfoClientModelField = CreatePlayerRequestBodyWithModelFingerprint.resultOrThrow().let {
-            val getClientModelIndex = CreatePlayerRequestBodyWithModelFingerprint.indexOfBuildModelInstruction(it.method)
+            val getClientModelIndex =
+                CreatePlayerRequestBodyWithModelFingerprint.indexOfBuildModelInstruction(it.method)
 
             // The next IPUT_OBJECT instruction after getting the client model is setting the client model field.
             val index = it.mutableMethod.indexOfFirstInstructionOrThrow(getClientModelIndex) {
@@ -179,6 +200,19 @@ object SpoofClientPatch : BytecodePatch(
 
             it.mutableMethod.getInstruction(index).getReference<FieldReference>()
                 ?: throw PatchException("Could not find clientInfoClientModelField")
+        }
+
+        val clientInfoOsVersionField = CreatePlayerRequestBodyWithVersionReleaseFingerprint.resultOrThrow().let {
+            val getOsVersionIndex =
+                CreatePlayerRequestBodyWithVersionReleaseFingerprint.indexOfBuildVersionReleaseInstruction(it.method)
+
+            // The next IPUT_OBJECT instruction after getting the client os version is setting the client os version field.
+            val index = it.mutableMethod.indexOfFirstInstructionOrThrow(getOsVersionIndex) {
+                opcode == Opcode.IPUT_OBJECT
+            }
+
+            it.mutableMethod.getInstruction(index).getReference<FieldReference>()
+                ?: throw PatchException("Could not find clientInfoOsVersionField")
         }
 
         // endregion
@@ -198,7 +232,7 @@ object SpoofClientPatch : BytecodePatch(
                 addInstruction(
                     checkCastIndex + 1,
                     "invoke-static { v$requestMessageInstanceRegister }," +
-                        " ${result.classDef.type}->$setClientInfoMethodName($clientInfoContainerClassName)V",
+                            " ${result.classDef.type}->$setClientInfoMethodName($clientInfoContainerClassName)V",
                 )
             }
 
@@ -240,6 +274,12 @@ object SpoofClientPatch : BytecodePatch(
                             invoke-static { v1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getClientVersion(Ljava/lang/String;)Ljava/lang/String;
                             move-result-object v1
                             iput-object v1, v0, $clientInfoClientVersionField
+
+                            # Set client os version to the spoofed value.
+                            iget-object v1, v0, $clientInfoOsVersionField
+                            invoke-static { v1 }, $INTEGRATIONS_CLASS_DESCRIPTOR->getOsVersion(Ljava/lang/String;)Ljava/lang/String;
+                            move-result-object v1
+                            iput-object v1, v0, $clientInfoOsVersionField
                             
                             :disabled
                             return-void
@@ -291,7 +331,8 @@ object SpoofClientPatch : BytecodePatch(
 
             it.mutableMethod.apply {
                 // Find the conditional check if the playback speed menu item is not created.
-                val shouldCreateMenuIndex = indexOfFirstInstructionOrThrow(scanResult.endIndex) { opcode == Opcode.IF_EQZ }
+                val shouldCreateMenuIndex =
+                    indexOfFirstInstructionOrThrow(scanResult.endIndex) { opcode == Opcode.IF_EQZ }
                 val shouldCreateMenuRegister = getInstruction<OneRegisterInstruction>(shouldCreateMenuIndex).registerA
 
                 addInstructions(
@@ -305,5 +346,124 @@ object SpoofClientPatch : BytecodePatch(
         }
 
         // endregion
+
+        // Fix watch history if spoofing to iOS.
+
+        GetTrackingUriFingerprint.resultOrThrow().let {
+            it.mutableMethod.apply {
+                val returnUrlIndex = it.scanResult.patternScanResult!!.endIndex
+                val urlRegister = getInstruction<OneRegisterInstruction>(returnUrlIndex).registerA
+
+                addInstructions(
+                    returnUrlIndex,
+                    """
+                        invoke-static { v$urlRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->overrideTrackingUrl(Landroid/net/Uri;)Landroid/net/Uri;
+                        move-result-object v$urlRegister
+                    """
+                )
+            }
+        }
+
+        // endregion
+
+        // region Fix video qualities missing, if spoofing to iOS by overriding the user agent.
+
+        BuildRequestFingerprint.resultOrThrow().let { result ->
+            result.mutableMethod.apply {
+                val buildRequestIndex = getInstructions().lastIndex - 2
+                val requestBuilderRegister = getInstruction<FiveRegisterInstruction>(buildRequestIndex).registerC
+
+                val newRequestBuilderIndex = result.scanResult.patternScanResult!!.endIndex
+                val urlRegister = getInstruction<FiveRegisterInstruction>(newRequestBuilderIndex).registerD
+
+                // Replace "requestBuilder.build(): Request" with "overrideUserAgent(requestBuilder, url): Request".
+                replaceInstruction(
+                    buildRequestIndex,
+                    "invoke-static { v$requestBuilderRegister, v$urlRegister }, " +
+                            "$INTEGRATIONS_CLASS_DESCRIPTOR->" +
+                            "overrideUserAgent(${REQUEST_BUILDER_CLASS_DESCRIPTOR}Ljava/lang/String;)" +
+                            REQUEST_CLASS_DESCRIPTOR
+                )
+            }
+        }
+
+        // endregion
+
+        // region Change streaming data by injecting player request response.
+
+        BuildPlayerRequestResponseFingerprint.resultOrThrow().let {
+            it.mutableMethod.apply {
+                val moveIndex = it.scanResult.patternScanResult!!.endIndex
+                val moveRegister = getInstruction<OneRegisterInstruction>(moveIndex).registerA
+                val freeRegister = getInstruction<FiveRegisterInstruction>(moveIndex - 1).registerC
+
+                addInstructions(
+                    moveIndex + 1,
+                    """
+                        invoke-virtual { p1 }, Lorg/chromium/net/UrlResponseInfo;->getUrl()Ljava/lang/String;
+                        move-result-object v$freeRegister
+                        invoke-static { v$moveRegister, v$freeRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->setStreamingData([BLjava/lang/String;)[B
+                        move-result-object v$moveRegister
+                    """
+                )
+            }
+        }
+
+        // endregion
+
+        TestFingerprint.resultOrThrow().let {
+        	//val targetIndex = it.scanResult.patternScanResult!!.endIndex
+
+            //it.mutableMethod.apply {
+                //addInstructions(
+                //    implementation!!.instructions.lastIndex,
+                //    """
+                //        # Field a : Uri
+                //        # Field c : HTTP Method
+                //        # Field d : POST Data
+                //        iget-object v1, v0, $definingClass->a:Landroid/net/Uri;
+                //        iget v2, v0, $definingClass->c:I
+                //        iget-object v3, v0, $definingClass->d:[B
+                //        invoke-static { v1, v2, v3 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testSpoof(Landroid/net/Uri;I[B)[B
+                //        move-result-object v3
+                //        iput-object v3, v0, $definingClass->d:[B
+                //    """
+                //)
+            //}
+        }
+        
+        TestTwoFingerprint.resultOrThrow().let {
+            val buildIndex = it.scanResult.patternScanResult!!.endIndex
+            // amgx
+            val builderClass = it.mutableMethod
+                .getInstruction(buildIndex).getReference<MethodReference>()?.definingClass
+            // amhf
+            val messageClass = it.mutableMethod
+                .getInstruction(buildIndex).getReference<MethodReference>()?.returnType
+            
+            val targetMethod = it.mutableClass.methods.find { method ->
+                 method.parameterTypes.size == 2 && method.parameterTypes[0] == "[B"
+            }
+            
+            targetMethod?.apply {
+                val startIndex = indexOfFirstInstructionOrThrow(0) { opcode == Opcode.SGET_OBJECT }
+                val playerResponseClass = getInstruction(startIndex).getReference<FieldReference>()?.definingClass
+                val parserClass = getInstruction(startIndex + 1).getReference<MethodReference>()?.definingClass
+                val parserMethod = getInstruction(startIndex + 1).getReference<MethodReference>()?.name
+                val parserType = getInstruction(startIndex + 1).getReference<MethodReference>()?.returnType
+                
+                val targetIndex = indexOfFirstInstructionOrThrow(0) { opcode == Opcode.NEW_INSTANCE }
+                println("Build Index: $buildIndex, Builder Class: $builderClass, Message Class: $messageClass, " +
+                            "Target Method: $targetMethod, Start Index: $startIndex, Player Response Class: $playerResponseClass, " +
+                            "Parser Class: $parserClass, Parser Method: $parserMethod, Parser Type: $parserType, Target Index: $targetIndex")
+                 
+                addInstructions(
+                    targetIndex,
+                    """
+                        invoke-static { }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint()V
+                    """
+                )
+            }
+        } 
     }
 }
