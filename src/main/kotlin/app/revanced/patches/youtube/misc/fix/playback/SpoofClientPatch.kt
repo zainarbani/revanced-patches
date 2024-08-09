@@ -27,6 +27,7 @@ import com.android.tools.smali.dexlib2.builder.MutableMethodImplementation
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
+import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
@@ -430,16 +431,36 @@ object SpoofClientPatch : BytecodePatch(
                 //)
             //}
         }
-
+        
         TestTwoFingerprint.resultOrThrow().let {
-            it.mutableMethod.apply {
-                val targetIndex = it.scanResult.patternScanResult!!.endIndex
-                //val targetRegister = getInstruction<OneRegisterInstruction>(targetIndex).registerA
-
+            val buildIndex = it.scanResult.patternScanResult!!.endIndex
+            // amgx
+            val builderClass = it.mutableMethod
+                .getInstruction(buildIndex).getReference<MethodReference>()?.definingClass
+            // amhf
+            val messageClass = it.mutableMethod
+                .getInstruction(buildIndex).getReference<MethodReference>()?.returnType
+            
+            val targetMethod = it.mutableClass.methods.find { method ->
+                 method.parameterTypes.size == 2 && method.parameterTypes[0] == "[B"
+            }
+            
+            targetMethod?.apply {
+                val startIndex = indexOfFirstInstructionOrThrow(0) { opcode == Opcode.SGET_OBJECT }
+                val playerResponseClass = getInstruction(startIndex).getReference<FieldReference>()?.definingClass
+                val parserClass = getInstruction(startIndex + 1).getReference<MethodReference>()?.definingClass
+                val parserMethod = getInstruction(startIndex + 1).getReference<MethodReference>()?.name
+                val parserType = getInstruction(startIndex + 1).getReference<MethodReference>()?.returnType
+                
+                val targetIndex = indexOfFirstInstructionOrThrow(0) { opcode == Opcode.NEW_INSTANCE }
+                println("Build Index: $buildIndex, Builder Class: $builderClass, Message Class: $messageClass, " +
+                            "Target Method: $targetMethod, Start Index: $startIndex, Player Response Class: $playerResponseClass, " +
+                            "Parser Class: $parserClass, Parser Method: $parserMethod, Parser Type: $parserType, Target Index: $targetIndex")
+                 
                 addInstructions(
-                    targetIndex + 1,
+                    targetIndex,
                     """
-                        invoke-static { v2 }, $INTEGRATIONS_CLASS_DESCRIPTOR->testParcel(Landroid/os/Parcel;)V
+                        invoke-static { }, $INTEGRATIONS_CLASS_DESCRIPTOR->testPrint()V
                     """
                 )
             }

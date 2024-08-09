@@ -6,10 +6,15 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal object TestTwoFingerprint : MethodFingerprint(
+    accessFlags = AccessFlags.PUBLIC or AccessFlags.CONSTRUCTOR,
+    returnType = "V",
+    parameters = listOf("L", "L", "L"),
     opcodes = listOf(
-        Opcode.RETURN_OBJECT,
-        Opcode.INVOKE_STATIC,
-        Opcode.MOVE_RESULT_OBJECT
+        Opcode.IGET_OBJECT,
+        Opcode.CHECK_CAST,
+        Opcode.INVOKE_VIRTUAL
     ),
-    strings = listOf("Error reading streaming data")
+    customFingerprint = { methodDef, _ ->
+        classDef.type.endsWith("/PlayerResponseModelImpl;") && methodDef.name == "<init>"
+    }
 )
