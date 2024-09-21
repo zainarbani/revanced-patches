@@ -7,9 +7,7 @@ import app.revanced.patcher.patch.BytecodePatch
 import app.revanced.patcher.patch.annotation.CompatiblePackage
 import app.revanced.patcher.patch.annotation.Patch
 import app.revanced.patcher.util.proxy.mutableTypes.MutableMethod
-import app.revanced.patches.youtube.misc.backgroundplayback.fingerprints.BackgroundPlaybackManagerFingerprint
-import app.revanced.patches.youtube.misc.backgroundplayback.fingerprints.BackgroundPlaybackSettingsFingerprint
-import app.revanced.patches.youtube.misc.backgroundplayback.fingerprints.KidsBackgroundPlaybackPolicyControllerFingerprint
+import app.revanced.patches.youtube.misc.backgroundplayback.fingerprints.*
 import app.revanced.patches.youtube.misc.integrations.IntegrationsPatch
 import app.revanced.patches.youtube.misc.playertype.PlayerTypeHookPatch
 import app.revanced.patches.youtube.misc.settings.SettingsPatch
@@ -58,7 +56,9 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 object BackgroundPlaybackPatch : BytecodePatch(
     setOf(
         BackgroundPlaybackManagerFingerprint,
+        BackgroundPlaybackManagerShortsFingerprint,
         BackgroundPlaybackSettingsFingerprint,
+        ExperimentalShortsPipFingerprint,
         KidsBackgroundPlaybackPolicyControllerFingerprint
     )
 ) {
@@ -66,14 +66,16 @@ object BackgroundPlaybackPatch : BytecodePatch(
         "Lapp/revanced/integrations/youtube/patches/BackgroundPlaybackPatch;"
 
     override fun execute(context: BytecodeContext) {
-        BackgroundPlaybackManagerFingerprint.resultOrThrow().mutableMethod.addInstructions(
+        arrayOf(
+            BackgroundPlaybackManagerFingerprint,
+            BackgroundPlaybackManagerShortsFingerprint
+        ).forEach { it.resultOrThrow().mutableMethod.addInstructions(
             0,
             """
-                invoke-static {}, $INTEGRATIONS_CLASS_DESCRIPTOR->playbackIsNotShort()Z
-                move-result v0
+                const/4 v0, 0x1
                 return v0
             """
-        )
+        )}
 
         // Enable background playback option in YouTube settings
         BackgroundPlaybackSettingsFingerprint.resultOrThrow().mutableMethod.apply {
@@ -98,6 +100,15 @@ object BackgroundPlaybackPatch : BytecodePatch(
         KidsBackgroundPlaybackPolicyControllerFingerprint.resultOrThrow().mutableMethod.addInstruction(
             0,
             "return-void"
+        )
+
+        // Force allowing background play for shorts
+        ExperimentalShortsPipFingerprint.resultOrThrow().mutableMethod.addInstructions(
+            0,
+            """
+                const/4 v0, 0x1
+                return v0
+            """
         )
     }
 }
