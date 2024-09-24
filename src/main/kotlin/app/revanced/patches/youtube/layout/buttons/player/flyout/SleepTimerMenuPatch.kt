@@ -7,7 +7,7 @@ import app.revanced.patcher.patch.BytecodePatch
 import app.revanced.patcher.patch.annotation.CompatiblePackage
 import app.revanced.patcher.patch.annotation.Patch
 import app.revanced.patches.youtube.layout.buttons.player.flyout.fingerprints.SleepTimerFeatureFingerprint
-import app.revanced.patches.youtube.layout.buttons.player.flyout.fingerprints.SleepTimerExperimentalFeatureFingerprint
+import app.revanced.patches.youtube.layout.buttons.player.flyout.fingerprints.SleepTimerFlyoutMenuFeatureFingerprint
 import app.revanced.util.resultOrThrow
 
 @Patch(
@@ -24,7 +24,7 @@ import app.revanced.util.resultOrThrow
 )
 @Suppress("unused")
 object SleepTimerMenuPatch : BytecodePatch(
-    setOf(SleepTimerFeatureFingerprint, SleepTimerExperimentalFeatureFingerprint)
+    setOf(SleepTimerFeatureFingerprint, SleepTimerFlyoutMenuFeatureFingerprint)
 ) {
     override fun execute(context: BytecodeContext) {
         SleepTimerFeatureFingerprint.resultOrThrow().mutableMethod.addInstructions(
@@ -35,8 +35,8 @@ object SleepTimerMenuPatch : BytecodePatch(
             """
         )
 
-        // This experimental check might be removed in the future.
-        SleepTimerExperimentalFeatureFingerprint.resultOrThrow().let {
+        // Feature is experimental, and this fingerprint may change in the future.
+        SleepTimerFlyoutMenuFeatureFingerprint.resultOrThrow().let {
             it.mutableMethod.apply {
                 val targetIndex = it.scanResult.patternScanResult!!.startIndex
 
