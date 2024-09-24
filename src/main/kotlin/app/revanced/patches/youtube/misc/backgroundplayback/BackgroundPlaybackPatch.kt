@@ -7,6 +7,8 @@ import app.revanced.patcher.patch.BytecodePatch
 import app.revanced.patcher.patch.annotation.CompatiblePackage
 import app.revanced.patcher.patch.annotation.Patch
 import app.revanced.patcher.util.proxy.mutableTypes.MutableMethod
+import app.revanced.patches.all.misc.resources.AddResourcesPatch
+import app.revanced.patches.shared.misc.settings.preference.SwitchPreference
 import app.revanced.patches.youtube.misc.backgroundplayback.fingerprints.*
 import app.revanced.patches.youtube.misc.integrations.IntegrationsPatch
 import app.revanced.patches.youtube.misc.playertype.PlayerTypeHookPatch
@@ -25,6 +27,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
         PlayerTypeHookPatch::class,
         VideoInformationPatch::class,
         SettingsPatch::class,
+        AddResourcesPatch::class,
     ],
     compatiblePackages = [
         CompatiblePackage(
@@ -66,13 +69,20 @@ object BackgroundPlaybackPatch : BytecodePatch(
         "Lapp/revanced/integrations/youtube/patches/BackgroundPlaybackPatch;"
 
     override fun execute(context: BytecodeContext) {
+        AddResourcesPatch(this::class)
+
+        SettingsPatch.PreferenceScreen.SHORTS.addPreferences(
+            SwitchPreference("revanced_disable_background_shorts")
+        )
+
         arrayOf(
             BackgroundPlaybackManagerFingerprint,
             BackgroundPlaybackManagerShortsFingerprint
         ).forEach { it.resultOrThrow().mutableMethod.addInstructions(
             0,
             """
-                const/4 v0, 0x1
+                invoke-static {}, $INTEGRATIONS_CLASS_DESCRIPTOR->isBackgroundPlaybackAllowed()Z
+                move-result v0
                 return v0
             """
         )}
