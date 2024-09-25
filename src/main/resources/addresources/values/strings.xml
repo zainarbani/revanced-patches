@@ -88,8 +88,8 @@ This is because Crowdin requires temporarily flattening this file and removing t
         </patch>
         <patch id="misc.backgroundplayback.BackgroundPlaybackPatch">
             <string name="revanced_shorts_background_playback_title">Allow Shorts background playback</string>
-            <string name="revanced_shorts_background_playback_summary_on">Shorts background playback are enabled</string>
-            <string name="revanced_shorts_background_playback_summary_off">Shorts background playback are disabled</string>
+            <string name="revanced_shorts_background_playback_summary_on">Shorts background playback is enabled</string>
+            <string name="revanced_shorts_background_playback_summary_off">Shorts background playback is disabled</string>
         </patch>
         <patch id="misc.debugging.DebuggingPatch">
             <string name="revanced_debug_screen_title">Debugging</string>
