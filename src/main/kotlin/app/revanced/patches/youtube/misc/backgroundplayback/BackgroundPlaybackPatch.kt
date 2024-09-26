@@ -85,7 +85,14 @@ object BackgroundPlaybackPatch : BytecodePatch(
                 move-result v0
                 return v0
             """
-        )}
+            )
+        }
+
+        val overrideBackgroundPlaybackSettingsInstructions = """
+                    invoke-static {}, $INTEGRATIONS_CLASS_DESCRIPTOR->overrideBackgroundPlaybackAvailable()Z
+                    move-result v0
+                    return v0
+                """
 
         // Enable background playback option in YouTube settings
         BackgroundPlaybackSettingsFingerprint.resultOrThrow().mutableMethod.apply {
@@ -96,18 +103,11 @@ object BackgroundPlaybackPatch : BytecodePatch(
             val settingsBooleanMethod =
                 context.toMethodWalker(this).nextMethod(settingsBooleanIndex, true).getMethod() as MutableMethod
 
-            settingsBooleanMethod.addInstructions(
-                0,
-                """
-                    invoke-static {}, $INTEGRATIONS_CLASS_DESCRIPTOR->overrideBackgroundPlaybackAvailable()Z
-                    move-result v0
-                    return v0
-                """
-            )
+            settingsBooleanMethod.addInstructions(0, overrideBackgroundPlaybackSettingsInstructions)
         }
 
         // Force allowing background play for videos labeled for kids.
-        KidsBackgroundPlaybackPolicyControllerFingerprint.resultOrThrow().mutableMethod.addInstruction(
+        KidsBackgroundPlaybackPolicyControllerFingerprint.resultOrThrow().mutableMethod.addInstructions(
             0,
             "return-void"
         )
@@ -115,10 +115,7 @@ object BackgroundPlaybackPatch : BytecodePatch(
         // Force allowing background play for shorts
         ExperimentalShortsPipFingerprint.resultOrThrow().mutableMethod.addInstructions(
             0,
-            """
-                const/4 v0, 0x1
-                return v0
-            """
+            overrideBackgroundPlaybackSettingsInstructions
         )
     }
 }
