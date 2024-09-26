@@ -14,6 +14,7 @@ import app.revanced.patches.youtube.misc.playertype.PlayerTypeHookPatch
 import app.revanced.patches.youtube.misc.settings.SettingsPatch
 import app.revanced.patches.youtube.video.information.VideoInformationPatch
 import app.revanced.util.resultOrThrow
+import app.revanced.util.returnEarly
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
@@ -60,7 +61,7 @@ object BackgroundPlaybackPatch : BytecodePatch(
         BackgroundPlaybackManagerFingerprint,
         BackgroundPlaybackManagerShortsFingerprint,
         BackgroundPlaybackSettingsFingerprint,
-        ExperimentalShortsPipFingerprint,
+        ShortsBackgroundPlaybackFeatureFlagFingerprint,
         KidsBackgroundPlaybackPolicyControllerFingerprint
     )
 ) {
@@ -106,16 +107,13 @@ object BackgroundPlaybackPatch : BytecodePatch(
             settingsBooleanMethod.addInstructions(0, overrideBackgroundPlaybackSettingsInstructions)
         }
 
-        // Force allowing background play for videos labeled for kids.
-        KidsBackgroundPlaybackPolicyControllerFingerprint.resultOrThrow().mutableMethod.addInstructions(
-            0,
-            "return-void"
-        )
-
-        // Force allowing background play for shorts
-        ExperimentalShortsPipFingerprint.resultOrThrow().mutableMethod.addInstructions(
+        // Force allowing background play for Shorts.
+        ShortsBackgroundPlaybackFeatureFlagFingerprint.resultOrThrow().mutableMethod.addInstructions(
             0,
             overrideBackgroundPlaybackSettingsInstructions
         )
+
+        // Force allowing background play for videos labeled for kids.
+        KidsBackgroundPlaybackPolicyControllerFingerprint.returnEarly()
     }
 }
