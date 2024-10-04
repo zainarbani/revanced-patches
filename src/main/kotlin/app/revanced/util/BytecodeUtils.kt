@@ -15,7 +15,6 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 import com.android.tools.smali.dexlib2.iface.reference.Reference
 import com.android.tools.smali.dexlib2.util.MethodUtil
-import org.stringtemplate.v4.compiler.Bytecode.instructions
 
 fun MethodFingerprint.resultOrThrow() = result ?: throw exception
 
@@ -190,6 +189,23 @@ inline fun <reified T : Reference> Instruction.getReference() = (this as? Refere
 fun Method.indexOfFirstInstruction(predicate: Instruction.() -> Boolean) = indexOfFirstInstruction(0, predicate)
 
 /**
+ * @return The index of the first opcode specified, or -1 if not found.
+ * @see indexOfFirstInstructionOrThrow
+ */
+fun Method.indexOfFirstInstruction(targetOpcode: Opcode): Int =
+    indexOfFirstInstruction(0, targetOpcode)
+
+/**
+ * @param startIndex Optional starting index to start searching from.
+ * @return The index of the first opcode specified, or -1 if not found.
+ * @see indexOfFirstInstructionOrThrow
+ */
+fun Method.indexOfFirstInstruction(startIndex: Int = 0, targetOpcode: Opcode): Int =
+    indexOfFirstInstruction(startIndex) {
+        opcode == targetOpcode
+    }
+
+/**
  * Get the index of the first [Instruction] that matches the predicate, starting from [startIndex].
  *
  * @param startIndex Optional starting index to start searching from.
@@ -197,7 +213,11 @@ fun Method.indexOfFirstInstruction(predicate: Instruction.() -> Boolean) = index
  * @see indexOfFirstInstructionOrThrow
  */
 fun Method.indexOfFirstInstruction(startIndex: Int = 0, predicate: Instruction.() -> Boolean): Int {
-    val index = this.implementation!!.instructions.drop(startIndex).indexOfFirst(predicate)
+    var instructions = this.implementation!!.instructions
+    if (startIndex != 0) {
+        instructions = instructions.drop(startIndex)
+    }
+    val index = instructions.indexOfFirst(predicate)
 
     return if (index >= 0) {
         startIndex + index
@@ -205,6 +225,24 @@ fun Method.indexOfFirstInstruction(startIndex: Int = 0, predicate: Instruction.(
         -1
     }
 }
+
+/**
+ * @return The index of the first opcode specified
+ * @throws PatchException
+ * @see indexOfFirstInstruction
+ */
+fun Method.indexOfFirstInstructionOrThrow(targetOpcode: Opcode): Int =
+    indexOfFirstInstructionOrThrow(0, targetOpcode)
+
+/**
+ * @return The index of the first opcode specified, starting from the index specified.
+ * @throws PatchException
+ * @see indexOfFirstInstruction
+ */
+fun Method.indexOfFirstInstructionOrThrow(startIndex: Int = 0, targetOpcode: Opcode): Int =
+    indexOfFirstInstructionOrThrow(startIndex) {
+        opcode == targetOpcode
+    }
 
 /**
  * Get the index of the first [Instruction] that matches the predicate, starting from [startIndex].
@@ -218,22 +256,111 @@ fun Method.indexOfFirstInstructionOrThrow(startIndex: Int = 0, predicate: Instru
     if (index < 0) {
         throw PatchException("Could not find instruction index")
     }
+
+    return index
+}
+
+/**
+ * Get the index of matching instruction,
+ * starting from and [startIndex] and searching down.
+ *
+ * @param startIndex Optional starting index to search down from. Searching includes the start index.
+ * @return -1 if the instruction is not found.
+ * @see indexOfFirstInstructionReversedOrThrow
+ */
+fun Method.indexOfFirstInstructionReversed(startIndex: Int? = null, targetOpcode: Opcode): Int =
+    indexOfFirstInstructionReversed(startIndex) {
+        opcode == targetOpcode
+    }
+
+/**
+ * Get the index of matching instruction,
+ * starting from and [startIndex] and searching down.
+ *
+ * @param startIndex Optional starting index to search down from. Searching includes the start index.
+ * @return -1 if the instruction is not found.
+ * @see indexOfFirstInstructionReversedOrThrow
+ */
+fun Method.indexOfFirstInstructionReversed(startIndex: Int? = null, predicate: Instruction.() -> Boolean): Int {
+    var instructions = this.implementation!!.instructions
+    if (startIndex != null) {
+        instructions = instructions.take(startIndex + 1)
+    }
+
+    return instructions.indexOfLast(predicate)
+}
+
+/**
+ * Get the index of matching instruction,
+ * starting from and [startIndex] and searching down.
+ *
+ * @param startIndex Optional starting index to search down from. Searching includes the start index.
+ * @return -1 if the instruction is not found.
+ * @see indexOfFirstInstructionReversed
+ */
+fun Method.indexOfFirstInstructionReversedOrThrow(startIndex: Int? = null, targetOpcode: Opcode): Int =
+    indexOfFirstInstructionReversedOrThrow(startIndex) {
+        opcode == targetOpcode
+    }
+
+/**
+ * Get the index of matching instruction,
+ * starting from and [startIndex] and searching down.
+ *
+ * @param startIndex Optional starting index to search down from. Searching includes the start index.
+ * @return -1 if the instruction is not found.
+ * @see indexOfFirstInstructionReversed
+ */
+fun Method.indexOfFirstInstructionReversedOrThrow(startIndex: Int? = null, predicate: Instruction.() -> Boolean): Int {
+    val index = indexOfFirstInstructionReversed(startIndex, predicate)
+
+    if (index < 0) {
+        throw PatchException("Could not find instruction index")
+    }
+
     return index
 }
 
 /**
  * @return The list of indices of the opcode in reverse order.
  */
-fun Method.findOpcodeIndicesReversed(opcode: Opcode): List<Int> {
+fun Method.findOpcodeIndicesReversed(opcode: Opcode): List<Int> =
+    findOpcodeIndicesReversed { this.opcode == opcode }
+
+/**
+ * @return The list of indices of the opcode in reverse order.
+ */
+fun Method.findOpcodeIndicesReversed(filter: Instruction.() -> Boolean): List<Int> {
     val indexes = implementation!!.instructions
         .withIndex()
-        .filter { (_, instruction) -> instruction.opcode == opcode }
+        .filter { (_, instruction) -> filter.invoke(instruction) }
         .map { (index, _) -> index }
         .reversed()
 
-    if (indexes.isEmpty()) throw PatchException("No ${opcode.name} instructions found in: $this")
+    if (indexes.isEmpty()) throw PatchException("No matching instructions found in: $this")
 
     return indexes
+}
+
+/**
+ * Called for _all_ instructions with the given literal value.
+ */
+fun BytecodeContext.forEachLiteralValueInstruction(
+    literal: Long,
+    block: MutableMethod.(literalInstructionIndex: Int) -> Unit,
+) {
+    classes.forEach { classDef ->
+        classDef.methods.forEach { method ->
+            method.implementation?.instructions?.forEachIndexed { index, instruction ->
+                if (instruction.opcode == Opcode.CONST &&
+                    (instruction as WideLiteralInstruction).wideLiteral == literal
+                ) {
+                    val mutableMethod = proxy(classDef).mutableClass.findMutableMethodOf(method)
+                    block.invoke(mutableMethod, index)
+                }
+            }
+        }
+    }
 }
 
 /**

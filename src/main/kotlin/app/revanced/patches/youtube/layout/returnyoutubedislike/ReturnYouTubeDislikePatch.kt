@@ -5,6 +5,8 @@ import app.revanced.patcher.extensions.InstructionExtensions.addInstruction
 import app.revanced.patcher.extensions.InstructionExtensions.addInstructions
 import app.revanced.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.revanced.patcher.extensions.InstructionExtensions.getInstruction
+import app.revanced.patcher.extensions.InstructionExtensions.getInstructions
+import app.revanced.patcher.extensions.InstructionExtensions.removeInstruction
 import app.revanced.patcher.fingerprint.MethodFingerprint
 import app.revanced.patcher.patch.BytecodePatch
 import app.revanced.patcher.patch.PatchException
@@ -27,8 +29,10 @@ import app.revanced.patches.youtube.layout.returnyoutubedislike.fingerprints.Tex
 import app.revanced.patches.youtube.misc.integrations.IntegrationsPatch
 import app.revanced.patches.youtube.misc.litho.filter.LithoFilterPatch
 import app.revanced.patches.youtube.misc.playertype.PlayerTypeHookPatch
+import app.revanced.patches.youtube.misc.playservice.VersionCheckPatch
 import app.revanced.patches.youtube.shared.fingerprints.RollingNumberTextViewAnimationUpdateFingerprint
 import app.revanced.patches.youtube.video.videoid.VideoIdPatch
+import app.revanced.util.alsoResolve
 import app.revanced.util.exception
 import app.revanced.util.getReference
 import app.revanced.util.indexOfFirstInstructionOrThrow
@@ -37,9 +41,11 @@ import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
+import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import com.android.tools.smali.dexlib2.iface.reference.Reference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 
 @Patch(
@@ -51,27 +57,16 @@ import com.android.tools.smali.dexlib2.iface.reference.TypeReference
         VideoIdPatch::class,
         ReturnYouTubeDislikeResourcePatch::class,
         PlayerTypeHookPatch::class,
+        VersionCheckPatch::class
     ],
     compatiblePackages = [
         CompatiblePackage(
             "com.google.android.youtube", [
                 "18.49.37",
-                "19.01.34",
-                "19.02.39",
-                "19.03.36",
-                "19.04.38",
                 "19.05.36",
-                "19.06.39",
-                "19.07.40",
-                "19.08.36",
-                "19.09.38",
-                "19.10.39",
-                "19.11.43",
-                "19.12.41",
-                "19.13.37",
-                "19.14.43",
-                "19.15.36",
                 "19.16.39",
+                "19.25.37",
+                "19.34.42",
             ]
         )
     ]
@@ -136,7 +131,7 @@ object ReturnYouTubeDislikePatch : BytecodePatch(
         // And it works in all situations except it fails to update the Span when the user dislikes,
         // since the underlying (likes only) text did not change.
         // This hook handles all situations, as it's where the created Spans are stored and later reused.
-        TextComponentConstructorFingerprint.result?.let { textConstructorResult ->
+        TextComponentConstructorFingerprint.resultOrThrow().let { textConstructorResult ->
             // Find the field name of the conversion context.
             val conversionContextClassType = ConversionContextFingerprint.resultOrThrow().classDef.type
             val conversionContextField = textConstructorResult.classDef.fields.find {
@@ -147,36 +142,76 @@ object ReturnYouTubeDislikePatch : BytecodePatch(
             TextComponentLookupFingerprint.resultOrThrow().mutableMethod.apply {
                 // Find the instruction for creating the text data object.
                 val textDataClassType = TextComponentDataFingerprint.resultOrThrow().classDef.type
-                val insertIndex = indexOfFirstInstructionOrThrow {
-                    opcode == Opcode.NEW_INSTANCE &&
-                            getReference<TypeReference>()?.type == textDataClassType
+
+                val originalSmali : String
+                val insertIndex : Int
+                val tempRegister : Int
+                val charSequenceRegister : Int
+
+                if (VersionCheckPatch.is_19_33_or_greater) {
+                    insertIndex = indexOfFirstInstructionOrThrow {
+                        opcode == Opcode.INVOKE_STATIC_RANGE &&
+                                getReference<MethodReference>()?.returnType == textDataClassType
+                    }
+
+                    // Convert the original instruction to smali.
+                    // Would be handy if BuilderInstruction.toString() gave the smali, but it doesn't.
+                    // Maybe there's an easier way.
+                    val originalInstruction = getInstruction<RegisterRangeInstruction>(insertIndex)
+                    val originalStartRegister = originalInstruction.startRegister
+                    val originalEndRegister = originalStartRegister + originalInstruction.registerCount - 1
+                    val originalReference = originalInstruction.getReference<Reference>()
+                    originalSmali = "invoke-static/range { v$originalStartRegister .. v$originalEndRegister }, $originalReference"
+
+                    tempRegister = getInstruction<OneRegisterInstruction>(insertIndex + 1).registerA
+
+                    // Find the instruction that sets the span to an instance field.
+                    // The instruction is only a few lines after the creation of the instance.
+                    charSequenceRegister = getInstruction<FiveRegisterInstruction>(
+                        indexOfFirstInstructionOrThrow(insertIndex) {
+                            opcode == Opcode.INVOKE_VIRTUAL &&
+                                    getReference<MethodReference>()?.parameterTypes?.firstOrNull() == "Ljava/lang/CharSequence;"
+                        }
+                    ).registerD
+                } else {
+                    insertIndex = indexOfFirstInstructionOrThrow {
+                        opcode == Opcode.NEW_INSTANCE &&
+                                getReference<TypeReference>()?.type == textDataClassType
+                    }
+
+                    val originalInstruction = getInstruction<OneRegisterInstruction>(insertIndex)
+                    val originalRegister = originalInstruction.registerA
+                    val originalReference = originalInstruction.getReference<Reference>()
+                    originalSmali = "new-instance v$originalRegister, $originalReference"
+
+                    tempRegister = getInstruction<OneRegisterInstruction>(insertIndex).registerA
+
+                    charSequenceRegister = getInstruction<TwoRegisterInstruction>(
+                        indexOfFirstInstructionOrThrow(insertIndex) {
+                            opcode == Opcode.IPUT_OBJECT &&
+                                    getReference<FieldReference>()?.type == "Ljava/lang/CharSequence;"
+                        }
+                    ).registerA
                 }
-                val tempRegister = getInstruction<OneRegisterInstruction>(insertIndex).registerA
 
-                // Find the instruction that sets the span to an instance field.
-                // The instruction is only a few lines after the creation of the instance.
-                // The method has multiple iput-object instructions using a CharSequence,
-                // so verify the found instruction is in the expected location.
-                val putFieldInstruction = implementation!!.instructions
-                    .subList(insertIndex, insertIndex + 20)
-                    .find {
-                        it.opcode == Opcode.IPUT_OBJECT &&
-                                it.getReference<FieldReference>()?.type == "Ljava/lang/CharSequence;"
-                    } ?: throw PatchException("Could not find put object instruction")
-                val charSequenceRegister = (putFieldInstruction as TwoRegisterInstruction).registerA
-
+                // Add original instruction to preserve control flow.
+                // Would be helpful if instructions could be added at a control label.
                 addInstructions(
-                    insertIndex,
+                    insertIndex + 1,
                     """
-                    # Copy conversion context
-                    move-object/from16 v$tempRegister, p0
-                    iget-object v$tempRegister, v$tempRegister, $conversionContextField
-                    invoke-static {v$tempRegister, v$charSequenceRegister}, $INTEGRATIONS_CLASS_DESCRIPTOR->onLithoTextLoaded(Ljava/lang/Object;Ljava/lang/CharSequence;)Ljava/lang/CharSequence;
-                    move-result-object v$charSequenceRegister
-                """
+                        # Copy conversion context
+                        move-object/from16 v$tempRegister, p0
+                        iget-object v$tempRegister, v$tempRegister, $conversionContextField
+                        invoke-static { v$tempRegister, v$charSequenceRegister }, $INTEGRATIONS_CLASS_DESCRIPTOR->onLithoTextLoaded(Ljava/lang/Object;Ljava/lang/CharSequence;)Ljava/lang/CharSequence;
+                        move-result-object v$charSequenceRegister
+                        
+                        $originalSmali
+                    """
                 )
+
+                removeInstruction(insertIndex)
             }
-        } ?: throw TextComponentConstructorFingerprint.exception
+        }
 
         // endregion
 
@@ -184,18 +219,25 @@ object ReturnYouTubeDislikePatch : BytecodePatch(
 
         ShortsTextViewFingerprint.result?.let {
             it.mutableMethod.apply {
-                val patternResult = it.scanResult.patternScanResult!!
+                val insertIndex = it.scanResult.patternScanResult!!.endIndex + 1
 
                 // If the field is true, the TextView is for a dislike button.
-                val isDisLikesBooleanReference = getInstruction<ReferenceInstruction>(patternResult.endIndex).reference
+                val isDisLikesBooleanInstruction = getInstructions().first { instruction ->
+                    instruction.opcode == Opcode.IGET_BOOLEAN
+                } as ReferenceInstruction
 
-                val textViewFieldReference = // Like/Dislike button TextView field
-                    getInstruction<ReferenceInstruction>(patternResult.endIndex - 1).reference
+                val isDisLikesBooleanReference = isDisLikesBooleanInstruction.reference
+
+                // Like/Dislike button TextView field.
+                val textViewFieldInstruction = getInstructions().first { instruction ->
+                    instruction.opcode == Opcode.IGET_OBJECT
+                } as ReferenceInstruction
+
+                val textViewFieldReference = textViewFieldInstruction.reference
 
                 // Check if the hooked TextView object is that of the dislike button.
                 // If RYD is disabled, or the TextView object is not that of the dislike button, the execution flow is not interrupted.
                 // Otherwise, the TextView object is modified, and the execution flow is interrupted to prevent it from being changed afterward.
-                val insertIndex = patternResult.startIndex + 6
                 addInstructionsWithLabels(
                     insertIndex,
                     """
@@ -251,10 +293,6 @@ object ReturnYouTubeDislikePatch : BytecodePatch(
 
         // region Hook rolling numbers.
 
-        // Do this last to allow patching old unsupported versions (if the user really wants),
-        // On older unsupported version this will fail to resolve and throw an exception,
-        // but everything will still work correctly anyways.
-
         RollingNumberSetterFingerprint.result?.let {
             val dislikesIndex = it.scanResult.patternScanResult!!.endIndex
 
@@ -306,8 +344,7 @@ object ReturnYouTubeDislikePatch : BytecodePatch(
 
         // Additional text measurement method. Used if YouTube decides not to animate the likes count
         // and sometimes used for initial video load.
-        RollingNumberMeasureStaticLabelFingerprint.resolve(context, RollingNumberMeasureStaticLabelParentFingerprint.resultOrThrow().classDef)
-        RollingNumberMeasureStaticLabelFingerprint.result?.also {
+        RollingNumberMeasureStaticLabelFingerprint.alsoResolve(context, RollingNumberMeasureStaticLabelParentFingerprint).let {
             val measureTextIndex = it.scanResult.patternScanResult!!.startIndex + 1
             it.mutableMethod.apply {
                 val freeRegister = getInstruction<TwoRegisterInstruction>(0).registerA
@@ -320,7 +357,7 @@ object ReturnYouTubeDislikePatch : BytecodePatch(
                     """
                 )
             }
-        } ?: throw RollingNumberMeasureStaticLabelFingerprint.exception
+        }
 
         // The rolling number Span is missing styling since it's initially set as a String.
         // Modify the UI text view and use the styled like/dislike Span.
