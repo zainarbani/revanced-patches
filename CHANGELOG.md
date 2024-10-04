@@ -1,3 +1,11 @@
+# [4.18.0-dev.2](https://github.com/zainarbani/revanced-patches/compare/v4.18.0-dev.1...v4.18.0-dev.2) (2024-10-04)
+
+
+### Features
+
+* Merge branch `feat/yt-bump` to `dev` ([bd1f336](https://github.com/zainarbani/revanced-patches/commit/bd1f3360038b66fd6122249477974f99d2d1e57e))
+* Merge branch `feat/yt-sleep-timer` to `dev` ([1a9c126](https://github.com/zainarbani/revanced-patches/commit/1a9c1260bd3275c9096f4104afc556e22458e783))
+
 # [4.18.0-dev.1](https://github.com/zainarbani/revanced-patches/compare/v4.17.1...v4.18.0-dev.1) (2024-10-04)
 
 
