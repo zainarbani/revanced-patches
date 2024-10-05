@@ -18,6 +18,7 @@ import app.revanced.patches.youtube.layout.hide.general.fingerprints.HideShowMor
 import app.revanced.patches.youtube.layout.hide.general.fingerprints.ParseElementFromBufferFingerprint
 import app.revanced.patches.youtube.layout.hide.general.fingerprints.PlayerOverlayFingerprint
 import app.revanced.patches.youtube.layout.hide.general.fingerprints.ShowWatermarkFingerprint
+import app.revanced.patches.youtube.layout.hide.general.fingerprints.TestFingerprint
 import app.revanced.patches.youtube.misc.litho.filter.LithoFilterPatch
 import app.revanced.patches.youtube.misc.navigation.NavigationBarHookPatch
 import app.revanced.patches.youtube.misc.settings.SettingsPatch
@@ -53,7 +54,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 )
 @Suppress("unused")
 object HideLayoutComponentsPatch : BytecodePatch(
-    setOf(ParseElementFromBufferFingerprint, PlayerOverlayFingerprint, HideShowMoreButtonFingerprint),
+    setOf(ParseElementFromBufferFingerprint, PlayerOverlayFingerprint, HideShowMoreButtonFingerprint, TestFingerprint),
 ) {
     private const val LAYOUT_COMPONENTS_FILTER_CLASS_DESCRIPTOR =
         "Lapp/revanced/integrations/youtube/patches/components/LayoutComponentsFilter;"
@@ -210,5 +211,24 @@ object HideLayoutComponentsPatch : BytecodePatch(
         }
 
         // endregion
+
+        TestFingerprint.resultOrThrow().let {
+            it.mutableMethod.apply {
+                val igetIndex = it.scanResult.patternScanResult!!.endIndex
+                val igetRegister = getInstruction<TwoRegisterInstruction>(igetIndex).registerA
+                val freeRegister = getInstruction<TwoRegisterInstruction>(igetIndex + 1).registerA
+                 
+                val insertIndex = igetIndex + 1
+                addInstructions(
+                    insertIndex,
+                    """
+                        invoke-static { v$igetRegister }, Ljava/lang/String;->valueOf(Ljava/lang/Object;)Ljava/lang/String;
+                        move-result-object v$freeRegister
+                        invoke-static { v$freeRegister }, $LAYOUT_COMPONENTS_FILTER_CLASS_DESCRIPTOR->testMethod(Ljava/lang/String;)V
+                    """,
+                )
+            }
+        }
+
     }
 }
