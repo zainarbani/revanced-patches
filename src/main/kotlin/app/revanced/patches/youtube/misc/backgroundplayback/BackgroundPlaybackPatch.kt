@@ -2,6 +2,7 @@ package app.revanced.patches.youtube.misc.backgroundplayback
 
 import app.revanced.patcher.data.BytecodeContext
 import app.revanced.patcher.extensions.InstructionExtensions.addInstructions
+import app.revanced.patcher.extensions.InstructionExtensions.getInstruction
 import app.revanced.patcher.patch.BytecodePatch
 import app.revanced.patcher.patch.annotation.CompatiblePackage
 import app.revanced.patcher.patch.annotation.Patch
@@ -13,8 +14,12 @@ import app.revanced.patches.youtube.misc.integrations.IntegrationsPatch
 import app.revanced.patches.youtube.misc.playertype.PlayerTypeHookPatch
 import app.revanced.patches.youtube.misc.settings.SettingsPatch
 import app.revanced.patches.youtube.video.information.VideoInformationPatch
+import app.revanced.util.addInstructionsAtControlFlowLabel
+import app.revanced.util.findOpcodeIndicesReversed
 import app.revanced.util.resultOrThrow
 import app.revanced.util.returnEarly
+import com.android.tools.smali.dexlib2.Opcode
+import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
@@ -33,24 +38,11 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
         CompatiblePackage(
             "com.google.android.youtube",
             [
-                "18.48.39",
+                "18.38.44",
                 "18.49.37",
-                "19.01.34",
-                "19.02.39",
-                "19.03.36",
-                "19.04.38",
-                "19.05.36",
-                "19.06.39",
-                "19.07.40",
-                "19.08.36",
-                "19.09.38",
-                "19.10.39",
-                "19.11.43",
-                "19.12.41",
-                "19.13.37",
-                "19.14.43",
-                "19.15.36",
                 "19.16.39",
+                "19.25.37",
+                "19.34.42",
             ]
         )
     ]
@@ -94,6 +86,19 @@ object BackgroundPlaybackPatch : BytecodePatch(
                     move-result v0
                     return v0
                 """
+        BackgroundPlaybackManagerFingerprint.resultOrThrow().mutableMethod.apply {
+            findOpcodeIndicesReversed(Opcode.RETURN).forEach{ index ->
+                val register = getInstruction<OneRegisterInstruction>(index).registerA
+
+                addInstructionsAtControlFlowLabel(
+                    index,
+                    """
+                        invoke-static { v$register }, $INTEGRATIONS_CLASS_DESCRIPTOR->allowBackgroundPlayback(Z)Z
+                        move-result v$register 
+                    """
+                )
+            }
+        }
 
         // Enable background playback option in YouTube settings
         BackgroundPlaybackSettingsFingerprint.resultOrThrow().mutableMethod.apply {
