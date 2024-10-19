@@ -1,3 +1,10 @@
+# [4.18.0-dev.4](https://github.com/zainarbani/revanced-patches/compare/v4.18.0-dev.3...v4.18.0-dev.4) (2024-10-19)
+
+
+### Bug Fixes
+
+* test ([25cb76f](https://github.com/zainarbani/revanced-patches/commit/25cb76f8d1dc9ea83833a44a8c579c44653df218))
+
 # [4.18.0-dev.3](https://github.com/zainarbani/revanced-patches/compare/v4.18.0-dev.2...v4.18.0-dev.3) (2024-10-05)
 
 
