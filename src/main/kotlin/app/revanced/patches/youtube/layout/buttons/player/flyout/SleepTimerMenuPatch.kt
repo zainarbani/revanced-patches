@@ -34,9 +34,9 @@ object SleepTimerMenuPatch : BytecodePatch(
             it.mutableMethod.apply {
                 val targetIndex = it.scanResult.patternScanResult!!.startIndex
 
-                addInstruction(
-                    targetIndex, "const/4 p1, 0x1"
-                )
+                //addInstruction(
+                //    targetIndex, "const/4 p1, 0x1"
+                //)
             }
         }
     }
