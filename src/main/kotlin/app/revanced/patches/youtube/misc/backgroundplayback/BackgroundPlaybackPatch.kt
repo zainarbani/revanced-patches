@@ -71,14 +71,19 @@ object BackgroundPlaybackPatch : BytecodePatch(
             BackgroundPlaybackManagerFingerprint to "isBackgroundPlaybackAllowed",
             BackgroundPlaybackManagerShortsFingerprint to "isBackgroundShortsPlaybackAllowed"
         ).forEach { (fingerprint, integrationsMethod) ->
-            fingerprint.resultOrThrow().mutableMethod.addInstructions(
-                0,
-                """
-                    invoke-static {}, $INTEGRATIONS_CLASS_DESCRIPTOR->$integrationsMethod()Z
-                    move-result v0
-                    return v0
-            """
-            )
+            fingerprint.resultOrThrow().mutableMethod.apply {
+                findOpcodeIndicesReversed(Opcode.RETURN).forEach { index ->
+                    val register = getInstruction<OneRegisterInstruction>(index).registerA
+
+                    addInstructionsAtControlFlowLabel(
+                        index,
+                        """
+                            invoke-static { v$register }, $INTEGRATIONS_CLASS_DESCRIPTOR->$integrationsMethod(Z)Z
+                            move-result v$register 
+                        """
+                    )
+                }
+            }
         }
 
         val overrideBackgroundPlaybackSettingsInstructions = """
@@ -86,19 +91,6 @@ object BackgroundPlaybackPatch : BytecodePatch(
                     move-result v0
                     return v0
                 """
-        BackgroundPlaybackManagerFingerprint.resultOrThrow().mutableMethod.apply {
-            findOpcodeIndicesReversed(Opcode.RETURN).forEach{ index ->
-                val register = getInstruction<OneRegisterInstruction>(index).registerA
-
-                addInstructionsAtControlFlowLabel(
-                    index,
-                    """
-                        invoke-static { v$register }, $INTEGRATIONS_CLASS_DESCRIPTOR->allowBackgroundPlayback(Z)Z
-                        move-result v$register 
-                    """
-                )
-            }
-        }
 
         // Enable background playback option in YouTube settings
         BackgroundPlaybackSettingsFingerprint.resultOrThrow().mutableMethod.apply {
@@ -118,7 +110,7 @@ object BackgroundPlaybackPatch : BytecodePatch(
             overrideBackgroundPlaybackSettingsInstructions
         )
 
-        // Force allowing background play for videos labeled for kids.
+        // Force allowing background play of videos intended for children.
         KidsBackgroundPlaybackPolicyControllerFingerprint.returnEarly()
     }
 }
