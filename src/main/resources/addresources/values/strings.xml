@@ -607,6 +607,8 @@ This is because Crowdin requires temporarily flattening this file and removing t
             <string name="revanced_hide_seekbar_thumbnail_summary_off">Thumbnail seekbar is shown</string>
         </patch>
         <patch id="layout.hide.shorts.HideShortsComponentsResourcePatch">
+            <string name="revanced_shorts_player_screen_title">Shorts player</string>
+            <string name="revanced_shorts_player_screen_summary">Hide or show components in the Shorts player</string>
             <!-- 'home' should be translated using the same localized wording YouTube displays for the home tab. -->
             <string name="revanced_hide_shorts_home_title">Hide Shorts in home feed</string>
             <string name="revanced_hide_shorts_home_summary_on">Shorts in home feed are hidden</string>
@@ -653,6 +655,9 @@ This is because Crowdin requires temporarily flattening this file and removing t
             <string name="revanced_hide_shorts_green_screen_button_title">Hide green screen button</string>
             <string name="revanced_hide_shorts_green_screen_button_summary_on">Green screen button is hidden</string>
             <string name="revanced_hide_shorts_green_screen_button_summary_off">Green screen button is shown</string>
+            <string name="revanced_hide_shorts_hashtag_button_title">Hide hashtag button</string>
+            <string name="revanced_hide_shorts_hashtag_button_summary_on">Hashtag button is hidden</string>
+            <string name="revanced_hide_shorts_hashtag_button_summary_off">Hashtag button is shown</string>
             <string name="revanced_hide_shorts_search_suggestions_title">Hide search suggestions</string>
             <string name="revanced_hide_shorts_search_suggestions_summary_on">Search suggestions are hidden</string>
             <string name="revanced_hide_shorts_search_suggestions_summary_off">Search suggestions are shown</string>
@@ -998,6 +1003,14 @@ This is because Crowdin requires temporarily flattening this file and removing t
             <string name="revanced_disable_resuming_shorts_player_title">Disable resuming Shorts player</string>
             <string name="revanced_disable_resuming_shorts_player_summary_on">Shorts player will not resume on app startup</string>
             <string name="revanced_disable_resuming_shorts_player_summary_off">Shorts player will resume on app startup</string>
+        </patch>
+        <patch id="layout.shortsautoplay.ShortsAutoplayPatch">
+            <string name="revanced_shorts_autoplay_title">Autoplay Shorts</string>
+            <string name="revanced_shorts_autoplay_summary_on">Shorts will autoplay</string>
+            <string name="revanced_shorts_autoplay_summary_off">Shorts will repeat</string>
+            <string name="revanced_shorts_autoplay_background_title">Autoplay Shorts background play</string>
+            <string name="revanced_shorts_autoplay_background_summary_on">Shorts background play will autoplay</string>
+            <string name="revanced_shorts_autoplay_background_summary_off">Shorts background play will repeat</string>
         </patch>
         <patch id="layout.tablet.EnableTabletLayoutPatch">
             <string name="revanced_tablet_layout_title">Enable tablet layout</string>
